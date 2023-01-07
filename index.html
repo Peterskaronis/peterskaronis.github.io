@@ -7,10 +7,32 @@
     <link rel="stylesheet" href="style.css">
     <title>Peter Skaronis</title>
     
-    <script defer type="text/javascript" src="https://api.pirsch.io/pirsch.js"
-    id="pirschjs"
+    <script defer type="text/javascript" src="https://api.pirsch.io/pirsch-events.js"
+    id="pirscheventsjs"
     data-code="FDGWZn7v0ocNxM2YLn0nDj5BoNZ4VSZj"></script>
-    <script type="text/javascript">
+    
+</head>
+<body>
+    <section class="front-page">
+        <nav>
+            <div class="logo">
+                <img src="./assets/skaronis.com-logo.png" alt="Peter Skaronis">
+        </nav>
+        <div class="subscriber-point">
+            <h2>Hi, I'm Peter Skaronis</h2>
+            <h3>Cybersecurity Consultant</h3>
+            <section class="ctas">
+                <div class="ctain-main">
+                  <form action="https://world.hey.com/pskaronis/subscribers" accept-charset="UTF-8" data-remote="true" method="post">
+                    <label for="subscriber[email_address]">
+                        Subscribe to receive my thinking on Cybersecurity, technology and learning.
+                    </label>
+                    <div class="ctas">
+                      <input type="email" name="subscriber[email_address]" id="subscriber_email_address" placeholder="Email address" class="cta-main" required="required" aria-required="true">
+                      <button id="button" type="submit" class="cta-main">Subscribe</button>
+                   
+    </section>
+                      <script type="text/javascript">
     // Wait until the page has finished loading before adding the event listener.
     document.addEventListener("DOMContentLoaded", () => {
         let clicks = 1;
@@ -32,25 +54,5 @@
         });
     });
 </script>
-</head>
-<body>
-    <section class="front-page">
-        <nav>
-            <div class="logo">
-                <img src="./assets/skaronis.com-logo.png" alt="Peter Skaronis">
-        </nav>
-        <div class="subscriber-point">
-            <h2>Hi, I'm Peter Skaronis</h2>
-            <h3>Cybersecurity Consultant</h3>
-            <section class="ctas">
-                <div class="ctain-main">
-                  <form action="https://world.hey.com/pskaronis/subscribers" accept-charset="UTF-8" data-remote="true" method="post">
-                    <label for="subscriber[email_address]">
-                        Subscribe to receive my thinking on Cybersecurity, technology and learning.
-                    </label>
-                    <div class="ctas">
-                      <input type="email" name="subscriber[email_address]" id="subscriber_email_address" placeholder="Email address" class="cta-main" required="required" aria-required="true">
-                      <button id="button" type="submit" class="cta-main">Subscribe</button>
-    </section>
 </body>
 </html>
