@@ -10,6 +10,28 @@
     <script defer type="text/javascript" src="https://api.pirsch.io/pirsch.js"
     id="pirschjs"
     data-code="FDGWZn7v0ocNxM2YLn0nDj5BoNZ4VSZj"></script>
+    <script type="text/javascript">
+    // Wait until the page has finished loading before adding the event listener.
+    document.addEventListener("DOMContentLoaded", () => {
+        let clicks = 1;
+
+        // You might need to use a different selector, like if you have other elements in your button.
+        // See the second example on how you could solve that.
+        document.getElementById("button").addEventListener("click", () => {
+            pirsch("Button Clicked", {
+                duration: 42,
+                meta: {
+                    Clicks: clicks
+                }
+            }).then(() => {
+                clicks++;
+            }).catch(e => {
+                console.error(e); // log the error but still count up
+                clicks++;
+            });
+        });
+    });
+</script>
 </head>
 <body>
     <section class="front-page">
