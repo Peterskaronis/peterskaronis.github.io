@@ -62,7 +62,14 @@ nav {
     height: 3rem;
 }
 
-
+.profile img {
+    margin-top: 5vh;
+    margin-bottom: -25vh;
+    height: 10rem;
+ display: block;
+ margin-left: auto;
+ margin-right: auto;
+}
 
 .links a {
     color: var(--secondary-color);
