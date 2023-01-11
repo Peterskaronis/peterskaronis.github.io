@@ -119,3 +119,8 @@ nav {
    color: white;
 }
 
+.footer {
+    color: var(--secondary-color);
+    padding: 1rem;
+    text-align: center;
+}
