@@ -175,3 +175,11 @@ nav {
     border-radius: 20% 25% 20% 24%;
     padding: 10px 3px 3px 10px;
   }
+
+  div.parent {
+	text-align: center;
+	}
+ul { 
+	display: inline-block; 
+	text-align: left; 
+	}
