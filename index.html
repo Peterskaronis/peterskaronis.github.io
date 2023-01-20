@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Peter Skaronis</title>
-    <script defer type="text/javascript" src="https://api.pirsch.io/pirsch-events.js"
-    id="pirscheventsjs"
-    data-code="51WCzs0EmaXUoQ8GKPj8mW3qFEelCiv3"></script>
 </head>
 <body>
     <section class="front-page">
@@ -70,30 +67,6 @@
     <div class="col-md-12">
         <div class="footer-text">
             <p>© 2023 Peter Skaronis</p>
-        </div>
-
-        <script type="text/javascript">
-            // Wait until the page has finished loading before adding the event listener.
-            document.addEventListener("DOMContentLoaded", () => {
-                let clicks = 1;
-        
-                // You might need to use a different selector, like if you have other elements in your button.
-                // See the second example on how you could solve that.
-                document.getElementById("button").addEventListener("click", () => {
-                    pirsch("Subscribed", {
-                        duration: 42,
-                        meta: {
-                            Clicks: clicks
-                        }
-                    }).then(() => {
-                        clicks++;
-                    }).catch(e => {
-                        console.error(e); // log the error but still count up
-                        clicks++;
-                    });
-                });
-            });
-        
-        </script>        
+        </div>        
 </body>
 </html>
