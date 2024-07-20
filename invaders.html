@@ -7,29 +7,25 @@
     <style>
         body {
             background-color: #000;
+            color: #00ff00;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
-            color: #00ff00;
         }
         #gameTitle {
             font-size: 24px;
             margin-bottom: 20px;
-            text-align: center;
-            max-width: 800px;
         }
-        canvas {
+        #gameCanvas {
             border: 1px solid #00ff00;
-            background-color: #000;
         }
         #restartButton, #notesLink {
             margin-top: 20px;
             padding: 10px 20px;
-            font-size: 18px;
             background-color: #00ff00;
             color: #000;
             border: none;
@@ -37,13 +33,8 @@
             text-decoration: none;
             display: none;
         }
-        #notesLink {
-            background-color: #0000ff;
-            color: #ffffff;
-        }
         #infoText {
             margin-top: 10px;
-            margin-bottom: 10px;
             font-style: italic;
             color: #ffffff;
             display: none;
@@ -57,431 +48,91 @@
     <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
     <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
 
-
-
-
-
-    
     <script>
-
-
-        // Add this near the top of your script, with other variable declarations
-let audioContext;
-let backgroundMusic;
-
-// Add this function to initialize and start the background music
-function initBackgroundMusic() {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // Create oscillator for base tone
-    const baseOscillator = audioContext.createOscillator();
-    baseOscillator.type = 'sawtooth';
-    baseOscillator.frequency.setValueAtTime(150, audioContext.currentTime);
-
-    // Create oscillator for high-pitched beeps
-    const beepOscillator = audioContext.createOscillator();
-    beepOscillator.type = 'sine';
-    beepOscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
-
-    // Create gain nodes
-    const baseGain = audioContext.createGain();
-    baseGain.gain.setValueAtTime(0.3, audioContext.currentTime);
-    const beepGain = audioContext.createGain();
-    beepGain.gain.setValueAtTime(0, audioContext.currentTime);
-
-    // Connect nodes
-    baseOscillator.connect(baseGain);
-    beepOscillator.connect(beepGain);
-    baseGain.connect(audioContext.destination);
-    beepGain.connect(audioContext.destination);
-
-    // Start oscillators
-    baseOscillator.start();
-    beepOscillator.start();
-
-    // Create repeating beep pattern
-    setInterval(() => {
-        beepGain.gain.setValueAtTime(0.1, audioContext.currentTime);
-        beepGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-    }, 1000);
-
-    backgroundMusic = { baseOscillator, beepOscillator, baseGain, beepGain };
-}
-
-// Add this function to stop the background music
-function stopBackgroundMusic() {
-    if (backgroundMusic) {
-        backgroundMusic.baseOscillator.stop();
-        backgroundMusic.beepOscillator.stop();
-    }
-}
-
-// Modify your initGame function to start the music
-function initGame() {
-    // ... existing initGame code ...
-    
-    if (!audioContext) {
-        initBackgroundMusic();
-    }
-}
-
-// Modify your gameLoop function to stop the music when the game is over
-function gameLoop(currentTime) {
-    // ... existing gameLoop code ...
-
-    if (gameOver) {
-        stopBackgroundMusic();
-        // ... existing game over code ...
-    }
-}
-
-// Add this to ensure audio starts on user interaction (to comply with autoplay policies)
-document.addEventListener('click', () => {
-    if (!audioContext) {
-        initBackgroundMusic();
-    }
-});
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         const restartButton = document.getElementById('restartButton');
         const notesLink = document.getElementById('notesLink');
         const infoText = document.getElementById('infoText');
 
-        // Audio context
         let audioContext;
-        let isSoundInitialized = false;
+        let backgroundMusic;
 
-        let player, bullets, enemies, enemyBullets, score, gameOver, gameWon, timeLeft;
-        let keys = {};
-        let lastShot = 0;
-        const shootCooldown = 500;
-        const gameDuration = 60; // 60 seconds
-        const enemyShootChance = 0.02; // 2% chance per enemy per frame
-        const enemyColumns = 10;
-        const enemyRows = 5;
-
-        function initSound() {
+        function initBackgroundMusic() {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            isSoundInitialized = true;
+            
+            const baseOscillator = audioContext.createOscillator();
+            baseOscillator.type = 'sawtooth';
+            baseOscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+
+            const beepOscillator = audioContext.createOscillator();
+            beepOscillator.type = 'sine';
+            beepOscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
+
+            const baseGain = audioContext.createGain();
+            baseGain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            const beepGain = audioContext.createGain();
+            beepGain.gain.setValueAtTime(0, audioContext.currentTime);
+
+            baseOscillator.connect(baseGain);
+            beepOscillator.connect(beepGain);
+            baseGain.connect(audioContext.destination);
+            beepGain.connect(audioContext.destination);
+
+            baseOscillator.start();
+            beepOscillator.start();
+
+            setInterval(() => {
+                beepGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                beepGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+            }, 1000);
+
+            backgroundMusic = { baseOscillator, beepOscillator, baseGain, beepGain };
         }
 
-        function playSound(frequency, duration) {
-            if (!isSoundInitialized) return;
-
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-
-            oscillator.type = 'square';
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-
-            oscillator.start();
-            oscillator.stop(audioContext.currentTime + duration);
+        function stopBackgroundMusic() {
+            if (backgroundMusic) {
+                backgroundMusic.baseOscillator.stop();
+                backgroundMusic.beepOscillator.stop();
+            }
         }
 
         function initGame() {
-            player = {
-                x: canvas.width / 2,
-                y: canvas.height - 30,
-                width: 50,
-                height: 20,
-                dx: 5
-            };
-            bullets = [];
-            enemyBullets = [];
-            enemies = [];
-            score = 0;
-            gameOver = false;
-            gameWon = false;
-            timeLeft = gameDuration;
-
-            // Create enemies
-            for (let row = 0; row < enemyRows; row++) {
-                for (let col = 0; col < enemyColumns; col++) {
-                    enemies.push({
-                        x: col * 60,
-                        y: row * 50 + 50,
-                        width: 40,
-                        height: 30,
-                        column: col,
-                        row: row,
-                        canShoot: row === enemyRows - 1,
-                        dx: 1,  // Horizontal speed
-                        dy: 0.02  // Vertical speed (very slow)
-                    });
-                }
+            // Initialize game objects and state here
+            if (!audioContext) {
+                initBackgroundMusic();
             }
-
+            // Hide UI elements
             restartButton.style.display = 'none';
             notesLink.style.display = 'none';
             infoText.style.display = 'none';
         }
 
         function gameLoop() {
-            if (!gameOver && !gameWon) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                handlePlayerMovement();
-                handleShooting();
-                updateBullets();
-                updateEnemyBullets();
-                drawPlayer();
-                drawBullets();
-                drawEnemyBullets();
-                drawEnemies();
-                moveEnemies();
-                checkCollisions();
-                enemyShoot();
-                drawScore();
-                drawTime();
-                updateTime();
-                checkGameOver();
-                requestAnimationFrame(gameLoop);
-            } else {
-                drawGameOver();
-            }
+            // Game logic goes here
+            // When game is over:
+            // stopBackgroundMusic();
+            // Show UI elements
+            // restartButton.style.display = 'block';
+            // notesLink.style.display = 'block';
+            // infoText.style.display = 'block';
         }
-
-        function drawPlayer() {
-            ctx.fillStyle = '#00ff00';
-            ctx.fillRect(player.x, player.y, player.width, player.height);
-        }
-
-        function updateBullets() {
-            bullets = bullets.filter(bullet => {
-                bullet.y -= bullet.dy;
-                return bullet.y > 0;
-            });
-        }
-
-        function updateEnemyBullets() {
-            enemyBullets = enemyBullets.filter(bullet => {
-                bullet.y += bullet.dy;
-                return bullet.y < canvas.height;
-            });
-        }
-
-        function drawBullets() {
-            ctx.fillStyle = '#ffffff';
-            bullets.forEach(bullet => {
-                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            });
-        }
-
-        function drawEnemyBullets() {
-            ctx.fillStyle = '#ff0000';
-            enemyBullets.forEach(bullet => {
-                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            });
-        }
-
-        function drawEnemies() {
-            enemies.forEach(enemy => {
-                drawSpaceInvader(enemy.x, enemy.y, enemy.width, enemy.height);
-            });
-        }
-
-        function drawSpaceInvader(x, y, width, height) {
-            const pixelSize = Math.min(width, height) / 11;
-            ctx.fillStyle = '#00ff00';
-            
-            const invader = [
-                [0,0,1,0,0,0,0,0,1,0,0],
-                [0,0,0,1,0,0,0,1,0,0,0],
-                [0,0,1,1,1,1,1,1,1,0,0],
-                [0,1,1,0,1,1,1,0,1,1,0],
-                [1,1,1,1,1,1,1,1,1,1,1],
-                [1,0,1,1,1,1,1,1,1,0,1],
-                [1,0,1,0,0,0,0,0,1,0,1],
-                [0,0,0,1,1,0,1,1,0,0,0]
-            ];
-            
-            invader.forEach((row, i) => {
-                row.forEach((pixel, j) => {
-                    if(pixel === 1) {
-                        ctx.fillRect(x + j * pixelSize, y + i * pixelSize, pixelSize, pixelSize);
-                    }
-                });
-            });
-        }
-
-        function moveEnemies() {
-            let changeDirection = false;
-            
-            enemies.forEach(enemy => {
-                // Move horizontally
-                enemy.x += enemy.dx;
-                
-                // Check if any enemy touches the sides
-                if (enemy.x + enemy.width > canvas.width || enemy.x < 0) {
-                    changeDirection = true;
-                }
-                
-                // Always move down slightly
-                enemy.y += enemy.dy;
-            });
-
-            // If an enemy touches a side, reverse direction for all
-            if (changeDirection) {
-                enemies.forEach(enemy => {
-                    enemy.dx *= -1;
-                    // Small boost downwards when changing direction
-                    enemy.y += 5;
-                });
-            }
-        }
-
-        function enemyShoot() {
-            enemies.filter(enemy => enemy.canShoot).forEach(enemy => {
-                if (Math.random() < enemyShootChance) {
-                    enemyBullets.push({
-                        x: enemy.x + enemy.width / 2,
-                        y: enemy.y + enemy.height,
-                        width: 3,
-                        height: 10,
-                        dy: 3
-                    });
-                    playSound(330, 0.1); // Play a 330Hz tone for 0.1 seconds
-                }
-            });
-        }
-
-        function checkCollisions() {
-            // Player bullets hitting enemies
-            for (let i = bullets.length - 1; i >= 0; i--) {
-                for (let j = enemies.length - 1; j >= 0; j--) {
-                    if (bullets[i] && enemies[j] &&
-                        bullets[i].x < enemies[j].x + enemies[j].width &&
-                        bullets[i].x + bullets[i].width > enemies[j].x &&
-                        bullets[i].y < enemies[j].y + enemies[j].height &&
-                        bullets[i].y + bullets[i].height > enemies[j].y) {
-                        bullets.splice(i, 1);
-                        const destroyedEnemy = enemies.splice(j, 1)[0];
-                        score += 10;
-                        updateShootingEnemies(destroyedEnemy.column);
-                        break;
-                    }
-                }
-            }
-
-            // Enemy bullets hitting player
-            for (let i = enemyBullets.length - 1; i >= 0; i--) {
-                if (enemyBullets[i].x < player.x + player.width &&
-                    enemyBullets[i].x + enemyBullets[i].width > player.x &&
-                    enemyBullets[i].y < player.y + player.height &&
-                    enemyBullets[i].y + enemyBullets[i].height > player.y) {
-                    gameOver = true;
-                    break;
-                }
-            }
-
-            // Enemies reaching the bottom
-            enemies.forEach(enemy => {
-                if (enemy.y + enemy.height > player.y) {
-                    gameOver = true;
-                }
-            });
-        }
-
-        function updateShootingEnemies(column) {
-            const enemiesInColumn = enemies.filter(e => e.column === column);
-            if (enemiesInColumn.length > 0) {
-                // Find the lowest enemy in the column
-                const lowestEnemy = enemiesInColumn.reduce((prev, current) => 
-                    (prev.row > current.row) ? prev : current
-                );
-                // Make only the lowest enemy in the column able to shoot
-                enemiesInColumn.forEach(e => e.canShoot = (e === lowestEnemy));
-            }
-        }
-
-        function drawScore() {
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '20px Arial';
-            ctx.fillText(`Score: ${score}`, 10, 30);
-        }
-
-        function drawTime() {
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '20px Arial';
-            ctx.fillText(`Time: ${Math.ceil(timeLeft)}s`, canvas.width - 100, 30);
-        }
-
-        function updateTime() {
-            if (timeLeft > 0) {
-                timeLeft -= 1/60; // Assuming 60 FPS
-            } else {
-                gameOver = true;
-            }
-        }
-
-        function handlePlayerMovement() {
-            if (keys.ArrowLeft && player.x > 0) {
-                player.x -= player.dx;
-            }
-            if (keys.ArrowRight && player.x + player.width < canvas.width) {
-                player.x += player.dx;
-            }
-        }
-
-        function handleShooting() {
-            if (keys[' '] && Date.now() - lastShot > shootCooldown) {
-                bullets.push({
-                    x: player.x + player.width / 2 - 1.5,
-                    y: player.y,
-                    width: 3,
-                    height: 10,
-                    dy: 5
-                });
-                lastShot = Date.now();
-                playSound(440, 0.1); // Play a 440Hz tone for 0.1 seconds
-            }
-        }
-
-        function checkGameOver() {
-            if (enemies.length === 0) {
-                gameWon = true;
-            }
-        }
-
-        function drawGameOver() {
-            ctx.fillStyle = '#ffffff';
-            ctx.font = '40px Arial';
-            if (gameWon) {
-                ctx.fillText('You Win!', canvas.width/2 - 70, canvas.height/2);
-            } else {
-                ctx.fillText('Game Over', canvas.width/2 - 90, canvas.height/2);
-            }
-            ctx.font = '24px Arial';
-            ctx.fillText(`Final Score: ${score}`, canvas.width/2 - 70, canvas.height/2 + 40);
-            restartButton.style.display = 'block';
-            infoText.style.display = 'block';
-            notesLink.style.display = 'block';
-        }
-
-        document.addEventListener('keydown', (e) => {
-            keys[e.key] = true;
-        });
-
-        document.addEventListener('keyup', (e) => {
-            keys[e.key] = false;
-        });
 
         restartButton.addEventListener('click', () => {
+            if (!audioContext) {
+                initBackgroundMusic();
+            }
             initGame();
             gameLoop();
         });
 
-        canvas.addEventListener('click', () => {
-            if (!isSoundInitialized) {
-                initSound();
+        document.addEventListener('click', () => {
+            if (!audioContext) {
+                initBackgroundMusic();
             }
         });
 
+        // Initial game start
         initGame();
         gameLoop();
     </script>
