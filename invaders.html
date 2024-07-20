@@ -3,155 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Invaders</title>
+    <title>A Day in the Life of A Cybersecurity Analyst</title>
     <style>
         body {
             background-color: #000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
+            color: #00ff00;
+        }
+        #gameTitle {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 800px;
         }
         canvas {
-            border: 1px solid #333;
-            background-color: #0a0a2a;  /* Dark blue background */
+            border: 1px solid #00ff00;
+            background-color: #000;
+        }
+        #restartButton, #notesLink {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            display: none;
+        }
+        #notesLink {
+            background-color: #0000ff;
+            color: #ffffff;
         }
     </style>
 </head>
 <body>
+    <h1 id="gameTitle">A Day in the Life of A Cybersecurity Analyst</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <button id="restartButton" style="display: none;">Restart Game</button>
+    <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+        const restartButton = document.getElementById('restartButton');
+        const notesLink = document.getElementById('notesLink');
 
-        // Game objects
-        const player = {
-            x: canvas.width / 2,
-            y: canvas.height - 30,
-            width: 50,
-            height: 20,
-            dx: 5
-        };
-
-        const bullets = [];
-        const enemies = [];
+        let player, bullets, enemies, enemyBullets, score, gameOver, gameWon, timeLeft;
+        let keys = {};
+        let lastShot = 0;
+        const shootCooldown = 500;
+        const gameDuration = 60; // 60 seconds
+        const enemyShootChance = 0.02; // 2% chance per enemy per frame
+        const enemyColumns = 10;
         const enemyRows = 5;
-        const enemyCols = 10;
-        const enemyWidth = 40;
-        const enemyHeight = 30;
-        const enemyPadding = 10;
-        let enemyDirection = 1;
-        let score = 0;
 
-        // Create enemies
-        for (let row = 0; row < enemyRows; row++) {
-            for (let col = 0; col < enemyCols; col++) {
-                enemies.push({
-                    x: col * (enemyWidth + enemyPadding),
-                    y: row * (enemyHeight + enemyPadding) + 30,
-                    width: enemyWidth,
-                    height: enemyHeight
-                });
+        function initGame() {
+            player = {
+                x: canvas.width / 2,
+                y: canvas.height - 30,
+                width: 50,
+                height: 20,
+                dx: 5
+            };
+            bullets = [];
+            enemyBullets = [];
+            enemies = [];
+            score = 0;
+            gameOver = false;
+            gameWon = false;
+            timeLeft = gameDuration;
+
+            // Create enemies
+            for (let row = 0; row < enemyRows; row++) {
+                for (let col = 0; col < enemyColumns; col++) {
+                    enemies.push({
+                        x: col * 60,
+                        y: row * 50 + 50,
+                        width: 40,
+                        height: 30,
+                        column: col,
+                        row: row,
+                        canShoot: row === enemyRows - 1 // Only the bottom row can shoot initially
+                    });
+                }
+            }
+
+            restartButton.style.display = 'none';
+            notesLink.style.display = 'none';
+        }
+
+        function gameLoop() {
+            if (!gameOver && !gameWon) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                handlePlayerMovement();
+                handleShooting();
+                updateBullets();
+                updateEnemyBullets();
+                drawPlayer();
+                drawBullets();
+                drawEnemyBullets();
+                drawEnemies();
+                moveEnemies();
+                checkCollisions();
+                enemyShoot();
+                drawScore();
+                drawTime();
+                updateTime();
+                checkGameOver();
+                requestAnimationFrame(gameLoop);
+            } else {
+                drawGameOver();
             }
         }
 
-        // Game loop
-        function gameLoop() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawPlayer();
-            drawBullets();
-            drawEnemies();
-            moveEnemies();
-            checkCollisions();
-            drawScore();
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Draw player
         function drawPlayer() {
-            ctx.fillStyle = '#00ff00';  // Bright green
+            ctx.fillStyle = '#00ff00';
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
 
-        // Draw bullets
+        function updateBullets() {
+            bullets = bullets.filter(bullet => {
+                bullet.y -= bullet.dy;
+                return bullet.y > 0;
+            });
+        }
+
+        function updateEnemyBullets() {
+            enemyBullets = enemyBullets.filter(bullet => {
+                bullet.y += bullet.dy;
+                return bullet.y < canvas.height;
+            });
+        }
+
         function drawBullets() {
-            ctx.fillStyle = '#ffff00';  // Yellow
+            ctx.fillStyle = '#ffffff';
             bullets.forEach(bullet => {
                 ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-                bullet.y -= bullet.dy;
             });
         }
 
-        // Draw enemies
+        function drawEnemyBullets() {
+            ctx.fillStyle = '#ff0000';
+            enemyBullets.forEach(bullet => {
+                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+            });
+        }
+
         function drawEnemies() {
-            ctx.fillStyle = '#ff4500';  // OrangeRed
             enemies.forEach(enemy => {
-                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+                drawSpaceInvader(enemy.x, enemy.y, enemy.width, enemy.height);
             });
         }
 
-        // Move enemies
-        function moveEnemies() {
-            let changeDirection = false;
-            enemies.forEach(enemy => {
-                enemy.x += 1 * enemyDirection;
-                if (enemy.x + enemy.width > canvas.width || enemy.x < 0) {
-                    changeDirection = true;
-                }
-            });
-
-            if (changeDirection) {
-                enemyDirection *= -1;
-                enemies.forEach(enemy => {
-                    enemy.y += 20;
-                });
-            }
-        }
-
-        // Check collisions
-        function checkCollisions() {
-            bullets.forEach((bullet, bulletIndex) => {
-                enemies.forEach((enemy, enemyIndex) => {
-                    if (bullet.x < enemy.x + enemy.width &&
-                        bullet.x + bullet.width > enemy.x &&
-                        bullet.y < enemy.y + enemy.height &&
-                        bullet.y + bullet.height > enemy.y) {
-                        bullets.splice(bulletIndex, 1);
-                        enemies.splice(enemyIndex, 1);
-                        score += 10;
+        function drawSpaceInvader(x, y, width, height) {
+            const pixelSize = Math.min(width, height) / 11;
+            ctx.fillStyle = '#00ff00';
+            
+            const invader = [
+                [0,0,1,0,0,0,0,0,1,0,0],
+                [0,0,0,1,0,0,0,1,0,0,0],
+                [0,0,1,1,1,1,1,1,1,0,0],
+                [0,1,1,0,1,1,1,0,1,1,0],
+                [1,1,1,1,1,1,1,1,1,1,1],
+                [1,0,1,1,1,1,1,1,1,0,1],
+                [1,0,1,0,0,0,0,0,1,0,1],
+                [0,0,0,1,1,0,1,1,0,0,0]
+            ];
+            
+            invader.forEach((row, i) => {
+                row.forEach((pixel, j) => {
+                    if(pixel === 1) {
+                        ctx.fillRect(x + j * pixelSize, y + i * pixelSize, pixelSize, pixelSize);
                     }
                 });
             });
         }
 
-        // Draw score
+        function moveEnemies() {
+            let dx = 1;
+            let moveDown = false;
+            enemies.forEach(enemy => {
+                if (enemy.x + enemy.width > canvas.width || enemy.x < 0) {
+                    dx *= -1;
+                    moveDown = true;
+                }
+            });
+            enemies.forEach(enemy => {
+                enemy.x += dx;
+                if (moveDown) {
+                    enemy.y += 10;
+                }
+            });
+        }
+
+        function enemyShoot() {
+            enemies.filter(enemy => enemy.canShoot).forEach(enemy => {
+                if (Math.random() < enemyShootChance) {
+                    enemyBullets.push({
+                        x: enemy.x + enemy.width / 2,
+                        y: enemy.y + enemy.height,
+                        width: 3,
+                        height: 10,
+                        dy: 3
+                    });
+                }
+            });
+        }
+
+        function checkCollisions() {
+            // Player bullets hitting enemies
+            for (let i = bullets.length - 1; i >= 0; i--) {
+                for (let j = enemies.length - 1; j >= 0; j--) {
+                    if (bullets[i] && enemies[j] &&
+                        bullets[i].x < enemies[j].x + enemies[j].width &&
+                        bullets[i].x + bullets[i].width > enemies[j].x &&
+                        bullets[i].y < enemies[j].y + enemies[j].height &&
+                        bullets[i].y + bullets[i].height > enemies[j].y) {
+                        bullets.splice(i, 1);
+                        const destroyedEnemy = enemies.splice(j, 1)[0];
+                        score += 10;
+                        updateShootingEnemies(destroyedEnemy.column);
+                        break;
+                    }
+                }
+            }
+
+            // Enemy bullets hitting player
+            for (let i = enemyBullets.length - 1; i >= 0; i--) {
+                if (enemyBullets[i].x < player.x + player.width &&
+                    enemyBullets[i].x + enemyBullets[i].width > player.x &&
+                    enemyBullets[i].y < player.y + player.height &&
+                    enemyBullets[i].y + enemyBullets[i].height > player.y) {
+                    gameOver = true;
+                    break;
+                }
+            }
+
+            // Enemies reaching the bottom
+            enemies.forEach(enemy => {
+                if (enemy.y + enemy.height > player.y) {
+                    gameOver = true;
+                }
+            });
+        }
+
+        function updateShootingEnemies(column) {
+            const enemiesInColumn = enemies.filter(e => e.column === column);
+            if (enemiesInColumn.length > 0) {
+                // Find the lowest enemy in the column
+                const lowestEnemy = enemiesInColumn.reduce((prev, current) => 
+                    (prev.row > current.row) ? prev : current
+                );
+                // Make only the lowest enemy in the column able to shoot
+                enemiesInColumn.forEach(e => e.canShoot = (e === lowestEnemy));
+            }
+        }
+
         function drawScore() {
-            ctx.fillStyle = '#ffffff';  // White
+            ctx.fillStyle = '#ffffff';
             ctx.font = '20px Arial';
             ctx.fillText(`Score: ${score}`, 10, 30);
         }
 
-        // Key events
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft' && player.x > 0) {
+        function drawTime() {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '20px Arial';
+            ctx.fillText(`Time: ${Math.ceil(timeLeft)}s`, canvas.width - 100, 30);
+        }
+
+        function updateTime() {
+            if (timeLeft > 0) {
+                timeLeft -= 1/60; // Assuming 60 FPS
+            } else {
+                gameOver = true;
+            }
+        }
+
+        function handlePlayerMovement() {
+            if (keys.ArrowLeft && player.x > 0) {
                 player.x -= player.dx;
             }
-            if (e.key === 'ArrowRight' && player.x + player.width < canvas.width) {
+            if (keys.ArrowRight && player.x + player.width < canvas.width) {
                 player.x += player.dx;
             }
-            if (e.key === ' ') {
+        }
+
+        function handleShooting() {
+            if (keys[' '] && Date.now() - lastShot > shootCooldown) {
                 bullets.push({
-                    x: player.x + player.width / 2 - 1.5,  // Center the bullet
+                    x: player.x + player.width / 2 - 1.5,
                     y: player.y,
                     width: 3,
                     height: 10,
                     dy: 5
                 });
+                lastShot = Date.now();
             }
+        }
+
+        function checkGameOver() {
+            if (enemies.length === 0) {
+                gameWon = true;
+            }
+        }
+
+        function drawGameOver() {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '40px Arial';
+            if (gameWon) {
+                ctx.fillText('You Win!', canvas.width/2 - 70, canvas.height/2);
+            } else {
+                ctx.fillText('Game Over', canvas.width/2 - 90, canvas.height/2);
+            }
+            ctx.font = '24px Arial';
+            ctx.fillText(`Final Score: ${score}`, canvas.width/2 - 70, canvas.height/2 + 40);
+            restartButton.style.display = 'block';
+            notesLink.style.display = 'block';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
         });
 
-        // Start the game
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        restartButton.addEventListener('click', () => {
+            initGame();
+            gameLoop();
+        });
+
+        initGame();
         gameLoop();
     </script>
 </body>
