@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Day in the Life of A Cyberconsultant</title>
+    <title>A Day in the Life of A Cybersecurity Consultant</title>
     <style>
         body {
             background-color: #000;
@@ -54,23 +54,9 @@
     <h1 id="gameTitle">A Day in the Life of A Cybersecurity Consultant</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <button id="restartButton" style="display: none;">Next Day</button> <br>
-    <section class="container">
-        <span class="highlight-container"><span class="highlight"><h4><a href="https://notes.techimpossible.com">Cybersecurity Notes →</a></h4></span></span>  
-    </section>
+    <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
+    <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1542TCGJG3"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1542TCGJG3');
-</script>
-
-
-
-    
     <!-- Audio element for background music -->
     <audio id="backgroundMusic" src="assets/cyber.mp3" preload="auto" loop></audio>
     <script>
