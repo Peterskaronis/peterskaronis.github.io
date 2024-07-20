@@ -53,7 +53,7 @@
 <body>
     <h1 id="gameTitle">A Day in the Life of A Cybersecurity Analyst</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <button id="restartButton" style="display: none;">Restart Game</button><br>
+    <button id="restartButton" style="display: none;">Restart Game</button>
     <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
     <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
     
@@ -66,7 +66,7 @@
 
         // Audio context
         let audioContext;
-        let isSoundInitialized = false;
+        let backgroundMusic;
 
         let player, bullets, enemies, enemyBullets, score, gameOver, gameWon, timeLeft;
         let keys = {};
@@ -79,11 +79,46 @@
 
         function initSound() {
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            isSoundInitialized = true;
+            
+            // Create and start background music
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(150, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.start();
+            
+            // Create LFO for frequency modulation
+            const lfo = audioContext.createOscillator();
+            const lfoGain = audioContext.createGain();
+            
+            lfo.type = 'sine';
+            lfo.frequency.setValueAtTime(0.2, audioContext.currentTime);
+            lfoGain.gain.setValueAtTime(10, audioContext.currentTime);
+            
+            lfo.connect(lfoGain);
+            lfoGain.connect(oscillator.frequency);
+            
+            lfo.start();
+
+            backgroundMusic = { oscillator, gainNode, lfo };
+        }
+
+        function stopBackgroundMusic() {
+            if (backgroundMusic) {
+                backgroundMusic.oscillator.stop();
+                backgroundMusic.lfo.stop();
+            }
         }
 
         function playSound(frequency, duration) {
-            if (!isSoundInitialized) return;
+            if (!audioContext) return;
 
             const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
@@ -207,10 +242,10 @@
             ctx.fillStyle = '#00ff00';
             
             const invader = [
-                [0,0,1,0,0,0,0,0,1,0,0],
-                [0,0,0,1,0,0,0,1,0,0,0],
-                [0,0,1,1,1,1,1,1,1,0,0],
-                [0,1,1,0,1,1,1,0,1,1,0],
+                [0,0,0,0,1,0,0,0,0,0,1],
+                [0,0,0,1,1,0,0,0,1,1,0],
+                [0,0,1,1,1,1,1,1,1,1,1],
+                [0,1,1,0,1,1,1,1,1,0,1],
                 [1,1,1,1,1,1,1,1,1,1,1],
                 [1,0,1,1,1,1,1,1,1,0,1],
                 [1,0,1,0,0,0,0,0,1,0,1],
@@ -230,23 +265,18 @@
             let changeDirection = false;
             
             enemies.forEach(enemy => {
-                // Move horizontally
                 enemy.x += enemy.dx;
                 
-                // Check if any enemy touches the sides
                 if (enemy.x + enemy.width > canvas.width || enemy.x < 0) {
                     changeDirection = true;
                 }
                 
-                // Always move down slightly
                 enemy.y += enemy.dy;
             });
 
-            // If an enemy touches a side, reverse direction for all
             if (changeDirection) {
                 enemies.forEach(enemy => {
                     enemy.dx *= -1;
-                    // Small boost downwards when changing direction
                     enemy.y += 5;
                 });
             }
@@ -268,7 +298,6 @@
         }
 
         function checkCollisions() {
-            // Player bullets hitting enemies
             for (let i = bullets.length - 1; i >= 0; i--) {
                 for (let j = enemies.length - 1; j >= 0; j--) {
                     if (bullets[i] && enemies[j] &&
@@ -285,7 +314,6 @@
                 }
             }
 
-            // Enemy bullets hitting player
             for (let i = enemyBullets.length - 1; i >= 0; i--) {
                 if (enemyBullets[i].x < player.x + player.width &&
                     enemyBullets[i].x + enemyBullets[i].width > player.x &&
@@ -296,7 +324,6 @@
                 }
             }
 
-            // Enemies reaching the bottom
             enemies.forEach(enemy => {
                 if (enemy.y + enemy.height > player.y) {
                     gameOver = true;
@@ -307,11 +334,9 @@
         function updateShootingEnemies(column) {
             const enemiesInColumn = enemies.filter(e => e.column === column);
             if (enemiesInColumn.length > 0) {
-                // Find the lowest enemy in the column
                 const lowestEnemy = enemiesInColumn.reduce((prev, current) => 
                     (prev.row > current.row) ? prev : current
                 );
-                // Make only the lowest enemy in the column able to shoot
                 enemiesInColumn.forEach(e => e.canShoot = (e === lowestEnemy));
             }
         }
@@ -330,7 +355,7 @@
 
         function updateTime() {
             if (timeLeft > 0) {
-                timeLeft -= 1/60; // Assuming 60 FPS
+                timeLeft -= 1/60;
             } else {
                 gameOver = true;
             }
@@ -378,10 +403,12 @@
             restartButton.style.display = 'block';
             infoText.style.display = 'block';
             notesLink.style.display = 'block';
+            stopBackgroundMusic();
         }
 
         document.addEventListener('keydown', (e) => {
             keys[e.key] = true;
+            if (!audioContext) initSound();
         });
 
         document.addEventListener('keyup', (e) => {
@@ -389,18 +416,5 @@
         });
 
         restartButton.addEventListener('click', () => {
-            initGame();
-            gameLoop();
-        });
-
-        canvas.addEventListener('click', () => {
-            if (!isSoundInitialized) {
-                initSound();
-            }
-        });
-
-        initGame();
-        gameLoop();
-    </script>
-</body>
-</html>
+            if (!audioContext) initSound();
+            else
