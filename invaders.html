@@ -41,12 +41,20 @@
             background-color: #0000ff;
             color: #ffffff;
         }
+        #infoText {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #ffffff;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1 id="gameTitle">A Day in the Life of A Cybersecurity Analyst</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
-    <button id="restartButton" style="display: none;">Restart Game</button>
+    <button id="restartButton" style="display: none;">Restart Game</button><br>
+    <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
     <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
     
     <script>
@@ -54,6 +62,7 @@
         const ctx = canvas.getContext('2d');
         const restartButton = document.getElementById('restartButton');
         const notesLink = document.getElementById('notesLink');
+        const infoText = document.getElementById('infoText');
 
         // Audio context
         let audioContext;
@@ -127,6 +136,7 @@
 
             restartButton.style.display = 'none';
             notesLink.style.display = 'none';
+            infoText.style.display = 'none';
         }
 
         function gameLoop() {
@@ -366,6 +376,7 @@
             ctx.font = '24px Arial';
             ctx.fillText(`Final Score: ${score}`, canvas.width/2 - 70, canvas.height/2 + 40);
             restartButton.style.display = 'block';
+            infoText.style.display = 'block';
             notesLink.style.display = 'block';
         }
 
