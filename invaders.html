@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        canvas {
+            border: 1px solid #333;
+            background-color: #0a0a2a;  /* Dark blue background */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game objects
+        const player = {
+            x: canvas.width / 2,
+            y: canvas.height - 30,
+            width: 50,
+            height: 20,
+            dx: 5
+        };
+
+        const bullets = [];
+        const enemies = [];
+        const enemyRows = 5;
+        const enemyCols = 10;
+        const enemyWidth = 40;
+        const enemyHeight = 30;
+        const enemyPadding = 10;
+        let enemyDirection = 1;
+        let score = 0;
+
+        // Create enemies
+        for (let row = 0; row < enemyRows; row++) {
+            for (let col = 0; col < enemyCols; col++) {
+                enemies.push({
+                    x: col * (enemyWidth + enemyPadding),
+                    y: row * (enemyHeight + enemyPadding) + 30,
+                    width: enemyWidth,
+                    height: enemyHeight
+                });
+            }
+        }
+
+        // Game loop
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlayer();
+            drawBullets();
+            drawEnemies();
+            moveEnemies();
+            checkCollisions();
+            drawScore();
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Draw player
+        function drawPlayer() {
+            ctx.fillStyle = '#00ff00';  // Bright green
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+        }
+
+        // Draw bullets
+        function drawBullets() {
+            ctx.fillStyle = '#ffff00';  // Yellow
+            bullets.forEach(bullet => {
+                ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
+                bullet.y -= bullet.dy;
+            });
+        }
+
+        // Draw enemies
+        function drawEnemies() {
+            ctx.fillStyle = '#ff4500';  // OrangeRed
+            enemies.forEach(enemy => {
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+        }
+
+        // Move enemies
+        function moveEnemies() {
+            let changeDirection = false;
+            enemies.forEach(enemy => {
+                enemy.x += 1 * enemyDirection;
+                if (enemy.x + enemy.width > canvas.width || enemy.x < 0) {
+                    changeDirection = true;
+                }
+            });
+
+            if (changeDirection) {
+                enemyDirection *= -1;
+                enemies.forEach(enemy => {
+                    enemy.y += 20;
+                });
+            }
+        }
+
+        // Check collisions
+        function checkCollisions() {
+            bullets.forEach((bullet, bulletIndex) => {
+                enemies.forEach((enemy, enemyIndex) => {
+                    if (bullet.x < enemy.x + enemy.width &&
+                        bullet.x + bullet.width > enemy.x &&
+                        bullet.y < enemy.y + enemy.height &&
+                        bullet.y + bullet.height > enemy.y) {
+                        bullets.splice(bulletIndex, 1);
+                        enemies.splice(enemyIndex, 1);
+                        score += 10;
+                    }
+                });
+            });
+        }
+
+        // Draw score
+        function drawScore() {
+            ctx.fillStyle = '#ffffff';  // White
+            ctx.font = '20px Arial';
+            ctx.fillText(`Score: ${score}`, 10, 30);
+        }
+
+        // Key events
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && player.x > 0) {
+                player.x -= player.dx;
+            }
+            if (e.key === 'ArrowRight' && player.x + player.width < canvas.width) {
+                player.x += player.dx;
+            }
+            if (e.key === ' ') {
+                bullets.push({
+                    x: player.x + player.width / 2 - 1.5,  // Center the bullet
+                    y: player.y,
+                    width: 3,
+                    height: 10,
+                    dy: 5
+                });
+            }
+        });
+
+        // Start the game
+        gameLoop();
+    </script>
+</body>
+</html>
