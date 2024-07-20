@@ -51,7 +51,7 @@
     </style>
 </head>
 <body>
-    <h1 id="gameTitle">A Day in the Life of A Cybersecurity Analyst</h1>
+    <h1 id="gameTitle">A Day in the Life of A Cybersecurity Consultant</h1>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <button id="restartButton" style="display: none;">Next Day</button> <br>
     <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
@@ -69,7 +69,7 @@
 
         // Audio context
         let audioContext;
-        let isSoundInitialized = true;
+        let isSoundInitialized = false;
 
         window.addEventListener('load', () => {
             initSound();
