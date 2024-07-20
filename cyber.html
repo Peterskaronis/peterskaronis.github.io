@@ -57,8 +57,21 @@
     <p id="infoText" style="display: none;">Or learn how to stay sane by reading</p>
     <a id="notesLink" href="https://notes.techimpossible.com" target="_blank" style="display: none;">Cybersecurity Notes</a>
 
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1542TCGJG3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-1542TCGJG3');
+</script>
+
+
+
+    
     <!-- Audio element for background music -->
-    <audio id="backgroundMusic" src="assets/cyber.mp3" loop></audio>
+    <audio id="backgroundMusic" src="cyber.mp3" preload="auto" loop></audio>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -73,9 +86,19 @@
 
         window.addEventListener('load', () => {
             initSound();
-            backgroundMusic.volume = 0.8 ; // Set volume to 80%
-            backgroundMusic.play();
+            backgroundMusic.volume = 0.8; // Set volume to 80%
+            backgroundMusic.play().catch(() => {
+                // Play attempt failed, likely due to autoplay restrictions
+                document.body.addEventListener('click', startBackgroundMusic);
+                document.body.addEventListener('touchstart', startBackgroundMusic);
+            });
         });
+
+        function startBackgroundMusic() {
+            backgroundMusic.play();
+            document.body.removeEventListener('click', startBackgroundMusic);
+            document.body.removeEventListener('touchstart', startBackgroundMusic);
+        }
 
         let player, bullets, enemies, enemyBullets, score, gameOver, gameWon, timeLeft;
         let keys = {};
@@ -408,7 +431,11 @@
         window.addEventListener('load', () => {
             initSound();
             backgroundMusic.volume = 0.8; // Set volume to 80%
-            backgroundMusic.play();
+            backgroundMusic.play().catch(() => {
+                // Play attempt failed, likely due to autoplay restrictions
+                document.body.addEventListener('click', startBackgroundMusic);
+                document.body.addEventListener('touchstart', startBackgroundMusic);
+            });
         });
 
         initGame();
