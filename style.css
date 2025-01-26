@@ -11,7 +11,8 @@ body {
     font-size: 16px;
     line-height: 1.5;
     color: #333;
-    background: #f4f4f4;
+    background: #f5f5f5;
+    position: relative;
     overflow-x: hidden;
 }
 
@@ -73,11 +74,10 @@ nav {
     margin-top: 5vh;
     margin-bottom: -25vh;
     height: 10rem;
- display: block;
- margin-left: auto;
- margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
-
 
 .front-page{
    min-height: 100vh;
@@ -85,23 +85,27 @@ nav {
 
 .subscriber-point {
     margin-top: 25vh;
+    margin-bottom: 1rem;
     font-family: Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
     text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.49);
     text-align: center;
     color: #464646;
 }
 
+.subscriber-point h2 {
+    margin-bottom: 0.5rem;
+}
+
 .subscriber-point h3 {
     font-family: sans-serif;
-    text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.49);
-    text-align: center;
+    margin-bottom: 1rem;
 }
 
-.ctas { 
+.ctas {
     margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
     text-align: center;
 }
-
 
 .ctas button {
     padding: 0.5rem;
@@ -132,12 +136,12 @@ nav {
 
 .work {
     max-width: 800px;
-    margin: 2rem auto;
+    margin: 1rem auto;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .futuristic-links {
@@ -145,15 +149,15 @@ nav {
     padding: 0;
     width: 100%;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 0 auto 0.5rem auto;
 }
 
 .futuristic-links li {
-    margin: 8px 0;
+    margin: 4px 0;
 }
 
 .section-title {
-    margin: 2rem 0 1rem 0;
+    margin: 1rem 0 0.5rem 0;
     font-size: 1.2rem;
     color: var(--primary-color);
     position: relative;
@@ -176,14 +180,14 @@ nav {
     text-align: center;
     margin: 0 auto;
     display: block;
-    padding: 12px 20px;
+    padding: 8px 16px;
     background: rgba(121, 23, 232, 0.1);
     border-radius: 8px;
 }
 
 /* Add styles for the last section */
 .work h4 {
-    margin-top: 2rem;
+    margin-top: 1rem;
     font-size: 1.1rem;
 }
 
@@ -197,28 +201,29 @@ nav {
     text-align: center;
     padding: 44px;
     color: #333;
-  }
+    margin: 0.5rem auto;
+}
   
-  h1 {
+h1 {
     font-size: 50px;
-  }
+}
   
-  p {
+p {
     font-size: 18px;
-  }
-  p small {
+}
+p small {
     font-size: 80%;
     color: #666;
-  }
+}
   
-  .highlight-container, .highlight {
+.highlight-container, .highlight {
     position: relative;
-  }
+}
   
-  .highlight-container {
+.highlight-container {
     display: inline-block;
-  }
-  .highlight-container:before {
+}
+.highlight-container:before {
     content: " ";
     display: block;
     height: 90%;
@@ -232,15 +237,15 @@ nav {
     left: -1px;
     border-radius: 20% 25% 20% 24%;
     padding: 10px 3px 3px 10px;
-  }
+}
 
-  div.parent {
-	text-align: center;
-	}
+div.parent {
+    text-align: center;
+}
 ul { 
-	display: inline-block; 
-	text-align: left; 
-	}
+    display: inline-block; 
+    text-align: left; 
+}
 
 .content-below-subscription {
     text-align: center;
@@ -251,4 +256,58 @@ ul {
 
 p, h2, h3 {
     text-align: center;
+}
+
+.cyber-separator {
+    width: 100%;
+    max-width: 600px;
+    height: 3px;
+    margin: 1rem auto;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(121, 23, 232, 0.2) 15%,
+        rgba(121, 23, 232, 0.8) 50%,
+        rgba(121, 23, 232, 0.2) 85%,
+        transparent 100%
+    );
+    position: relative;
+    overflow: hidden;
+}
+
+.cyber-separator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.8),
+        transparent
+    );
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    to {
+        left: 100%;
+    }
+}
+
+#particleCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.profile {
+    margin-bottom: 1rem;
 }
