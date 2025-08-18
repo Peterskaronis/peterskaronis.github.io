@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>try{var k='theme',s=localStorage.getItem(k),h=(new Date).getHours(),a=(h>=6&&h<18)?'light':'dark';document.documentElement.dataset.theme=s||a;}catch(e){}</script>
+ <style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8)}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35)}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:2rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.5rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.page-header{text-align:center;margin:2rem auto;max-width:600px}.page-header h1{margin-bottom:1rem}.page-header p{font-size:1.1rem;color:var(--text);opacity:.8}.now-content{max-width:800px;margin:0 auto;padding:0 1rem}.timeline{position:relative;padding:2rem 0}.timeline-item{position:relative;margin:2rem 0}.timeline-content{padding:1.5rem;background:var(--card-bg);border-radius:12px;box-shadow:var(--shadow);position:relative;transition:transform .2s ease,box-shadow .2s ease;border-left:4px solid var(--primary-color)}.timeline-content:hover{transform:translateY(-3px);box-shadow:0 8px 25px rgba(0,0,0,.2)}.timeline-date{font-size:.9rem;font-weight:600;color:var(--primary-color);margin-bottom:.5rem;text-transform:uppercase;letter-spacing:.5px}.timeline-title{font-size:1.3rem;font-weight:600;margin-bottom:.75rem;color:var(--text)}.timeline-description{color:var(--text);opacity:.9;line-height:1.6}.timeline-description a{color:var(--primary-color);text-decoration:none;font-weight:500}.timeline-description a:hover{opacity:.8}.back-link{text-align:center;margin:3rem 0}.back-link a{color:var(--primary-color);text-decoration:none;font-weight:500;padding:.75rem 1.5rem;border:2px solid var(--primary-color);border-radius:25px;transition:all .2s ease}.back-link a:hover{background:var(--primary-color);color:#fff;transform:translateY(-2px)}.footer{color:var(--secondary-color);padding:1rem;text-align:center;margin-top:3rem}@media (max-width:768px){.timeline::before{left:20px}.timeline-item,.timeline-item:nth-child(even){flex-direction:row}.timeline-content{margin:0 0 0 2rem}.timeline-content::before,.timeline-item:nth-child(even) .timeline-content::before{left:-16px;border-right-color:var(--card-bg);border-left-color:transparent}.timeline-item:nth-child(odd) .timeline-content{border-left:4px solid var(--primary-color)}.timeline-item:nth-child(even) .timeline-content{border-left:4px solid var(--primary-color);border-right:none}.timeline-dot{left:20px}}
+ </style>
+  <meta name="description" content="What I'm working on now - current projects, learning, and focus areas by Peter Skaronis">
+  <title>Now - Peter Skaronis</title>
+</head>
+<body>
+
+  <section>
+    <nav class="site-nav">
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <div class="page-header">
+      <h1>What I'm Doing Now</h1>
+      <p>A timeline of my current projects, learning, and focus areas. Inspired by <a href="https://nownownow.com/about">Derek Sivers' Now page movement</a>.</p>
+    </div>
+
+    <div class="cyber-separator"></div>
+
+    <div class="now-content">
+      <div class="timeline">
+        
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">January 2025</div>
+            <div class="timeline-title">🚀 New Year, New Focus</div>
+            <div class="timeline-description">
+              Starting the year with a renewed focus on cybersecurity consulting and expanding my vCISO services. Working on scaling my practice and helping more startups establish strong security foundations.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">December 2024</div>
+            <div class="timeline-title">📚 Content Creation Surge</div>
+            <div class="timeline-description">
+              Ramping up content creation across all platforms. Publishing more frequently on <a href="https://notes.techimpossible.com">Cybersecurity Notes</a> and working on new educational materials for the community.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">November 2024</div>
+            <div class="timeline-title">🎮 Game Development</div>
+            <div class="timeline-description">
+              Continuing development on cybersecurity education games. Working on new features for <a href="https://skaronis.com/cyber">Life of a Cybersecurity Consultant</a> and planning the next interactive learning experience.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">October 2024</div>
+            <div class="timeline-title">🎯 Strategic Planning</div>
+            <div class="timeline-description">
+              Deep diving into strategic planning for 2025. Evaluating current projects, setting goals for speaking engagements, and planning new educational initiatives in the cybersecurity space.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">September 2024</div>
+            <div class="timeline-title">📸 Photography Renaissance</div>
+            <div class="timeline-description">
+              Rediscovering my passion for photography. Spending more time behind the lens and sharing new work on <a href="https://unsplash.com/@skaronis">Unsplash</a>. Finding the balance between technical work and creative expression.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-content">
+            <div class="timeline-date">December 2024 - Ongoing</div>
+            <div class="timeline-title">📖 Learning & Growth</div>
+            <div class="timeline-description">
+              Always learning. Currently exploring advanced AI applications in cybersecurity, studying compliance frameworks, and staying updated with the latest threat intelligence trends.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="back-link">
+      <a href="index.html">← Back to Home</a>
+    </div>
+
+    <footer class="footer-text">
+      <p>© 2023–2025 Peter Skaronis — Last updated: January 2025</p>
+    </footer>
+
+  </section>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var KEY = 'theme';
+  function current() { return root.dataset.theme || 'light'; }
+  function setTheme(t) {
+    root.dataset.theme = t;
+    try { localStorage.setItem(KEY, t); } catch(e) {}
+    if (btn) btn.textContent = (t === 'dark') ? '☀️' : '🌙';
+  }
+  setTheme(current());
+  if (btn) btn.addEventListener('click', function(){ setTheme(current() === 'dark' ? 'light' : 'dark'); });
+})();
+</script>
+
+</body>
+</html>
