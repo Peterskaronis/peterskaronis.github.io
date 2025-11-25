@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script>try{var k='theme',s=localStorage.getItem(k),h=(new Date).getHours(),a=(h>=6&&h<18)?'light':'dark';document.documentElement.dataset.theme=s||a;}catch(e){}</script>
   <style>
-*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8);--warning:#e85d04;--success:#2d6a4f;--info:#0077b6;--glow:rgba(121,23,232,.3);--danger:#d00000}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35);--warning:#f48c06;--success:#40916c;--info:#48cae4;--glow:rgba(167,131,255,.4);--danger:#ff6b6b}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:1.5rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.2rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.back-link{font-size:.9rem;color:var(--primary-color);border-bottom:none}.back-link:hover{opacity:.8}.container{max-width:1200px;margin:0 auto;padding:2rem 1rem}.header{text-align:center;margin-bottom:2rem}.header h1{margin-bottom:.5rem}.header p{color:var(--text);opacity:.8;max-width:600px;margin:0 auto}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1.5rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:2rem}.card{background:var(--card-bg);border-radius:12px;padding:1.5rem;border-left:4px solid var(--primary-color);box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}.card h2{margin:0 0 1rem 0;padding:0;display:flex;align-items:center;gap:.5rem;font-size:1.25rem}.card-icon{font-size:1.5rem}.card.danger-card{border-left-color:var(--danger)}.card.warning-card{border-left-color:var(--warning)}.data-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--tertiary-color)}.data-row:last-child{border-bottom:none}.data-label{font-weight:500;color:var(--text);opacity:.7;font-size:.9rem;flex-shrink:0}.data-value{text-align:right;word-break:break-word;max-width:60%;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.85rem;color:var(--primary-color)}.data-value.danger{color:var(--danger)}.data-value.warning{color:var(--warning)}.loading{color:var(--text);opacity:.5;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.ip-highlight{font-size:1.5rem;font-weight:700;text-align:center;padding:1rem;background:linear-gradient(135deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 70%,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.warning-banner{background:linear-gradient(135deg,rgba(232,93,4,.15),rgba(232,93,4,.05));border:1px solid var(--warning);border-radius:8px;padding:1rem 1.5rem;margin:2rem 0;text-align:center}.warning-banner h3{color:var(--warning);margin-bottom:.5rem}.fingerprint-display{font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.7rem;word-break:break-all;background:var(--secondary-color);padding:.75rem;border-radius:6px;margin-top:.5rem;border:1px solid var(--tertiary-color)}.progress-bar{width:100%;height:6px;background:var(--tertiary-color);border-radius:3px;overflow:hidden;margin:1rem 0}.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 60%,#fff));border-radius:3px;transition:width .3s ease;box-shadow:0 0 10px var(--glow)}.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.5rem}.status-yes{background:var(--success);box-shadow:0 0 8px var(--success)}.status-no{background:var(--warning);box-shadow:0 0 8px var(--warning)}.status-danger{background:var(--danger);box-shadow:0 0 8px var(--danger)}.footer{text-align:center;margin-top:3rem;padding:2rem;opacity:.7;font-size:.9rem}.scan-animation{position:relative;overflow:hidden}.scan-animation::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(167,131,255,.1),transparent);animation:scan 2s ease-in-out infinite}@keyframes scan{to{left:100%}}.refresh-btn{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:1rem;transition:transform .1s ease,opacity .2s ease}.refresh-btn:hover{opacity:.9;transform:translateY(-1px)}.refresh-btn:active{transform:translateY(0)}.extension-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}.extension-tag{background:var(--secondary-color);border:1px solid var(--tertiary-color);padding:.25rem .5rem;border-radius:4px;font-size:.75rem;font-family:'SF Mono',Monaco,Consolas,monospace}.extension-tag.detected{background:rgba(208,0,0,.15);border-color:var(--danger);color:var(--danger)}.extension-tag.privacy-risk{background:rgba(248,140,6,.15);border-color:var(--warning);color:var(--warning)}.font-list{font-size:.75rem;max-height:100px;overflow-y:auto;background:var(--secondary-color);padding:.5rem;border-radius:4px;border:1px solid var(--tertiary-color);margin-top:.5rem}.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin-top:.5rem}.social-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:var(--secondary-color);border-radius:6px;font-size:.8rem;border:1px solid var(--tertiary-color)}.social-item.logged-in{background:rgba(208,0,0,.1);border-color:var(--danger)}.social-item .social-icon{font-size:1rem}.storage-inspector{margin-top:.75rem}.storage-section{margin-bottom:1rem}.storage-section h4{font-size:.85rem;margin-bottom:.5rem;opacity:.8;display:flex;align-items:center;gap:.5rem}.storage-section h4 .count{background:var(--primary-color);color:#fff;padding:.1rem .4rem;border-radius:4px;font-size:.7rem}.storage-list{background:var(--secondary-color);border:1px solid var(--tertiary-color);border-radius:6px;max-height:150px;overflow-y:auto;font-size:.75rem}.storage-item{padding:.5rem .75rem;border-bottom:1px solid var(--tertiary-color);display:flex;flex-direction:column;gap:.25rem}.storage-item:last-child{border-bottom:none}.storage-key{font-weight:600;color:var(--primary-color);font-family:'SF Mono',Monaco,Consolas,monospace;word-break:break-all}.storage-value{color:var(--text);opacity:.8;font-family:'SF Mono',Monaco,Consolas,monospace;word-break:break-all;max-height:60px;overflow:hidden;text-overflow:ellipsis}.storage-item.sensitive{background:rgba(208,0,0,.08)}.storage-item.sensitive .storage-key{color:var(--danger)}.sensitive-badge{display:inline-block;background:var(--danger);color:#fff;font-size:.6rem;padding:.1rem .3rem;border-radius:3px;margin-left:.5rem;text-transform:uppercase}.storage-empty{padding:.75rem;text-align:center;opacity:.6;font-style:italic}@media(max-width:768px){.grid{grid-template-columns:1fr}.data-value{max-width:55%}.header h1{font-size:2rem}.social-grid{grid-template-columns:repeat(2,1fr)}}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8);--warning:#e85d04;--success:#2d6a4f;--info:#0077b6;--glow:rgba(121,23,232,.3);--danger:#d00000}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35);--warning:#f48c06;--success:#40916c;--info:#48cae4;--glow:rgba(167,131,255,.4);--danger:#ff6b6b}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:1.5rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.2rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.back-link{font-size:.9rem;color:var(--primary-color);border-bottom:none}.back-link:hover{opacity:.8}.container{max-width:1200px;margin:0 auto;padding:2rem 1rem}.header{text-align:center;margin-bottom:2rem}.header h1{margin-bottom:.5rem}.header p{color:var(--text);opacity:.8;max-width:600px;margin:0 auto}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1.5rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:2rem}.card{background:var(--card-bg);border-radius:12px;padding:1.5rem;border-left:4px solid var(--primary-color);box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}.card h2{margin:0 0 1rem 0;padding:0;display:flex;align-items:center;gap:.5rem;font-size:1.25rem}.card-icon{font-size:1.5rem}.card.danger-card{border-left-color:var(--danger)}.card.warning-card{border-left-color:var(--warning)}.data-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--tertiary-color)}.data-row:last-child{border-bottom:none}.data-label{font-weight:500;color:var(--text);opacity:.7;font-size:.9rem;flex-shrink:0}.data-value{text-align:right;word-break:break-word;max-width:60%;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.85rem;color:var(--primary-color)}.data-value.danger{color:var(--danger)}.data-value.warning{color:var(--warning)}.loading{color:var(--text);opacity:.5;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.ip-highlight{font-size:1.5rem;font-weight:700;text-align:center;padding:1rem;background:linear-gradient(135deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 70%,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.warning-banner{background:linear-gradient(135deg,rgba(232,93,4,.15),rgba(232,93,4,.05));border:1px solid var(--warning);border-radius:8px;padding:1rem 1.5rem;margin:2rem 0;text-align:center}.warning-banner h3{color:var(--warning);margin-bottom:.5rem}.fingerprint-display{font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.7rem;word-break:break-all;background:var(--secondary-color);padding:.75rem;border-radius:6px;margin-top:.5rem;border:1px solid var(--tertiary-color)}.progress-bar{width:100%;height:6px;background:var(--tertiary-color);border-radius:3px;overflow:hidden;margin:1rem 0}.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 60%,#fff));border-radius:3px;transition:width .3s ease;box-shadow:0 0 10px var(--glow)}.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.5rem}.status-yes{background:var(--success);box-shadow:0 0 8px var(--success)}.status-no{background:var(--warning);box-shadow:0 0 8px var(--warning)}.status-danger{background:var(--danger);box-shadow:0 0 8px var(--danger)}.footer{text-align:center;margin-top:3rem;padding:2rem;opacity:.7;font-size:.9rem}.scan-animation{position:relative;overflow:hidden}.scan-animation::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(167,131,255,.1),transparent);animation:scan 2s ease-in-out infinite}@keyframes scan{to{left:100%}}.refresh-btn{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:1rem;transition:transform .1s ease,opacity .2s ease}.refresh-btn:hover{opacity:.9;transform:translateY(-1px)}.refresh-btn:active{transform:translateY(0)}.extension-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}.extension-tag{background:var(--secondary-color);border:1px solid var(--tertiary-color);padding:.25rem .5rem;border-radius:4px;font-size:.75rem;font-family:'SF Mono',Monaco,Consolas,monospace}.extension-tag.detected{background:rgba(208,0,0,.15);border-color:var(--danger);color:var(--danger)}.extension-tag.privacy-risk{background:rgba(248,140,6,.15);border-color:var(--warning);color:var(--warning)}.font-list{font-size:.75rem;max-height:100px;overflow-y:auto;background:var(--secondary-color);padding:.5rem;border-radius:4px;border:1px solid var(--tertiary-color);margin-top:.5rem}.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin-top:.5rem}.social-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:var(--secondary-color);border-radius:6px;font-size:.8rem;border:1px solid var(--tertiary-color)}.social-item.logged-in{background:rgba(208,0,0,.1);border-color:var(--danger)}.social-item .social-icon{font-size:1rem}.storage-inspector{margin-top:.75rem}.storage-section{margin-bottom:1rem}.storage-section h4{font-size:.85rem;margin-bottom:.5rem;opacity:.8;display:flex;align-items:center;gap:.5rem}.storage-section h4 .count{background:var(--primary-color);color:#fff;padding:.1rem .4rem;border-radius:4px;font-size:.7rem}.storage-list{background:var(--secondary-color);border:1px solid var(--tertiary-color);border-radius:6px;max-height:150px;overflow-y:auto;font-size:.75rem}.storage-item{padding:.5rem .75rem;border-bottom:1px solid var(--tertiary-color);display:flex;flex-direction:column;gap:.25rem}.storage-item:last-child{border-bottom:none}.storage-key{font-weight:600;color:var(--primary-color);font-family:'SF Mono',Monaco,Consolas,monospace;word-break:break-all}.storage-value{color:var(--text);opacity:.8;font-family:'SF Mono',Monaco,Consolas,monospace;word-break:break-all;max-height:60px;overflow:hidden;text-overflow:ellipsis}.storage-item.sensitive{background:rgba(208,0,0,.08)}.storage-item.sensitive .storage-key{color:var(--danger)}.sensitive-badge{display:inline-block;background:var(--danger);color:#fff;font-size:.6rem;padding:.1rem .3rem;border-radius:3px;margin-left:.5rem;text-transform:uppercase}.storage-empty{padding:.75rem;text-align:center;opacity:.6;font-style:italic}.threat-intel{margin-top:1rem;padding-top:.75rem;border-top:1px dashed var(--tertiary-color)}.threat-toggle{background:none;border:1px solid var(--tertiary-color);color:var(--text);padding:.4rem .75rem;border-radius:6px;font-size:.75rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;opacity:.8;transition:all .2s ease}.threat-toggle:hover{opacity:1;border-color:var(--primary-color)}.threat-toggle .arrow{transition:transform .2s ease;font-size:.6rem}.threat-toggle.open .arrow{transform:rotate(90deg)}.threat-content{display:none;margin-top:.75rem;font-size:.8rem;line-height:1.5}.threat-content.visible{display:block;animation:fadeIn .3s ease}.threat-content p{margin-bottom:.5rem;opacity:.85}.threat-label{font-weight:600;color:var(--warning);font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;margin-bottom:.25rem}.mitre-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}.mitre-tag{background:rgba(0,119,182,.15);border:1px solid var(--info);color:var(--info);padding:.2rem .5rem;border-radius:4px;font-size:.65rem;font-family:'SF Mono',Monaco,Consolas,monospace;text-decoration:none;transition:all .2s ease}.mitre-tag:hover{background:rgba(0,119,182,.25)}@keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}@media(max-width:768px){.grid{grid-template-columns:1fr}.data-value{max-width:55%}.header h1{font-size:2rem}.social-grid{grid-template-columns:repeat(2,1fr)}}
   </style>
   <meta name="description" content="Digital Awareness Tool - See what information websites can collect about you just by visiting.">
   <title>Digital Awareness | Peter Skaronis</title>
@@ -57,6 +57,19 @@
             <span class="data-label">Downlink Speed</span>
             <span class="data-value" id="downlink"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>IP reveals physical location, ISP, and organization. Attackers use this for geotargeting, identifying corporate networks, and VPN detection.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Location-based phishing, ISP-specific exploits, network reconnaissance for targeted attacks.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1590/" target="_blank" class="mitre-tag">T1590: Gather Victim Network Info</a>
+                <a href="https://attack.mitre.org/techniques/T1016/" target="_blank" class="mitre-tag">T1016: System Network Config</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Privacy Leaks - NEW -->
@@ -81,6 +94,19 @@
           <div class="data-row">
             <span class="data-label">Audio Fingerprint</span>
             <span class="data-value" id="audioHash"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>WebRTC leaks reveal internal network structure. Canvas/audio fingerprints create unique identifiers that persist across sessions and sites.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Cross-site tracking without cookies, identifying users even in incognito mode, internal network mapping for lateral movement.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1016/" target="_blank" class="mitre-tag">T1016: Network Config Discovery</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -111,6 +137,19 @@
             <span class="data-label">Ad Blocker</span>
             <span class="data-value" id="adblock"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Browser version reveals potential vulnerabilities. Language preferences indicate nationality/location. Ad blocker detection affects malvertising strategies.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Browser-specific exploits (CVEs), language-targeted phishing, evading ad blocker detection for malicious ads.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1518/" target="_blank" class="mitre-tag">T1518: Software Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1189/" target="_blank" class="mitre-tag">T1189: Drive-by Compromise</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Extensions & Plugins - NEW -->
@@ -128,6 +167,19 @@
           <div class="extension-list" id="extensionList">
             <span class="loading">Scanning...</span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Extensions reveal security awareness (ad blockers), profession (dev tools), crypto holdings (wallets), and password management habits.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Extension-specific vulnerabilities, targeting crypto wallet users, exploiting password manager weaknesses, bypassing security extensions.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1518/" target="_blank" class="mitre-tag">T1518: Software Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1176/" target="_blank" class="mitre-tag">T1176: Browser Extensions</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Social Logins - NEW -->
@@ -136,6 +188,19 @@
           <p style="font-size:.8rem;opacity:.7;margin-bottom:.5rem;">Sites can detect if you're logged into these services:</p>
           <div class="social-grid" id="socialGrid">
             <span class="loading">Checking...</span>
+          </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Reveals active accounts and services used. Confirms identity across platforms and indicates personal/professional tools.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Targeted phishing for specific services, credential stuffing prioritization, social engineering with confirmed account knowledge.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1589/" target="_blank" class="mitre-tag">T1589: Gather Victim Identity</a>
+                <a href="https://attack.mitre.org/techniques/T1566/" target="_blank" class="mitre-tag">T1566: Phishing</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -166,6 +231,19 @@
             <span class="data-label">Device Type</span>
             <span class="data-value" id="deviceType"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>OS version reveals patch level and potential vulnerabilities. CPU cores and memory indicate device value and processing capabilities for cryptomining.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>OS-specific exploits, device-targeted malware, identifying high-value targets (expensive hardware), tailoring payloads to available resources.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1592/" target="_blank" class="mitre-tag">T1592: Gather Victim Host Info</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Display Information -->
@@ -195,6 +273,19 @@
             <span class="data-label">HDR Support</span>
             <span class="data-value" id="hdr"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Screen resolution and available screen area reveal monitor setup, taskbar position, and potential multi-monitor configuration. Unique combinations aid fingerprinting.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Crafting phishing pages that match victim's resolution, detecting virtual machines (unusual resolutions), identifying dual-monitor setups for targeted attacks.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1497/" target="_blank" class="mitre-tag">T1497: Virtualization/Sandbox Evasion</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Graphics Information -->
@@ -216,6 +307,20 @@
             <span class="data-label">Max Texture Size</span>
             <span class="data-value" id="maxTexture"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>GPU details are highly unique identifiers. Specific GPU models indicate device age, value, and gaming/professional use. Virtual machine GPUs have distinctive signatures.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>VM/sandbox detection to evade security researchers, GPU-specific exploits, identifying valuable targets (workstations with professional GPUs), cryptojacking capability assessment.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1497/" target="_blank" class="mitre-tag">T1497: Virtualization/Sandbox Evasion</a>
+                <a href="https://attack.mitre.org/techniques/T1496/" target="_blank" class="mitre-tag">T1496: Resource Hijacking</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Fonts - NEW -->
@@ -232,6 +337,19 @@
           <p style="font-size:.75rem;opacity:.7;margin-top:.5rem;">Sample of detected fonts:</p>
           <div class="font-list" id="fontList">
             <span class="loading">Enumerating fonts...</span>
+          </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Installed fonts are extremely unique. Professional software (Adobe, Microsoft Office) installs distinctive fonts. Developer fonts reveal coding activity. Language fonts indicate nationality.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Highly reliable cross-session tracking, identifying professionals by software fonts, detecting security researchers by dev tool fonts, persistent identification despite cookie clearing.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1518/" target="_blank" class="mitre-tag">T1518: Software Discovery</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -254,6 +372,19 @@
             <span class="data-label">Date Format</span>
             <span class="data-value" id="dateFormat"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Timezone confirms physical location even with VPN. Date/time format reveals cultural background. Unusual timezones may indicate travelers or expats.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Timing attacks based on victim's active hours, VPN detection (timezone mismatch with IP), scheduling phishing for optimal response times, regional attack campaigns.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1124/" target="_blank" class="mitre-tag">T1124: System Time Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1614/" target="_blank" class="mitre-tag">T1614: System Location Discovery</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Battery & Power -->
@@ -274,6 +405,19 @@
           <div class="data-row">
             <span class="data-label">Time to Empty</span>
             <span class="data-value" id="dischargingTime"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Battery status reveals mobile vs. desktop use. Charging patterns indicate user behavior. Low battery users may make hasty security decisions.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Urgency-based phishing when battery is low, device type confirmation, tracking via battery level changes over time, identifying mobile targets for SMS phishing.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+                <a href="https://attack.mitre.org/techniques/T1422/" target="_blank" class="mitre-tag">T1422: System Network Config (Mobile)</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -299,6 +443,19 @@
           <div class="data-row">
             <span class="data-label">Service Workers</span>
             <span class="data-value" id="serviceWorkers"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Storage capabilities indicate browser features and potential for persistent tracking. Service Worker support enables background execution.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Persistent malware via Service Workers, evercookies using multiple storage mechanisms, offline attack payloads, background cryptocurrency mining.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1185/" target="_blank" class="mitre-tag">T1185: Browser Session Hijacking</a>
+                <a href="https://attack.mitre.org/techniques/T1059/" target="_blank" class="mitre-tag">T1059.007: JavaScript Execution</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -328,6 +485,20 @@
               </div>
             </div>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Stored data often contains authentication tokens, user preferences, tracking IDs, and cached personal information. XSS attacks can exfiltrate all stored data.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>XSS payload stealing tokens/sessions, persistent tracking via stored identifiers, account takeover via stolen auth tokens, privacy profiling from preferences.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1185/" target="_blank" class="mitre-tag">T1185: Browser Session Hijacking</a>
+                <a href="https://attack.mitre.org/techniques/T1539/" target="_blank" class="mitre-tag">T1539: Steal Web Session Cookie</a>
+                <a href="https://attack.mitre.org/techniques/T1005/" target="_blank" class="mitre-tag">T1005: Data from Local System</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Media Capabilities -->
@@ -349,6 +520,20 @@
             <span class="data-label">Media Devices</span>
             <span class="data-value" id="mediaDevices"><span class="loading">Detecting...</span></span>
           </div>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Media capabilities indicate device type and codec support. WebRTC reveals camera/microphone presence. Media device IDs can be persistent identifiers.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Identifying targets with cameras for sextortion, codec-based fingerprinting, WebRTC IP leaks, unauthorized media access attempts via permission prompts.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1125/" target="_blank" class="mitre-tag">T1125: Video Capture</a>
+                <a href="https://attack.mitre.org/techniques/T1123/" target="_blank" class="mitre-tag">T1123: Audio Capture</a>
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Fingerprint -->
@@ -359,6 +544,20 @@
             <span class="loading">Calculating fingerprint...</span>
           </div>
           <p style="margin-top:1rem;font-size:.85rem;opacity:.7;">Uniqueness estimate: <strong id="uniqueness">Calculating...</strong></p>
+          <div class="threat-intel">
+            <button class="threat-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('visible')"><span class="arrow">▶</span> Threat Intel</button>
+            <div class="threat-content">
+              <div class="threat-label">OSINT Value</div>
+              <p>Browser fingerprinting combines all collected data into a unique identifier that persists across sessions, VPNs, and cookie clearing. Used for tracking and de-anonymization.</p>
+              <div class="threat-label">Attack Vectors</div>
+              <p>Persistent cross-site tracking, identifying users despite privacy measures, linking anonymous accounts to real identities, fraud detection evasion research.</p>
+              <div class="mitre-tags">
+                <a href="https://attack.mitre.org/techniques/T1592/" target="_blank" class="mitre-tag">T1592: Gather Victim Host Info</a>
+                <a href="https://attack.mitre.org/techniques/T1589/" target="_blank" class="mitre-tag">T1589: Gather Victim Identity</a>
+                <a href="https://attack.mitre.org/techniques/T1082/" target="_blank" class="mitre-tag">T1082: System Information Discovery</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
