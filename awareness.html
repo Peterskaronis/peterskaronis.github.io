@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script>try{var k='theme',s=localStorage.getItem(k),h=(new Date).getHours(),a=(h>=6&&h<18)?'light':'dark';document.documentElement.dataset.theme=s||a;}catch(e){}</script>
   <style>
-*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8);--warning:#e85d04;--success:#2d6a4f;--info:#0077b6;--glow:rgba(121,23,232,.3)}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35);--warning:#f48c06;--success:#40916c;--info:#48cae4;--glow:rgba(167,131,255,.4)}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:1.5rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.2rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.back-link{font-size:.9rem;color:var(--primary-color);border-bottom:none}.back-link:hover{opacity:.8}.container{max-width:1200px;margin:0 auto;padding:2rem 1rem}.header{text-align:center;margin-bottom:2rem}.header h1{margin-bottom:.5rem}.header p{color:var(--text);opacity:.8;max-width:600px;margin:0 auto}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1.5rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:2rem}.card{background:var(--card-bg);border-radius:12px;padding:1.5rem;border-left:4px solid var(--primary-color);box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}.card h2{margin:0 0 1rem 0;padding:0;display:flex;align-items:center;gap:.5rem;font-size:1.25rem}.card-icon{font-size:1.5rem}.data-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--tertiary-color)}.data-row:last-child{border-bottom:none}.data-label{font-weight:500;color:var(--text);opacity:.7;font-size:.9rem;flex-shrink:0}.data-value{text-align:right;word-break:break-word;max-width:60%;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.85rem;color:var(--primary-color)}.loading{color:var(--text);opacity:.5;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.ip-highlight{font-size:1.5rem;font-weight:700;text-align:center;padding:1rem;background:linear-gradient(135deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 70%,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.warning-banner{background:linear-gradient(135deg,rgba(232,93,4,.15),rgba(232,93,4,.05));border:1px solid var(--warning);border-radius:8px;padding:1rem 1.5rem;margin:2rem 0;text-align:center}.warning-banner h3{color:var(--warning);margin-bottom:.5rem}.fingerprint-display{font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.7rem;word-break:break-all;background:var(--secondary-color);padding:.75rem;border-radius:6px;margin-top:.5rem;border:1px solid var(--tertiary-color)}.progress-bar{width:100%;height:6px;background:var(--tertiary-color);border-radius:3px;overflow:hidden;margin:1rem 0}.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 60%,#fff));border-radius:3px;transition:width .3s ease;box-shadow:0 0 10px var(--glow)}.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.5rem}.status-yes{background:var(--success);box-shadow:0 0 8px var(--success)}.status-no{background:var(--warning);box-shadow:0 0 8px var(--warning)}.footer{text-align:center;margin-top:3rem;padding:2rem;opacity:.7;font-size:.9rem}.scan-animation{position:relative;overflow:hidden}.scan-animation::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(167,131,255,.1),transparent);animation:scan 2s ease-in-out infinite}@keyframes scan{to{left:100%}}.refresh-btn{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:1rem;transition:transform .1s ease,opacity .2s ease}.refresh-btn:hover{opacity:.9;transform:translateY(-1px)}.refresh-btn:active{transform:translateY(0)}@media(max-width:768px){.grid{grid-template-columns:1fr}.data-value{max-width:55%}.header h1{font-size:2rem}}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8);--warning:#e85d04;--success:#2d6a4f;--info:#0077b6;--glow:rgba(121,23,232,.3);--danger:#d00000}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35);--warning:#f48c06;--success:#40916c;--info:#48cae4;--glow:rgba(167,131,255,.4);--danger:#ff6b6b}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:1.5rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.2rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.back-link{font-size:.9rem;color:var(--primary-color);border-bottom:none}.back-link:hover{opacity:.8}.container{max-width:1200px;margin:0 auto;padding:2rem 1rem}.header{text-align:center;margin-bottom:2rem}.header h1{margin-bottom:.5rem}.header p{color:var(--text);opacity:.8;max-width:600px;margin:0 auto}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1.5rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:2rem}.card{background:var(--card-bg);border-radius:12px;padding:1.5rem;border-left:4px solid var(--primary-color);box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}.card h2{margin:0 0 1rem 0;padding:0;display:flex;align-items:center;gap:.5rem;font-size:1.25rem}.card-icon{font-size:1.5rem}.card.danger-card{border-left-color:var(--danger)}.card.warning-card{border-left-color:var(--warning)}.data-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--tertiary-color)}.data-row:last-child{border-bottom:none}.data-label{font-weight:500;color:var(--text);opacity:.7;font-size:.9rem;flex-shrink:0}.data-value{text-align:right;word-break:break-word;max-width:60%;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.85rem;color:var(--primary-color)}.data-value.danger{color:var(--danger)}.data-value.warning{color:var(--warning)}.loading{color:var(--text);opacity:.5;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.ip-highlight{font-size:1.5rem;font-weight:700;text-align:center;padding:1rem;background:linear-gradient(135deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 70%,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.warning-banner{background:linear-gradient(135deg,rgba(232,93,4,.15),rgba(232,93,4,.05));border:1px solid var(--warning);border-radius:8px;padding:1rem 1.5rem;margin:2rem 0;text-align:center}.warning-banner h3{color:var(--warning);margin-bottom:.5rem}.fingerprint-display{font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.7rem;word-break:break-all;background:var(--secondary-color);padding:.75rem;border-radius:6px;margin-top:.5rem;border:1px solid var(--tertiary-color)}.progress-bar{width:100%;height:6px;background:var(--tertiary-color);border-radius:3px;overflow:hidden;margin:1rem 0}.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 60%,#fff));border-radius:3px;transition:width .3s ease;box-shadow:0 0 10px var(--glow)}.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.5rem}.status-yes{background:var(--success);box-shadow:0 0 8px var(--success)}.status-no{background:var(--warning);box-shadow:0 0 8px var(--warning)}.status-danger{background:var(--danger);box-shadow:0 0 8px var(--danger)}.footer{text-align:center;margin-top:3rem;padding:2rem;opacity:.7;font-size:.9rem}.scan-animation{position:relative;overflow:hidden}.scan-animation::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(167,131,255,.1),transparent);animation:scan 2s ease-in-out infinite}@keyframes scan{to{left:100%}}.refresh-btn{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:1rem;transition:transform .1s ease,opacity .2s ease}.refresh-btn:hover{opacity:.9;transform:translateY(-1px)}.refresh-btn:active{transform:translateY(0)}.extension-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}.extension-tag{background:var(--secondary-color);border:1px solid var(--tertiary-color);padding:.25rem .5rem;border-radius:4px;font-size:.75rem;font-family:'SF Mono',Monaco,Consolas,monospace}.extension-tag.detected{background:rgba(208,0,0,.15);border-color:var(--danger);color:var(--danger)}.extension-tag.privacy-risk{background:rgba(248,140,6,.15);border-color:var(--warning);color:var(--warning)}.font-list{font-size:.75rem;max-height:100px;overflow-y:auto;background:var(--secondary-color);padding:.5rem;border-radius:4px;border:1px solid var(--tertiary-color);margin-top:.5rem}.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin-top:.5rem}.social-item{display:flex;align-items:center;gap:.5rem;padding:.4rem .6rem;background:var(--secondary-color);border-radius:6px;font-size:.8rem;border:1px solid var(--tertiary-color)}.social-item.logged-in{background:rgba(208,0,0,.1);border-color:var(--danger)}.social-item .social-icon{font-size:1rem}@media(max-width:768px){.grid{grid-template-columns:1fr}.data-value{max-width:55%}.header h1{font-size:2rem}.social-grid{grid-template-columns:repeat(2,1fr)}}
   </style>
   <meta name="description" content="Digital Awareness Tool - See what information websites can collect about you just by visiting.">
   <title>Digital Awareness | Peter Skaronis</title>
@@ -59,6 +59,31 @@
           </div>
         </div>
 
+        <!-- Privacy Leaks - NEW -->
+        <div class="card scan-animation danger-card">
+          <h2><span class="card-icon">🚨</span> Privacy Leaks</h2>
+          <div class="data-row">
+            <span class="data-label">Local IP (WebRTC)</span>
+            <span class="data-value" id="localIP"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Private Browsing</span>
+            <span class="data-value" id="incognito"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Referrer</span>
+            <span class="data-value" id="referrer"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Canvas Fingerprint</span>
+            <span class="data-value" id="canvasHash"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Audio Fingerprint</span>
+            <span class="data-value" id="audioHash"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
         <!-- Browser Information -->
         <div class="card scan-animation">
           <h2><span class="card-icon">🔍</span> Browser</h2>
@@ -85,6 +110,32 @@
           <div class="data-row">
             <span class="data-label">Ad Blocker</span>
             <span class="data-value" id="adblock"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Extensions & Plugins - NEW -->
+        <div class="card scan-animation warning-card">
+          <h2><span class="card-icon">🧩</span> Extensions & Plugins</h2>
+          <div class="data-row">
+            <span class="data-label">PDF Viewer</span>
+            <span class="data-value" id="pdfViewer"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Plugins Count</span>
+            <span class="data-value" id="pluginsCount"><span class="loading">Detecting...</span></span>
+          </div>
+          <p style="font-size:.8rem;opacity:.7;margin-top:.75rem;">Detected Extensions:</p>
+          <div class="extension-list" id="extensionList">
+            <span class="loading">Scanning...</span>
+          </div>
+        </div>
+
+        <!-- Social Logins - NEW -->
+        <div class="card scan-animation danger-card">
+          <h2><span class="card-icon">👤</span> Social Login Detection</h2>
+          <p style="font-size:.8rem;opacity:.7;margin-bottom:.5rem;">Sites can detect if you're logged into these services:</p>
+          <div class="social-grid" id="socialGrid">
+            <span class="loading">Checking...</span>
           </div>
         </div>
 
@@ -164,6 +215,23 @@
           <div class="data-row">
             <span class="data-label">Max Texture Size</span>
             <span class="data-value" id="maxTexture"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Fonts - NEW -->
+        <div class="card scan-animation warning-card">
+          <h2><span class="card-icon">🔤</span> Font Fingerprinting</h2>
+          <div class="data-row">
+            <span class="data-label">Detected Fonts</span>
+            <span class="data-value" id="fontCount"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Font Hash</span>
+            <span class="data-value" id="fontHash"><span class="loading">Detecting...</span></span>
+          </div>
+          <p style="font-size:.75rem;opacity:.7;margin-top:.5rem;">Sample of detected fonts:</p>
+          <div class="font-list" id="fontList">
+            <span class="loading">Enumerating fonts...</span>
           </div>
         </div>
 
@@ -306,9 +374,12 @@
     status.textContent = message;
   }
 
-  function setValue(id, value) {
+  function setValue(id, value, className) {
     const el = $(id);
-    if (el) el.textContent = value || 'Not available';
+    if (el) {
+      el.textContent = value || 'Not available';
+      if (className) el.className = 'data-value ' + className;
+    }
   }
 
   function setStatus(id, isEnabled) {
@@ -316,6 +387,17 @@
     if (el) {
       el.innerHTML = `<span class="status-indicator ${isEnabled ? 'status-yes' : 'status-no'}"></span>${isEnabled ? 'Yes' : 'No'}`;
     }
+  }
+
+  // Simple hash function
+  function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0');
   }
 
   // Detect browser
@@ -409,6 +491,227 @@
     }
   }
 
+  // WebRTC Local IP Detection
+  async function getLocalIPs() {
+    const ips = new Set();
+    try {
+      const pc = new RTCPeerConnection({ iceServers: [] });
+      pc.createDataChannel('');
+      const offer = await pc.createOffer();
+      await pc.setLocalDescription(offer);
+
+      return new Promise((resolve) => {
+        const timeout = setTimeout(() => {
+          pc.close();
+          resolve(Array.from(ips));
+        }, 2000);
+
+        pc.onicecandidate = (e) => {
+          if (!e.candidate) {
+            clearTimeout(timeout);
+            pc.close();
+            resolve(Array.from(ips));
+            return;
+          }
+          const match = e.candidate.candidate.match(/(\d+\.\d+\.\d+\.\d+)/);
+          if (match) {
+            const ip = match[1];
+            if (!ip.startsWith('0.')) ips.add(ip);
+          }
+        };
+      });
+    } catch(e) {
+      return [];
+    }
+  }
+
+  // Incognito/Private mode detection
+  async function detectIncognito() {
+    // Try multiple detection methods
+
+    // Method 1: Storage quota (Chrome)
+    if ('storage' in navigator && 'estimate' in navigator.storage) {
+      try {
+        const { quota } = await navigator.storage.estimate();
+        if (quota && quota < 120000000) return true; // Less than ~120MB suggests incognito
+      } catch(e) {}
+    }
+
+    // Method 2: IndexedDB behavior (Firefox)
+    try {
+      const db = indexedDB.open('test');
+      db.onerror = () => true;
+    } catch(e) {
+      return true;
+    }
+
+    // Method 3: FileSystem API (older Chrome)
+    if ('webkitRequestFileSystem' in window) {
+      return new Promise(resolve => {
+        window.webkitRequestFileSystem(
+          window.TEMPORARY, 100,
+          () => resolve(false),
+          () => resolve(true)
+        );
+      });
+    }
+
+    return false;
+  }
+
+  // Canvas fingerprint
+  function getCanvasFingerprint() {
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 200;
+      canvas.height = 50;
+      const ctx = canvas.getContext('2d');
+
+      ctx.textBaseline = 'top';
+      ctx.font = '14px Arial';
+      ctx.fillStyle = '#f60';
+      ctx.fillRect(125, 1, 62, 20);
+      ctx.fillStyle = '#069';
+      ctx.fillText('Cwm fjord', 2, 15);
+      ctx.fillStyle = 'rgba(102, 204, 0, 0.7)';
+      ctx.fillText('Cwm fjord', 4, 17);
+
+      return simpleHash(canvas.toDataURL()).toUpperCase();
+    } catch(e) {
+      return 'Not available';
+    }
+  }
+
+  // Audio fingerprint
+  function getAudioFingerprint() {
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const analyser = audioContext.createAnalyser();
+      const gain = audioContext.createGain();
+      const processor = audioContext.createScriptProcessor(4096, 1, 1);
+
+      gain.gain.value = 0;
+      oscillator.type = 'triangle';
+      oscillator.connect(analyser);
+      analyser.connect(processor);
+      processor.connect(gain);
+      gain.connect(audioContext.destination);
+      oscillator.start(0);
+
+      const bins = new Float32Array(analyser.frequencyBinCount);
+      analyser.getFloatFrequencyData(bins);
+
+      oscillator.stop();
+      audioContext.close();
+
+      return simpleHash(bins.slice(0, 30).join(',')).toUpperCase();
+    } catch(e) {
+      return 'Not available';
+    }
+  }
+
+  // Font detection
+  function detectFonts() {
+    const baseFonts = ['monospace', 'sans-serif', 'serif'];
+    const testFonts = [
+      'Arial', 'Arial Black', 'Arial Narrow', 'Calibri', 'Cambria', 'Century Gothic',
+      'Comic Sans MS', 'Consolas', 'Courier', 'Courier New', 'Georgia', 'Helvetica',
+      'Impact', 'Lucida Console', 'Lucida Sans', 'Monaco', 'Palatino', 'Segoe UI',
+      'Tahoma', 'Times', 'Times New Roman', 'Trebuchet MS', 'Verdana',
+      'Roboto', 'Open Sans', 'Lato', 'Source Sans Pro', 'Ubuntu', 'Noto Sans',
+      'Fira Code', 'JetBrains Mono', 'SF Pro', 'SF Mono', 'Menlo', 'Cascadia Code',
+      'Wingdings', 'Webdings', 'Symbol', 'Apple Symbols', 'Zapf Dingbats'
+    ];
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const testString = 'mmmmmmmmmmlli';
+    const testSize = '72px';
+
+    const baseWidths = {};
+    baseFonts.forEach(font => {
+      ctx.font = `${testSize} ${font}`;
+      baseWidths[font] = ctx.measureText(testString).width;
+    });
+
+    const detected = [];
+    testFonts.forEach(font => {
+      for (const baseFont of baseFonts) {
+        ctx.font = `${testSize} "${font}", ${baseFont}`;
+        const width = ctx.measureText(testString).width;
+        if (width !== baseWidths[baseFont]) {
+          detected.push(font);
+          break;
+        }
+      }
+    });
+
+    return detected;
+  }
+
+  // Extension detection
+  async function detectExtensions() {
+    const extensions = [
+      { name: 'uBlock Origin', id: 'cjpalhdlnbpafiamejdnhcphjbkeiagm', resources: ['/web_accessible_resources/noop.html'] },
+      { name: 'AdBlock', id: 'gighmmpiobklfepjocnamgkkbiglidom', resources: ['/adblock-button-icon.png'] },
+      { name: 'AdBlock Plus', id: 'cfhdojbkjhnklbpkdaibdccddilifddb', resources: ['/adblockplusui/skin/icons/abp-full-logo.svg'] },
+      { name: 'Ghostery', id: 'mlomiejdfkolichcflejclcbmpeaniij', resources: ['/app/images/ghosty_icon.svg'] },
+      { name: 'Privacy Badger', id: 'pkehgijcmpdhfbdbbnkijodmdjhbjlgp', resources: ['/skin/sprites/ui-icons.svg'] },
+      { name: 'Honey', id: 'bmnlcjabgnpnenekpadlanbbkooimhnj', resources: ['/paypal-logo.svg'] },
+      { name: 'LastPass', id: 'hdokiejnpimakedhajhdlcegeplioahd', resources: ['/images/icon_grey_32.png'] },
+      { name: '1Password', id: 'aeblfdkhhhdcdjpifhhbdiojplfjncoa', resources: ['/assets/images/icon.svg'] },
+      { name: 'Bitwarden', id: 'nngceckbapebfimnlniiiahkandclblb', resources: ['/images/icon38.png'] },
+      { name: 'Grammarly', id: 'kbfnbcaeplbcioakkpcpgfkobkghlhen', resources: ['/assets/extension_logo.svg'] },
+      { name: 'React DevTools', id: 'fmkadmapgofadopljbjfkapdkoienihi', resources: ['/main.html'] },
+      { name: 'Vue DevTools', id: 'nhdogjmejiglipccpnnnanhbledajbpd', resources: ['/devtools.html'] },
+      { name: 'Redux DevTools', id: 'lmhkpmbekcpmknklioeibfkpmmfibljd', resources: ['/devpanel.html'] },
+      { name: 'MetaMask', id: 'nkbihfbeogaeaoehlefnkodbefgpgknn', resources: ['/phishing.html'] },
+      { name: 'Dashlane', id: 'fdjamakpfbbddfjaooikfcpapjohcfmg', resources: ['/content/content.js'] },
+      { name: 'NordVPN', id: 'fjoaledfpmneenckfbpdfhkmimnjocfa', resources: ['/logo.svg'] },
+    ];
+
+    const detected = [];
+
+    for (const ext of extensions) {
+      for (const resource of ext.resources) {
+        try {
+          const url = `chrome-extension://${ext.id}${resource}`;
+          const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
+          detected.push(ext.name);
+          break;
+        } catch(e) {
+          // Extension not detected via this resource
+        }
+      }
+    }
+
+    // Also check for common extension behaviors
+    if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) detected.push('React DevTools');
+    if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) detected.push('Vue DevTools');
+    if (window.ethereum) detected.push('Web3 Wallet (MetaMask/etc)');
+
+    return [...new Set(detected)];
+  }
+
+  // Social login detection (timing-based image loading)
+  async function detectSocialLogins() {
+    const services = [
+      { name: 'Google', icon: '🔍', url: 'https://accounts.google.com/CheckCookie?continue=https://www.google.com/intl/en/images/logos/accounts_logo.png' },
+      { name: 'Facebook', icon: '📘', url: 'https://www.facebook.com/login/device-based/regular/login/' },
+      { name: 'Twitter/X', icon: '🐦', url: 'https://twitter.com/login' },
+      { name: 'LinkedIn', icon: '💼', url: 'https://www.linkedin.com/uas/login' },
+      { name: 'GitHub', icon: '🐙', url: 'https://github.com/login' },
+      { name: 'Amazon', icon: '📦', url: 'https://www.amazon.com/ap/signin' },
+      { name: 'Microsoft', icon: '🪟', url: 'https://login.live.com/' },
+      { name: 'Apple', icon: '🍎', url: 'https://appleid.apple.com/auth/authorize' }
+    ];
+
+    // Note: Modern browsers have largely blocked these timing attacks
+    // This is for educational demonstration
+    return services.map(s => ({ ...s, detected: 'Unknown' }));
+  }
+
   // Check audio formats
   function checkAudioFormats() {
     const audio = document.createElement('audio');
@@ -432,27 +735,6 @@
     return formats.join(', ') || 'None detected';
   }
 
-  // Simple hash function for fingerprint
-  function simpleHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      const char = str.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
-    }
-    return Math.abs(hash).toString(16).padStart(8, '0');
-  }
-
-  // Generate fingerprint
-  function generateFingerprint(data) {
-    const fingerprintData = JSON.stringify(data);
-    const hash1 = simpleHash(fingerprintData);
-    const hash2 = simpleHash(fingerprintData.split('').reverse().join(''));
-    const hash3 = simpleHash(hash1 + hash2);
-    const hash4 = simpleHash(fingerprintData + Date.now().toString().slice(0, -6));
-    return `${hash1}-${hash2}-${hash3}-${hash4}`.toUpperCase();
-  }
-
   // Detect ad blocker
   async function detectAdBlocker() {
     try {
@@ -470,6 +752,16 @@
     }
   }
 
+  // Generate fingerprint
+  function generateFingerprint(data) {
+    const fingerprintData = JSON.stringify(data);
+    const hash1 = simpleHash(fingerprintData);
+    const hash2 = simpleHash(fingerprintData.split('').reverse().join(''));
+    const hash3 = simpleHash(hash1 + hash2);
+    const hash4 = simpleHash(fingerprintData + Date.now().toString().slice(0, -6));
+    return `${hash1}-${hash2}-${hash3}-${hash4}`.toUpperCase();
+  }
+
   // Main scan function
   async function runScan() {
     updateProgress(5, 'Detecting browser information...');
@@ -481,7 +773,24 @@
     setStatus('cookies', navigator.cookieEnabled);
     setValue('dnt', navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled');
 
-    updateProgress(15, 'Detecting system information...');
+    updateProgress(10, 'Detecting privacy leaks...');
+
+    // Privacy leaks
+    const localIPs = await getLocalIPs();
+    if (localIPs.length > 0) {
+      setValue('localIP', localIPs.join(', '), 'danger');
+    } else {
+      setValue('localIP', 'Protected / Not detected');
+    }
+
+    const isIncognito = await detectIncognito();
+    setValue('incognito', isIncognito ? 'Yes - Detected!' : 'No', isIncognito ? 'danger' : '');
+
+    setValue('referrer', document.referrer || 'Direct visit (no referrer)');
+    setValue('canvasHash', getCanvasFingerprint(), 'warning');
+    setValue('audioHash', getAudioFingerprint(), 'warning');
+
+    updateProgress(20, 'Detecting system information...');
 
     // System info
     setValue('os', detectOS());
@@ -501,7 +810,7 @@
     setValue('pixelRatio', window.devicePixelRatio + 'x');
     setValue('hdr', window.matchMedia('(dynamic-range: high)').matches ? 'Supported' : 'Not detected');
 
-    updateProgress(45, 'Detecting graphics capabilities...');
+    updateProgress(40, 'Detecting graphics capabilities...');
 
     // Graphics info
     const webgl = getWebGLInfo();
@@ -510,7 +819,41 @@
     setValue('webgl', webgl.version);
     setValue('maxTexture', webgl.maxTexture);
 
-    updateProgress(55, 'Detecting time and locale...');
+    updateProgress(50, 'Enumerating fonts...');
+
+    // Font detection
+    const fonts = detectFonts();
+    setValue('fontCount', fonts.length + ' fonts detected', 'warning');
+    setValue('fontHash', simpleHash(fonts.join(',')).toUpperCase(), 'warning');
+    $('fontList').textContent = fonts.slice(0, 20).join(', ') + (fonts.length > 20 ? '...' : '');
+
+    updateProgress(60, 'Detecting extensions...');
+
+    // Extensions
+    setValue('pdfViewer', navigator.pdfViewerEnabled ? 'Built-in' : 'External/None');
+    setValue('pluginsCount', navigator.plugins ? navigator.plugins.length + ' plugins' : 'Not available');
+
+    const extensions = await detectExtensions();
+    const extList = $('extensionList');
+    if (extensions.length > 0) {
+      extList.innerHTML = extensions.map(ext => {
+        const isPrivacyTool = ['uBlock Origin', 'AdBlock', 'AdBlock Plus', 'Ghostery', 'Privacy Badger'].includes(ext);
+        return `<span class="extension-tag ${isPrivacyTool ? 'privacy-risk' : 'detected'}">${ext}</span>`;
+      }).join('');
+    } else {
+      extList.innerHTML = '<span style="opacity:.7;font-size:.8rem;">None detected (extensions may be hidden)</span>';
+    }
+
+    updateProgress(65, 'Checking social logins...');
+
+    // Social logins
+    const socialLogins = await detectSocialLogins();
+    const socialGrid = $('socialGrid');
+    socialGrid.innerHTML = socialLogins.map(s =>
+      `<div class="social-item"><span class="social-icon">${s.icon}</span>${s.name}</div>`
+    ).join('');
+
+    updateProgress(70, 'Detecting time and locale...');
 
     // Time info
     setValue('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -519,7 +862,7 @@
     setValue('localTime', new Date().toLocaleTimeString());
     setValue('dateFormat', new Date().toLocaleDateString());
 
-    updateProgress(65, 'Checking storage capabilities...');
+    updateProgress(75, 'Checking storage capabilities...');
 
     // Storage info
     setStatus('localStorage', !!window.localStorage);
@@ -528,7 +871,7 @@
     setStatus('webWorkers', !!window.Worker);
     setStatus('serviceWorkers', 'serviceWorker' in navigator);
 
-    updateProgress(75, 'Detecting media capabilities...');
+    updateProgress(80, 'Detecting media capabilities...');
 
     // Media info
     setValue('audioFormats', checkAudioFormats());
@@ -536,7 +879,7 @@
     setStatus('webrtc', !!window.RTCPeerConnection);
     setValue('mediaDevices', navigator.mediaDevices ? 'Available' : 'Not available');
 
-    updateProgress(80, 'Checking for ad blocker...');
+    updateProgress(82, 'Checking for ad blocker...');
 
     // Ad blocker detection
     const hasAdBlocker = await detectAdBlocker();
@@ -611,22 +954,26 @@
       memory: navigator.deviceMemory,
       touch: navigator.maxTouchPoints,
       gpu: webgl.renderer,
-      platform: navigator.platform
+      platform: navigator.platform,
+      fonts: fonts.length,
+      canvas: getCanvasFingerprint(),
+      audio: getAudioFingerprint()
     };
 
     const fingerprint = generateFingerprint(fingerprintData);
     $('fingerprint').textContent = fingerprint;
 
-    // Estimate uniqueness (this is a rough estimate for educational purposes)
+    // Estimate uniqueness
     const factors = [
       screen.width * screen.height,
       navigator.hardwareConcurrency || 4,
       screen.colorDepth,
       navigator.maxTouchPoints || 0,
-      navigator.languages?.length || 1
+      navigator.languages?.length || 1,
+      fonts.length * 100
     ];
     const uniqueScore = factors.reduce((a, b) => a + b, 0);
-    const uniqueEstimate = uniqueScore > 10000 ? '~1 in 286,777' : uniqueScore > 5000 ? '~1 in 50,000' : '~1 in 10,000';
+    const uniqueEstimate = uniqueScore > 15000 ? '~1 in 286,777' : uniqueScore > 8000 ? '~1 in 50,000' : '~1 in 10,000';
     $('uniqueness').textContent = uniqueEstimate + ' browsers';
 
     updateProgress(100, 'Scan complete!');
