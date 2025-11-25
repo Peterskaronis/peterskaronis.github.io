@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>try{var k='theme',s=localStorage.getItem(k),h=(new Date).getHours(),a=(h>=6&&h<18)?'light':'dark';document.documentElement.dataset.theme=s||a;}catch(e){}</script>
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#7917e8;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8);--warning:#e85d04;--success:#2d6a4f;--info:#0077b6;--glow:rgba(121,23,232,.3)}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35);--warning:#f48c06;--success:#40916c;--info:#48cae4;--glow:rgba(167,131,255,.4)}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:1.5rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.2rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.back-link{font-size:.9rem;color:var(--primary-color);border-bottom:none}.back-link:hover{opacity:.8}.container{max-width:1200px;margin:0 auto;padding:2rem 1rem}.header{text-align:center;margin-bottom:2rem}.header h1{margin-bottom:.5rem}.header p{color:var(--text);opacity:.8;max-width:600px;margin:0 auto}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1.5rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:1.5rem;margin-top:2rem}.card{background:var(--card-bg);border-radius:12px;padding:1.5rem;border-left:4px solid var(--primary-color);box-shadow:var(--shadow);transition:transform .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.2)}.card h2{margin:0 0 1rem 0;padding:0;display:flex;align-items:center;gap:.5rem;font-size:1.25rem}.card-icon{font-size:1.5rem}.data-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.6rem 0;border-bottom:1px solid var(--tertiary-color)}.data-row:last-child{border-bottom:none}.data-label{font-weight:500;color:var(--text);opacity:.7;font-size:.9rem;flex-shrink:0}.data-value{text-align:right;word-break:break-word;max-width:60%;font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.85rem;color:var(--primary-color)}.loading{color:var(--text);opacity:.5;animation:pulse 1.5s infinite}@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}.ip-highlight{font-size:1.5rem;font-weight:700;text-align:center;padding:1rem;background:linear-gradient(135deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 70%,#fff));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.warning-banner{background:linear-gradient(135deg,rgba(232,93,4,.15),rgba(232,93,4,.05));border:1px solid var(--warning);border-radius:8px;padding:1rem 1.5rem;margin:2rem 0;text-align:center}.warning-banner h3{color:var(--warning);margin-bottom:.5rem}.fingerprint-display{font-family:'SF Mono',Monaco,Consolas,monospace;font-size:.7rem;word-break:break-all;background:var(--secondary-color);padding:.75rem;border-radius:6px;margin-top:.5rem;border:1px solid var(--tertiary-color)}.progress-bar{width:100%;height:6px;background:var(--tertiary-color);border-radius:3px;overflow:hidden;margin:1rem 0}.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary-color),color-mix(in oklab,var(--primary-color) 60%,#fff));border-radius:3px;transition:width .3s ease;box-shadow:0 0 10px var(--glow)}.status-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:.5rem}.status-yes{background:var(--success);box-shadow:0 0 8px var(--success)}.status-no{background:var(--warning);box-shadow:0 0 8px var(--warning)}.footer{text-align:center;margin-top:3rem;padding:2rem;opacity:.7;font-size:.9rem}.scan-animation{position:relative;overflow:hidden}.scan-animation::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(167,131,255,.1),transparent);animation:scan 2s ease-in-out infinite}@keyframes scan{to{left:100%}}.refresh-btn{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1.5rem;border-radius:8px;cursor:pointer;font-size:1rem;margin-top:1rem;transition:transform .1s ease,opacity .2s ease}.refresh-btn:hover{opacity:.9;transform:translateY(-1px)}.refresh-btn:active{transform:translateY(0)}@media(max-width:768px){.grid{grid-template-columns:1fr}.data-value{max-width:55%}.header h1{font-size:2rem}}
+  </style>
+  <meta name="description" content="Digital Awareness Tool - See what information websites can collect about you just by visiting.">
+  <title>Digital Awareness | Peter Skaronis</title>
+</head>
+<body>
+  <section>
+    <nav>
+      <a href="index.html" class="back-link">← Back to Home</a>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
+    </nav>
+
+    <div class="container">
+      <div class="header">
+        <h1>Digital Awareness</h1>
+        <p>See what information websites can collect about you just by visiting. No cookies required - this is all from your browser.</p>
+      </div>
+
+      <div class="warning-banner">
+        <h3>Why does this matter?</h3>
+        <p>Every website you visit can access this information. Combined, these data points create a unique "fingerprint" that can track you across the web - even without cookies.</p>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="scanProgress" style="width: 0%"></div>
+      </div>
+      <p id="scanStatus" style="text-align:center;font-size:.9rem;opacity:.7">Initializing scan...</p>
+
+      <div class="grid">
+        <!-- Network Information -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🌐</span> Network</h2>
+          <div class="data-row">
+            <span class="data-label">Public IP</span>
+            <span class="data-value" id="ip"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Location (approx)</span>
+            <span class="data-value" id="location"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">ISP / Org</span>
+            <span class="data-value" id="isp"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Connection Type</span>
+            <span class="data-value" id="connectionType"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Downlink Speed</span>
+            <span class="data-value" id="downlink"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Browser Information -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🔍</span> Browser</h2>
+          <div class="data-row">
+            <span class="data-label">Browser</span>
+            <span class="data-value" id="browser"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Engine</span>
+            <span class="data-value" id="engine"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Language</span>
+            <span class="data-value" id="language"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Cookies Enabled</span>
+            <span class="data-value" id="cookies"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Do Not Track</span>
+            <span class="data-value" id="dnt"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Ad Blocker</span>
+            <span class="data-value" id="adblock"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- System Information -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">💻</span> System</h2>
+          <div class="data-row">
+            <span class="data-label">Operating System</span>
+            <span class="data-value" id="os"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Platform</span>
+            <span class="data-value" id="platform"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">CPU Cores</span>
+            <span class="data-value" id="cores"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Device Memory</span>
+            <span class="data-value" id="memory"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Touch Support</span>
+            <span class="data-value" id="touch"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Device Type</span>
+            <span class="data-value" id="deviceType"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Display Information -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🖥️</span> Display</h2>
+          <div class="data-row">
+            <span class="data-label">Screen Resolution</span>
+            <span class="data-value" id="screenRes"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Available Screen</span>
+            <span class="data-value" id="availScreen"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Viewport Size</span>
+            <span class="data-value" id="viewport"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Color Depth</span>
+            <span class="data-value" id="colorDepth"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Pixel Ratio</span>
+            <span class="data-value" id="pixelRatio"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">HDR Support</span>
+            <span class="data-value" id="hdr"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Graphics Information -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🎮</span> Graphics</h2>
+          <div class="data-row">
+            <span class="data-label">GPU Vendor</span>
+            <span class="data-value" id="gpuVendor"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">GPU Renderer</span>
+            <span class="data-value" id="gpuRenderer"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">WebGL Version</span>
+            <span class="data-value" id="webgl"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Max Texture Size</span>
+            <span class="data-value" id="maxTexture"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Time & Location -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🕐</span> Time & Locale</h2>
+          <div class="data-row">
+            <span class="data-label">Timezone</span>
+            <span class="data-value" id="timezone"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">UTC Offset</span>
+            <span class="data-value" id="utcOffset"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Local Time</span>
+            <span class="data-value" id="localTime"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Date Format</span>
+            <span class="data-value" id="dateFormat"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Battery & Power -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🔋</span> Battery</h2>
+          <div class="data-row">
+            <span class="data-label">Battery Level</span>
+            <span class="data-value" id="batteryLevel"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Charging Status</span>
+            <span class="data-value" id="charging"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Time to Full</span>
+            <span class="data-value" id="chargingTime"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Time to Empty</span>
+            <span class="data-value" id="dischargingTime"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Storage & Features -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">💾</span> Storage & Features</h2>
+          <div class="data-row">
+            <span class="data-label">Local Storage</span>
+            <span class="data-value" id="localStorage"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Session Storage</span>
+            <span class="data-value" id="sessionStorage"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">IndexedDB</span>
+            <span class="data-value" id="indexedDB"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Web Workers</span>
+            <span class="data-value" id="webWorkers"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Service Workers</span>
+            <span class="data-value" id="serviceWorkers"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Media Capabilities -->
+        <div class="card scan-animation">
+          <h2><span class="card-icon">🎵</span> Media</h2>
+          <div class="data-row">
+            <span class="data-label">Audio Formats</span>
+            <span class="data-value" id="audioFormats"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Video Formats</span>
+            <span class="data-value" id="videoFormats"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">WebRTC Support</span>
+            <span class="data-value" id="webrtc"><span class="loading">Detecting...</span></span>
+          </div>
+          <div class="data-row">
+            <span class="data-label">Media Devices</span>
+            <span class="data-value" id="mediaDevices"><span class="loading">Detecting...</span></span>
+          </div>
+        </div>
+
+        <!-- Fingerprint -->
+        <div class="card scan-animation" style="grid-column: 1 / -1;">
+          <h2><span class="card-icon">🔐</span> Your Browser Fingerprint</h2>
+          <p style="margin-bottom:1rem;opacity:.8;font-size:.9rem;">This hash is generated from your browser characteristics. It's likely unique to you among millions of users.</p>
+          <div class="fingerprint-display" id="fingerprint">
+            <span class="loading">Calculating fingerprint...</span>
+          </div>
+          <p style="margin-top:1rem;font-size:.85rem;opacity:.7;">Uniqueness estimate: <strong id="uniqueness">Calculating...</strong></p>
+        </div>
+      </div>
+
+      <div style="text-align:center">
+        <button class="refresh-btn" onclick="location.reload()">Scan Again</button>
+      </div>
+
+      <div class="footer">
+        <p>This tool is for educational purposes only. No data is stored or transmitted.</p>
+        <p style="margin-top:.5rem"><a href="index.html">← Back to Home</a></p>
+      </div>
+    </div>
+  </section>
+
+<script>
+(function () {
+  // Theme toggle
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  var KEY = 'theme';
+  function current() { return root.dataset.theme || 'light'; }
+  function setTheme(t) {
+    root.dataset.theme = t;
+    try { localStorage.setItem(KEY, t); } catch(e) {}
+    if (btn) btn.textContent = (t === 'dark') ? '☀️' : '🌙';
+  }
+  setTheme(current());
+  if (btn) btn.addEventListener('click', function(){ setTheme(current() === 'dark' ? 'light' : 'dark'); });
+})();
+
+// Main detection script
+(function() {
+  const $ = id => document.getElementById(id);
+  const progress = $('scanProgress');
+  const status = $('scanStatus');
+  let progressValue = 0;
+
+  function updateProgress(value, message) {
+    progressValue = value;
+    progress.style.width = value + '%';
+    status.textContent = message;
+  }
+
+  function setValue(id, value) {
+    const el = $(id);
+    if (el) el.textContent = value || 'Not available';
+  }
+
+  function setStatus(id, isEnabled) {
+    const el = $(id);
+    if (el) {
+      el.innerHTML = `<span class="status-indicator ${isEnabled ? 'status-yes' : 'status-no'}"></span>${isEnabled ? 'Yes' : 'No'}`;
+    }
+  }
+
+  // Detect browser
+  function detectBrowser() {
+    const ua = navigator.userAgent;
+    let browser = 'Unknown';
+    let version = '';
+
+    if (ua.includes('Firefox/')) {
+      browser = 'Firefox';
+      version = ua.match(/Firefox\/(\d+)/)?.[1] || '';
+    } else if (ua.includes('Edg/')) {
+      browser = 'Edge';
+      version = ua.match(/Edg\/(\d+)/)?.[1] || '';
+    } else if (ua.includes('Chrome/')) {
+      browser = 'Chrome';
+      version = ua.match(/Chrome\/(\d+)/)?.[1] || '';
+    } else if (ua.includes('Safari/') && !ua.includes('Chrome')) {
+      browser = 'Safari';
+      version = ua.match(/Version\/(\d+)/)?.[1] || '';
+    } else if (ua.includes('Opera') || ua.includes('OPR/')) {
+      browser = 'Opera';
+      version = ua.match(/(?:Opera|OPR)\/(\d+)/)?.[1] || '';
+    }
+
+    return browser + (version ? ' ' + version : '');
+  }
+
+  // Detect OS
+  function detectOS() {
+    const ua = navigator.userAgent;
+    const platform = navigator.platform;
+
+    if (ua.includes('Windows NT 10')) return 'Windows 10/11';
+    if (ua.includes('Windows NT 6.3')) return 'Windows 8.1';
+    if (ua.includes('Windows NT 6.2')) return 'Windows 8';
+    if (ua.includes('Windows NT 6.1')) return 'Windows 7';
+    if (ua.includes('Mac OS X')) {
+      const match = ua.match(/Mac OS X (\d+[._]\d+)/);
+      return 'macOS ' + (match ? match[1].replace('_', '.') : '');
+    }
+    if (ua.includes('Android')) {
+      const match = ua.match(/Android (\d+(\.\d+)?)/);
+      return 'Android ' + (match ? match[1] : '');
+    }
+    if (ua.includes('iPhone') || ua.includes('iPad')) {
+      const match = ua.match(/OS (\d+_\d+)/);
+      return 'iOS ' + (match ? match[1].replace('_', '.') : '');
+    }
+    if (ua.includes('Linux')) return 'Linux';
+    if (ua.includes('CrOS')) return 'Chrome OS';
+
+    return platform || 'Unknown';
+  }
+
+  // Detect engine
+  function detectEngine() {
+    const ua = navigator.userAgent;
+    if (ua.includes('Gecko/')) return 'Gecko (Firefox)';
+    if (ua.includes('AppleWebKit/')) {
+      if (ua.includes('Chrome/')) return 'Blink (Chromium)';
+      return 'WebKit (Safari)';
+    }
+    return 'Unknown';
+  }
+
+  // Detect device type
+  function detectDeviceType() {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) return 'Tablet';
+    if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) return 'Mobile';
+    return 'Desktop';
+  }
+
+  // Get WebGL info
+  function getWebGLInfo() {
+    try {
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (!gl) return { vendor: 'Not supported', renderer: 'Not supported', version: 'Not supported', maxTexture: 'N/A' };
+
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      return {
+        vendor: debugInfo ? gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR),
+        renderer: debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
+        version: gl.getParameter(gl.VERSION),
+        maxTexture: gl.getParameter(gl.MAX_TEXTURE_SIZE) + 'px'
+      };
+    } catch(e) {
+      return { vendor: 'Error', renderer: 'Error', version: 'Error', maxTexture: 'Error' };
+    }
+  }
+
+  // Check audio formats
+  function checkAudioFormats() {
+    const audio = document.createElement('audio');
+    const formats = [];
+    if (audio.canPlayType('audio/mpeg')) formats.push('MP3');
+    if (audio.canPlayType('audio/ogg')) formats.push('OGG');
+    if (audio.canPlayType('audio/wav')) formats.push('WAV');
+    if (audio.canPlayType('audio/aac')) formats.push('AAC');
+    if (audio.canPlayType('audio/webm')) formats.push('WebM');
+    return formats.join(', ') || 'None detected';
+  }
+
+  // Check video formats
+  function checkVideoFormats() {
+    const video = document.createElement('video');
+    const formats = [];
+    if (video.canPlayType('video/mp4')) formats.push('MP4');
+    if (video.canPlayType('video/webm')) formats.push('WebM');
+    if (video.canPlayType('video/ogg')) formats.push('OGG');
+    if (video.canPlayType('application/x-mpegURL')) formats.push('HLS');
+    return formats.join(', ') || 'None detected';
+  }
+
+  // Simple hash function for fingerprint
+  function simpleHash(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return Math.abs(hash).toString(16).padStart(8, '0');
+  }
+
+  // Generate fingerprint
+  function generateFingerprint(data) {
+    const fingerprintData = JSON.stringify(data);
+    const hash1 = simpleHash(fingerprintData);
+    const hash2 = simpleHash(fingerprintData.split('').reverse().join(''));
+    const hash3 = simpleHash(hash1 + hash2);
+    const hash4 = simpleHash(fingerprintData + Date.now().toString().slice(0, -6));
+    return `${hash1}-${hash2}-${hash3}-${hash4}`.toUpperCase();
+  }
+
+  // Detect ad blocker
+  async function detectAdBlocker() {
+    try {
+      const testAd = document.createElement('div');
+      testAd.innerHTML = '&nbsp;';
+      testAd.className = 'adsbox ad-banner ad-wrapper';
+      testAd.style.cssText = 'position:absolute;left:-9999px;';
+      document.body.appendChild(testAd);
+      await new Promise(r => setTimeout(r, 100));
+      const blocked = testAd.offsetHeight === 0;
+      document.body.removeChild(testAd);
+      return blocked;
+    } catch(e) {
+      return false;
+    }
+  }
+
+  // Main scan function
+  async function runScan() {
+    updateProgress(5, 'Detecting browser information...');
+
+    // Browser info
+    setValue('browser', detectBrowser());
+    setValue('engine', detectEngine());
+    setValue('language', navigator.languages ? navigator.languages.join(', ') : navigator.language);
+    setStatus('cookies', navigator.cookieEnabled);
+    setValue('dnt', navigator.doNotTrack === '1' ? 'Enabled' : 'Disabled');
+
+    updateProgress(15, 'Detecting system information...');
+
+    // System info
+    setValue('os', detectOS());
+    setValue('platform', navigator.platform);
+    setValue('cores', navigator.hardwareConcurrency || 'Not available');
+    setValue('memory', navigator.deviceMemory ? navigator.deviceMemory + ' GB' : 'Not available');
+    setValue('touch', ('ontouchstart' in window || navigator.maxTouchPoints > 0) ? 'Yes (' + navigator.maxTouchPoints + ' points)' : 'No');
+    setValue('deviceType', detectDeviceType());
+
+    updateProgress(30, 'Detecting display properties...');
+
+    // Display info
+    setValue('screenRes', screen.width + ' x ' + screen.height);
+    setValue('availScreen', screen.availWidth + ' x ' + screen.availHeight);
+    setValue('viewport', window.innerWidth + ' x ' + window.innerHeight);
+    setValue('colorDepth', screen.colorDepth + '-bit');
+    setValue('pixelRatio', window.devicePixelRatio + 'x');
+    setValue('hdr', window.matchMedia('(dynamic-range: high)').matches ? 'Supported' : 'Not detected');
+
+    updateProgress(45, 'Detecting graphics capabilities...');
+
+    // Graphics info
+    const webgl = getWebGLInfo();
+    setValue('gpuVendor', webgl.vendor);
+    setValue('gpuRenderer', webgl.renderer);
+    setValue('webgl', webgl.version);
+    setValue('maxTexture', webgl.maxTexture);
+
+    updateProgress(55, 'Detecting time and locale...');
+
+    // Time info
+    setValue('timezone', Intl.DateTimeFormat().resolvedOptions().timeZone);
+    const offset = new Date().getTimezoneOffset();
+    setValue('utcOffset', 'UTC' + (offset <= 0 ? '+' : '-') + Math.abs(offset / 60));
+    setValue('localTime', new Date().toLocaleTimeString());
+    setValue('dateFormat', new Date().toLocaleDateString());
+
+    updateProgress(65, 'Checking storage capabilities...');
+
+    // Storage info
+    setStatus('localStorage', !!window.localStorage);
+    setStatus('sessionStorage', !!window.sessionStorage);
+    setStatus('indexedDB', !!window.indexedDB);
+    setStatus('webWorkers', !!window.Worker);
+    setStatus('serviceWorkers', 'serviceWorker' in navigator);
+
+    updateProgress(75, 'Detecting media capabilities...');
+
+    // Media info
+    setValue('audioFormats', checkAudioFormats());
+    setValue('videoFormats', checkVideoFormats());
+    setStatus('webrtc', !!window.RTCPeerConnection);
+    setValue('mediaDevices', navigator.mediaDevices ? 'Available' : 'Not available');
+
+    updateProgress(80, 'Checking for ad blocker...');
+
+    // Ad blocker detection
+    const hasAdBlocker = await detectAdBlocker();
+    setValue('adblock', hasAdBlocker ? 'Detected' : 'Not detected');
+
+    updateProgress(85, 'Detecting battery status...');
+
+    // Battery info
+    if ('getBattery' in navigator) {
+      try {
+        const battery = await navigator.getBattery();
+        setValue('batteryLevel', Math.round(battery.level * 100) + '%');
+        setValue('charging', battery.charging ? 'Yes' : 'No');
+        setValue('chargingTime', battery.chargingTime === Infinity ? 'N/A' : Math.round(battery.chargingTime / 60) + ' min');
+        setValue('dischargingTime', battery.dischargingTime === Infinity ? 'N/A' : Math.round(battery.dischargingTime / 60) + ' min');
+      } catch(e) {
+        setValue('batteryLevel', 'Not available');
+        setValue('charging', 'Not available');
+        setValue('chargingTime', 'Not available');
+        setValue('dischargingTime', 'Not available');
+      }
+    } else {
+      setValue('batteryLevel', 'API not supported');
+      setValue('charging', 'API not supported');
+      setValue('chargingTime', 'API not supported');
+      setValue('dischargingTime', 'API not supported');
+    }
+
+    updateProgress(90, 'Fetching network information...');
+
+    // Network info
+    if ('connection' in navigator) {
+      const conn = navigator.connection;
+      setValue('connectionType', conn.effectiveType ? conn.effectiveType.toUpperCase() : 'Unknown');
+      setValue('downlink', conn.downlink ? conn.downlink + ' Mbps' : 'Unknown');
+    } else {
+      setValue('connectionType', 'API not supported');
+      setValue('downlink', 'API not supported');
+    }
+
+    // Fetch public IP
+    try {
+      const response = await fetch('https://ipapi.co/json/');
+      const data = await response.json();
+      setValue('ip', data.ip);
+      setValue('location', `${data.city}, ${data.region}, ${data.country_name}`);
+      setValue('isp', data.org);
+    } catch(e) {
+      try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        setValue('ip', data.ip);
+        setValue('location', 'Could not determine');
+        setValue('isp', 'Could not determine');
+      } catch(e2) {
+        setValue('ip', 'Could not fetch');
+        setValue('location', 'Could not fetch');
+        setValue('isp', 'Could not fetch');
+      }
+    }
+
+    updateProgress(95, 'Generating fingerprint...');
+
+    // Generate fingerprint
+    const fingerprintData = {
+      browser: detectBrowser(),
+      os: detectOS(),
+      screen: `${screen.width}x${screen.height}x${screen.colorDepth}`,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      language: navigator.language,
+      cores: navigator.hardwareConcurrency,
+      memory: navigator.deviceMemory,
+      touch: navigator.maxTouchPoints,
+      gpu: webgl.renderer,
+      platform: navigator.platform
+    };
+
+    const fingerprint = generateFingerprint(fingerprintData);
+    $('fingerprint').textContent = fingerprint;
+
+    // Estimate uniqueness (this is a rough estimate for educational purposes)
+    const factors = [
+      screen.width * screen.height,
+      navigator.hardwareConcurrency || 4,
+      screen.colorDepth,
+      navigator.maxTouchPoints || 0,
+      navigator.languages?.length || 1
+    ];
+    const uniqueScore = factors.reduce((a, b) => a + b, 0);
+    const uniqueEstimate = uniqueScore > 10000 ? '~1 in 286,777' : uniqueScore > 5000 ? '~1 in 50,000' : '~1 in 10,000';
+    $('uniqueness').textContent = uniqueEstimate + ' browsers';
+
+    updateProgress(100, 'Scan complete!');
+
+    // Remove scan animations
+    setTimeout(() => {
+      document.querySelectorAll('.scan-animation').forEach(el => {
+        el.classList.remove('scan-animation');
+      });
+    }, 500);
+  }
+
+  // Run scan on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runScan);
+  } else {
+    runScan();
+  }
+})();
+</script>
+
+</body>
+</html>
