@@ -650,47 +650,135 @@
     return detected;
   }
 
-  // Extension detection
+  // Extension detection - uses multiple reliable methods
   async function detectExtensions() {
-    const extensions = [
-      { name: 'uBlock Origin', id: 'cjpalhdlnbpafiamejdnhcphjbkeiagm', resources: ['/web_accessible_resources/noop.html'] },
-      { name: 'AdBlock', id: 'gighmmpiobklfepjocnamgkkbiglidom', resources: ['/adblock-button-icon.png'] },
-      { name: 'AdBlock Plus', id: 'cfhdojbkjhnklbpkdaibdccddilifddb', resources: ['/adblockplusui/skin/icons/abp-full-logo.svg'] },
-      { name: 'Ghostery', id: 'mlomiejdfkolichcflejclcbmpeaniij', resources: ['/app/images/ghosty_icon.svg'] },
-      { name: 'Privacy Badger', id: 'pkehgijcmpdhfbdbbnkijodmdjhbjlgp', resources: ['/skin/sprites/ui-icons.svg'] },
-      { name: 'Honey', id: 'bmnlcjabgnpnenekpadlanbbkooimhnj', resources: ['/paypal-logo.svg'] },
-      { name: 'LastPass', id: 'hdokiejnpimakedhajhdlcegeplioahd', resources: ['/images/icon_grey_32.png'] },
-      { name: '1Password', id: 'aeblfdkhhhdcdjpifhhbdiojplfjncoa', resources: ['/assets/images/icon.svg'] },
-      { name: 'Bitwarden', id: 'nngceckbapebfimnlniiiahkandclblb', resources: ['/images/icon38.png'] },
-      { name: 'Grammarly', id: 'kbfnbcaeplbcioakkpcpgfkobkghlhen', resources: ['/assets/extension_logo.svg'] },
-      { name: 'React DevTools', id: 'fmkadmapgofadopljbjfkapdkoienihi', resources: ['/main.html'] },
-      { name: 'Vue DevTools', id: 'nhdogjmejiglipccpnnnanhbledajbpd', resources: ['/devtools.html'] },
-      { name: 'Redux DevTools', id: 'lmhkpmbekcpmknklioeibfkpmmfibljd', resources: ['/devpanel.html'] },
-      { name: 'MetaMask', id: 'nkbihfbeogaeaoehlefnkodbefgpgknn', resources: ['/phishing.html'] },
-      { name: 'Dashlane', id: 'fdjamakpfbbddfjaooikfcpapjohcfmg', resources: ['/content/content.js'] },
-      { name: 'NordVPN', id: 'fjoaledfpmneenckfbpdfhkmimnjocfa', resources: ['/logo.svg'] },
-    ];
-
     const detected = [];
 
-    for (const ext of extensions) {
-      for (const resource of ext.resources) {
-        try {
-          const url = `chrome-extension://${ext.id}${resource}`;
-          const response = await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-          detected.push(ext.name);
-          break;
-        } catch(e) {
-          // Extension not detected via this resource
-        }
-      }
+    // 1. Global object detection - extensions inject these into window
+    const globalChecks = [
+      { check: () => window.__REACT_DEVTOOLS_GLOBAL_HOOK__, name: 'React DevTools' },
+      { check: () => window.__VUE_DEVTOOLS_GLOBAL_HOOK__, name: 'Vue DevTools' },
+      { check: () => window.__REDUX_DEVTOOLS_EXTENSION__, name: 'Redux DevTools' },
+      { check: () => window.ethereum, name: 'Web3 Wallet (MetaMask/etc)' },
+      { check: () => window.solana, name: 'Solana Wallet (Phantom/etc)' },
+      { check: () => window.kardiachain, name: 'KardiaChain Wallet' },
+      { check: () => window.web3, name: 'Web3 Provider' },
+      { check: () => window.Grammarly, name: 'Grammarly' },
+      { check: () => window.__GRAMMARLY_EXTENSION_INSTALL_URL__, name: 'Grammarly' },
+      { check: () => window.safari?.pushNotification, name: 'Safari Extensions' },
+      { check: () => window.__widevine_cdm_path__, name: 'Widevine CDM' },
+      { check: () => window.chrome?.csi, name: 'Chrome Internal' },
+    ];
+
+    for (const { check, name } of globalChecks) {
+      try { if (check()) detected.push(name); } catch(e) {}
     }
 
-    // Also check for common extension behaviors
-    if (window.__REACT_DEVTOOLS_GLOBAL_HOOK__) detected.push('React DevTools');
-    if (window.__VUE_DEVTOOLS_GLOBAL_HOOK__) detected.push('Vue DevTools');
-    if (window.ethereum) detected.push('Web3 Wallet (MetaMask/etc)');
+    // 2. DOM element detection - extensions inject elements
+    const domChecks = [
+      { selector: 'grammarly-desktop-integration', name: 'Grammarly' },
+      { selector: 'grammarly-extension', name: 'Grammarly' },
+      { selector: '[data-grammarly-shadow-root]', name: 'Grammarly' },
+      { selector: '#lastpass-icon', name: 'LastPass' },
+      { selector: '[data-lastpass-icon]', name: 'LastPass' },
+      { selector: '[data-lastpass-root]', name: 'LastPass' },
+      { selector: '.bitwarden-icon', name: 'Bitwarden' },
+      { selector: '[data-bitwarden]', name: 'Bitwarden' },
+      { selector: '#onepassword-icon', name: '1Password' },
+      { selector: '[data-1p-ignore]', name: '1Password' },
+      { selector: '[data-dashlanecreated]', name: 'Dashlane' },
+      { selector: '.dashlane-icon', name: 'Dashlane' },
+      { selector: '#honey-button', name: 'Honey (PayPal)' },
+      { selector: '[data-honey-container]', name: 'Honey (PayPal)' },
+      { selector: '.honey-gold-button', name: 'Honey (PayPal)' },
+      { selector: '#NordVPNPopup', name: 'NordVPN' },
+      { selector: '[data-surfshark]', name: 'Surfshark VPN' },
+      { selector: '.ep_font', name: 'ExpressVPN' },
+      { selector: '#av_icon', name: 'Avast' },
+      { selector: '[data-mcafee]', name: 'McAfee WebAdvisor' },
+      { selector: '#pocket-extension-root', name: 'Pocket' },
+      { selector: '[data-evernote-clipper]', name: 'Evernote Web Clipper' },
+      { selector: '#roboform-toolbar', name: 'RoboForm' },
+      { selector: '[data-keeper-lock]', name: 'Keeper' },
+      { selector: '.zoho-vault-icon', name: 'Zoho Vault' },
+    ];
 
+    for (const { selector, name } of domChecks) {
+      try { if (document.querySelector(selector)) detected.push(name); } catch(e) {}
+    }
+
+    // 3. Ad blocker detection via bait elements
+    const adBlockerDetected = await (async () => {
+      const baitClasses = [
+        'ad', 'ads', 'adsbox', 'ad-banner', 'ad-wrapper', 'ad-container',
+        'doubleclick', 'google-ad', 'sponsored-ad', 'advertisement'
+      ];
+      const bait = document.createElement('div');
+      bait.innerHTML = '&nbsp;';
+      bait.className = baitClasses.join(' ');
+      bait.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;';
+      document.body.appendChild(bait);
+      await new Promise(r => setTimeout(r, 100));
+      const blocked = bait.offsetHeight === 0 || bait.offsetWidth === 0 ||
+                      getComputedStyle(bait).display === 'none' ||
+                      getComputedStyle(bait).visibility === 'hidden';
+      document.body.removeChild(bait);
+      return blocked;
+    })();
+    if (adBlockerDetected) detected.push('Ad Blocker (Generic)');
+
+    // 4. Script blocker detection
+    const scriptBlockerDetected = await (async () => {
+      try {
+        const testScript = document.createElement('script');
+        testScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+        testScript.async = true;
+        let blocked = false;
+        testScript.onerror = () => { blocked = true; };
+        document.head.appendChild(testScript);
+        await new Promise(r => setTimeout(r, 200));
+        document.head.removeChild(testScript);
+        return blocked;
+      } catch(e) { return true; }
+    })();
+    if (scriptBlockerDetected && !adBlockerDetected) detected.push('Script Blocker');
+
+    // 5. Check for CSS injected by extensions
+    const cssChecks = () => {
+      const styles = Array.from(document.styleSheets);
+      for (const sheet of styles) {
+        try {
+          const href = sheet.href || '';
+          if (href.includes('chrome-extension://')) detected.push('Chrome Extension (CSS)');
+          if (href.includes('moz-extension://')) detected.push('Firefox Extension (CSS)');
+          if (href.includes('safari-extension://')) detected.push('Safari Extension (CSS)');
+        } catch(e) {}
+      }
+    };
+    cssChecks();
+
+    // 6. Check navigator.plugins for clues
+    if (navigator.plugins) {
+      const pluginNames = Array.from(navigator.plugins).map(p => p.name.toLowerCase());
+      if (pluginNames.some(n => n.includes('chromium pdf'))) detected.push('Chromium PDF Viewer');
+      if (pluginNames.some(n => n.includes('widevine'))) detected.push('Widevine DRM');
+    }
+
+    // 7. Detect color scheme preference override (Dark Reader, etc.)
+    const darkModeCheck = () => {
+      const testEl = document.createElement('div');
+      testEl.style.cssText = 'position:absolute;left:-9999px;background:white;';
+      document.body.appendChild(testEl);
+      const bg = getComputedStyle(testEl).backgroundColor;
+      document.body.removeChild(testEl);
+      // If background isn't white, an extension might be overriding it
+      if (bg !== 'rgb(255, 255, 255)' && bg !== 'rgba(0, 0, 0, 0)') {
+        detected.push('Dark Mode Extension (likely)');
+      }
+    };
+    try { darkModeCheck(); } catch(e) {}
+
+    // Return unique values
     return [...new Set(detected)];
   }
 
