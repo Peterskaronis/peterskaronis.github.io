@@ -361,7 +361,7 @@ ${sectionsHTML}        <footer>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
-            <p class="copyright">© ${new Date().getFullYear()}</p>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
 </body>
