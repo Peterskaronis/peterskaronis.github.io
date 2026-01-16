@@ -66,6 +66,20 @@
             color: #999;
         }
 
+        .daily-quote {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #555;
+            max-width: 500px;
+        }
+
+        .daily-quote .author {
+            font-style: normal;
+            color: #444;
+            margin-top: 0.3rem;
+        }
+
         /* Statement */
         .statement {
             padding: 5rem 0;
@@ -376,6 +390,7 @@
         <section class="hero">
             <h1>Peter Skaronis</h1>
             <p class="hero-subtitle">Cybersecurity consultant. vCISO. I help startups build security programs that actually work.</p>
+            <div class="daily-quote" id="daily-quote"></div>
         </section>
 
         <section class="statement">
@@ -480,5 +495,20 @@
             <p class="copyright">© 2025</p>
         </footer>
     </div>
+
+    <script>
+    (function() {
+        fetch('quotes.json')
+            .then(r => r.json())
+            .then(quotes => {
+                const today = new Date();
+                const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+                const quote = quotes[dayOfYear % quotes.length];
+                document.getElementById('daily-quote').innerHTML =
+                    '"' + quote.quote + '"<div class="author">— ' + quote.author + '</div>';
+            })
+            .catch(() => {});
+    })();
+    </script>
 </body>
 </html>
