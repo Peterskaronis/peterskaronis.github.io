@@ -15,9 +15,9 @@ jobs:
           node-version: '20'
       - name: Update posts from RSS feeds
         run: node scripts/update-posts.js
+      - name: Install Puppeteer
+        run: npm install puppeteer
       - name: Update testimonials
-        env:
-          TESTIMONIAL_API_KEY: ${{ secrets.TESTIMONIAL_API_KEY }}
         run: node scripts/update-testimonials.js
       - name: Commit changes
         run: |

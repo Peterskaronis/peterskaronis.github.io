@@ -1,48 +1,75 @@
 #!/usr/bin/env node
 
 /**
- * Fetches testimonials from Testimonial.to API and updates index.html
+ * Scrapes testimonials from love.techimpossible.com and updates index.html
  *
- * Usage: TESTIMONIAL_API_KEY=xxx node scripts/update-testimonials.js
- *
- * Requires the TESTIMONIAL_API_KEY environment variable to be set.
+ * Usage: node scripts/update-testimonials.js
  */
 
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-const API_URL = 'https://api.testimonial.to/v1/testimonials?liked=true';
+async function scrapeTestimonials() {
+  const puppeteer = require('puppeteer');
 
-function fetch(url, apiKey) {
-  return new Promise((resolve, reject) => {
-    const options = {
-      headers: {
-        'Authorization': `Bearer ${apiKey}`
-      }
-    };
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
 
-    https.get(url, options, (res) => {
-      if (res.statusCode !== 200) {
-        return reject(new Error(`API returned status ${res.statusCode}`));
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error('Failed to parse JSON response'));
+  try {
+    const page = await browser.newPage();
+    await page.goto('https://love.techimpossible.com/all', {
+      waitUntil: 'networkidle2',
+      timeout: 30000
+    });
+
+    // Wait for testimonials to load in iframe
+    await page.waitForSelector('iframe', { timeout: 10000 });
+
+    // Get the iframe
+    const iframeElement = await page.$('iframe');
+    const iframe = await iframeElement.contentFrame();
+
+    // Wait for testimonials to render
+    await iframe.waitForSelector('blockquote', { timeout: 10000 });
+
+    // Extract testimonials
+    const testimonials = await iframe.evaluate(() => {
+      const items = [];
+      const testimonialElements = document.querySelectorAll('blockquote');
+
+      testimonialElements.forEach(blockquote => {
+        const container = blockquote.closest('[class*="flex-col"]') || blockquote.parentElement.parentElement;
+
+        // Get the text content
+        const textEl = blockquote.querySelector('div > div') || blockquote.querySelector('div');
+        const text = textEl ? textEl.textContent.replace('Show more', '').trim() : '';
+
+        // Get author info - look for the link with name
+        const nameLink = container.querySelector('a[href]');
+        const name = nameLink ? nameLink.textContent.trim() : '';
+
+        // Get company/title - usually in a paragraph near the name
+        const companyEl = container.querySelector('p');
+        const company = companyEl ? companyEl.textContent.trim() : '';
+
+        if (text && name) {
+          items.push({ name, company, text });
         }
       });
-      res.on('error', reject);
-    }).on('error', reject);
-  });
+
+      return items;
+    });
+
+    return testimonials;
+  } finally {
+    await browser.close();
+  }
 }
 
-function truncateText(text, maxLength = 200) {
+function truncateText(text, maxLength = 250) {
   if (text.length <= maxLength) return text;
-  // Find the last space before maxLength
   const truncated = text.substring(0, maxLength);
   const lastSpace = truncated.lastIndexOf(' ');
   return truncated.substring(0, lastSpace) + '...';
@@ -58,16 +85,14 @@ function escapeHtml(text) {
 
 function generateTestimonialHTML(testimonials) {
   const items = testimonials.map((t, index) => {
-    const name = escapeHtml(t.name || 'Anonymous');
-    const title = t.jobTitle ? escapeHtml(t.jobTitle) : '';
+    const name = escapeHtml(t.name);
     const company = t.company ? escapeHtml(t.company) : '';
-    const authorLine = [name, title, company].filter(Boolean).join(', ');
-    const text = escapeHtml(truncateText(t.text || '', 250));
+    const text = escapeHtml(truncateText(t.text, 250));
     const activeClass = index === 0 ? ' active' : '';
 
     return `                <div class="testimonial${activeClass}">
                     <p class="testimonial-text">"${text}"</p>
-                    <p class="testimonial-author"><strong>${name}</strong>${company ? ' — ' + (title ? title + ', ' : '') + company : ''}</p>
+                    <p class="testimonial-author"><strong>${name}</strong>${company ? ' — ' + company : ''}</p>
                 </div>`;
   }).join('\n');
 
@@ -98,40 +123,26 @@ function updateIndexHTML(testimonials) {
 }
 
 async function main() {
-  const apiKey = process.env.TESTIMONIAL_API_KEY;
-
-  if (!apiKey) {
-    console.log('TESTIMONIAL_API_KEY not set, skipping testimonial update');
-    return;
-  }
-
-  console.log('Fetching testimonials from Testimonial.to...\n');
+  console.log('Scraping testimonials from love.techimpossible.com...\n');
 
   try {
-    const testimonials = await fetch(API_URL, apiKey);
+    const testimonials = await scrapeTestimonials();
 
-    if (!Array.isArray(testimonials) || testimonials.length === 0) {
+    if (!testimonials || testimonials.length === 0) {
       console.log('No testimonials found');
       return;
     }
 
-    // Filter to only text testimonials with content
-    const textTestimonials = testimonials.filter(t => t.text && t.text.trim());
+    console.log(`Found ${testimonials.length} testimonials:`);
+    testimonials.forEach(t => console.log(`  - ${t.name}: "${t.text.substring(0, 50)}..."`));
 
-    console.log(`Found ${textTestimonials.length} text testimonials`);
-
-    if (textTestimonials.length === 0) {
-      console.log('No text testimonials to display');
-      return;
-    }
-
-    // Take up to 5 most recent
-    const displayTestimonials = textTestimonials.slice(0, 5);
+    // Take up to 5
+    const displayTestimonials = testimonials.slice(0, 5);
 
     updateIndexHTML(displayTestimonials);
     console.log('\nDone!');
   } catch (err) {
-    console.error('Error fetching testimonials:', err.message);
+    console.error('Error scraping testimonials:', err.message);
     // Don't exit with error - testimonials are optional
   }
 }
