@@ -80,28 +80,6 @@
             margin-top: 0.3rem;
         }
 
-        /* Statement */
-        .statement {
-            padding: 5rem 0;
-            border-bottom: 1px solid #333;
-            text-align: center;
-        }
-
-        .rotating-word {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 3rem;
-            font-weight: 400;
-            font-style: italic;
-            letter-spacing: -0.02em;
-            color: #888;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        .rotating-word.visible {
-            opacity: 1;
-        }
-
         /* Grid sections */
         .grid-section {
             display: grid;
@@ -227,14 +205,20 @@
             color: #fff;
         }
 
-        /* Latest Post */
-        .latest-post {
+        /* Latest Grid */
+        .latest-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
             padding: 4rem 0;
             border-bottom: 1px solid #333;
+        }
+
+        .latest-item {
             text-align: center;
         }
 
-        .latest-post-header {
+        .latest-header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -242,7 +226,7 @@
             margin-bottom: 1.5rem;
         }
 
-        .latest-post-label {
+        .latest-label {
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -264,18 +248,24 @@
             opacity: 0.9;
         }
 
-        .latest-post-content {
+        .stamp.vibe {
+            color: #5c9ec4;
+            border-color: #5c9ec4;
+            transform: rotate(2deg);
+        }
+
+        .latest-content {
             display: block;
             text-decoration: none;
             transition: opacity 0.2s;
         }
 
-        .latest-post-content:hover {
+        .latest-content:hover {
             opacity: 0.8;
             text-decoration: none;
         }
 
-        .latest-post-title {
+        .latest-title {
             font-family: 'Instrument Serif', Georgia, serif;
             font-size: 2rem;
             font-weight: 400;
@@ -285,12 +275,12 @@
             margin-bottom: 0.5rem;
         }
 
-        .latest-post-meta {
+        .latest-meta {
             font-size: 0.85rem;
             color: #666;
         }
 
-        .latest-post-source {
+        .latest-source {
             color: #888;
         }
 
@@ -374,7 +364,10 @@
             .hero h1 { font-size: 3rem; }
             .hero-subtitle { font-size: 1.2rem; }
 
-            .rotating-word { font-size: 2rem; }
+            .latest-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
 
             .grid-section {
                 grid-template-columns: 1fr;
@@ -383,7 +376,7 @@
 
             .cta h2 { font-size: 2rem; }
 
-            .latest-post-title { font-size: 1.5rem; }
+            .latest-title { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -395,20 +388,28 @@
             <div class="daily-quote" id="daily-quote"></div>
         </section>
 
-        <section class="statement">
-            <span class="rotating-word" id="rotating-word"></span>
-        </section>
-
-        <section class="latest-post">
-            <div class="latest-post-header">
-                <span class="latest-post-label">Latest</span>
-                <span class="stamp">Off the Press</span>
+        <section class="latest-grid">
+            <div class="latest-item">
+                <div class="latest-header">
+                    <span class="latest-label">Latest Post</span>
+                    <span class="stamp">Off the Press</span>
+                </div>
+                <a href="https://blog.skaronis.com/p/you-are-not-a-tree" class="latest-content">
+                    <h2 class="latest-title">You Are Not a Tree</h2>
+                    <p class="latest-meta">January 2026 · <span class="latest-source">Substack</span></p>
+                </a>
+                <a href="archive.html" class="archive-link">View all posts →</a>
             </div>
-            <a href="https://blog.skaronis.com/p/you-are-not-a-tree" class="latest-post-content">
-                <h2 class="latest-post-title">You Are Not a Tree</h2>
-                <p class="latest-post-meta">January 2026 · <span class="latest-post-source">Substack</span></p>
-            </a>
-            <a href="archive.html" class="archive-link">View all posts →</a>
+            <div class="latest-item">
+                <div class="latest-header">
+                    <span class="latest-label">Latest Project</span>
+                    <span class="stamp vibe">Vibe Coded</span>
+                </div>
+                <a href="https://thinklens.pages.dev/" class="latest-content">
+                    <h2 class="latest-title">ThinkLens</h2>
+                    <p class="latest-meta">AI-powered idea analysis</p>
+                </a>
+            </div>
         </section>
 
         <div class="grid-section">
@@ -464,6 +465,10 @@
             <div class="section-label">Side Projects</div>
             <div class="section-content">
                 <ul class="link-list">
+                    <li>
+                        <a href="https://thinklens.pages.dev/">ThinkLens</a>
+                        <span class="meta">AI Tool</span>
+                    </li>
                     <li>
                         <a href="https://skaronis.com/cyber">Life of a Cybersecurity Consultant</a>
                         <span class="meta">Game</span>
@@ -527,23 +532,6 @@
                     '"' + quote.quote + '"<div class="author">— ' + quote.author + '</div>';
             })
             .catch(() => {});
-
-        // Rotating words
-        const words = ['Optionality', 'Agency', 'Resourcefulness', 'Mental Models'];
-        const el = document.getElementById('rotating-word');
-        let index = 0;
-
-        function showWord() {
-            el.classList.remove('visible');
-            setTimeout(() => {
-                el.textContent = words[index];
-                el.classList.add('visible');
-                index = (index + 1) % words.length;
-            }, 800);
-        }
-
-        showWord();
-        setInterval(showWord, 3000);
     })();
     </script>
 </body>
