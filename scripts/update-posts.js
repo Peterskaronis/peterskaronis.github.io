@@ -372,8 +372,8 @@ function updateIndexHTML(latestPost) {
   const indexPath = path.join(__dirname, '..', 'index.html');
   let html = fs.readFileSync(indexPath, 'utf8');
 
-  // Update the latest post section
-  const latestPostRegex = /(<section class="latest-post">[\s\S]*?<a href=")[^"]+(" class="latest-post-content">[\s\S]*?<h2 class="latest-post-title">)[^<]+(<\/h2>[\s\S]*?<p class="latest-post-meta">)[^<]+(<span class="latest-post-source">)[^<]+(<\/span><\/p>)/;
+  // Update the latest post section (updated for new class names)
+  const latestPostRegex = /(<section class="latest-grid">[\s\S]*?<span class="stamp">Off the Press<\/span>[\s\S]*?<a href=")[^"]+(" class="latest-content">[\s\S]*?<h2 class="latest-title">)[^<]+(<\/h2>[\s\S]*?<p class="latest-meta">)[^<]+(<span class="latest-source">)[^<]+(<\/span><\/p>)/;
 
   const monthYear = formatMonthYear(latestPost.date);
 
