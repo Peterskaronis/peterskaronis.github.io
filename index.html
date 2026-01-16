@@ -127,6 +127,30 @@
             margin-bottom: 0;
         }
 
+        /* Company header with sticker */
+        .company-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .sticker {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.4),
+                0 1px 3px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: rotate(-3deg);
+            transition: transform 0.2s ease;
+        }
+
+        .sticker:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+
         /* Link list */
         .link-list {
             list-style: none;
@@ -373,7 +397,10 @@
         <div class="grid-section">
             <div class="section-label">Company</div>
             <div class="section-content">
-                <h3><a href="https://techimpossible.com">Techimpossible</a></h3>
+                <div class="company-header">
+                    <img src="assets/techimpossible-logo.jpg" alt="Techimpossible" class="sticker">
+                    <h3><a href="https://techimpossible.com">Techimpossible</a></h3>
+                </div>
                 <p>My consultancy. SOC 2, ISO 27001, HIPAA compliance. Risk management and security strategy for growing companies.</p>
             </div>
         </div>
