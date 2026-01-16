@@ -1,107 +1,447 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <script>try{var k='theme',s=localStorage.getItem(k),h=(new Date).getHours(),a=(h>=6&&h<18)?'light':'dark';document.documentElement.dataset.theme=s||a;}catch(e){}</script>
- <style>
-*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}:root[data-theme='light']{--bg:#f5f5f5;--text:#333;--link:#000;--primary-color:#6212c4;--secondary-color:#fff;--tertiary-color:#ccc;--quaternary-color:#fff;--card-bg:rgba(121,23,232,.1);--shadow:0 4px 12px rgba(0,0,0,.2);--separator-shine:rgba(255,255,255,.8)}:root[data-theme='dark']{--bg:#0b0b0f;--text:#e6e6e6;--link:#e6e6e6;--primary-color:#a783ff;--secondary-color:#0f0f14;--tertiary-color:#2a2a33;--quaternary-color:#15151b;--card-bg:rgba(167,131,255,.12);--shadow:0 6px 16px rgba(0,0,0,.45);--separator-shine:rgba(255,255,255,.35)}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;font-size:16px;line-height:1.6;color:var(--text);background:var(--bg);position:relative;overflow-x:hidden;letter-spacing:-.2px}a{color:var(--link);font-size:1rem;text-decoration:none;border-bottom:1px dotted}section{padding:5%}h1{font-size:2.5rem;font-weight:700;letter-spacing:-.5px;line-height:1.2}h2{font-size:2rem;font-weight:600;line-height:1.3;padding:1rem 0;letter-spacing:-.3px}h3{font-size:1.5rem;font-weight:600;line-height:1.4;letter-spacing:-.2px}nav{display:flex;align-items:center;justify-content:space-between}.theme-toggle{cursor:pointer;border:1px solid var(--tertiary-color);background:var(--quaternary-color);color:var(--text);border-radius:999px;padding:.5rem .75rem;box-shadow:var(--shadow);transition:transform .1s ease,background .2s ease,color .2s ease,border-color .2s ease}.theme-toggle:hover{transform:translateY(-1px)}.theme-toggle:active{transform:translateY(0)}.profile img{margin-top:5vh;margin-bottom:-25vh;height:10rem;display:block;margin-left:auto;margin-right:auto;border-radius:50%;border:4px solid var(--primary-color);box-shadow:0 0 20px color-mix(in oklab,var(--primary-color) 40%,transparent)}.front-page{min-height:100vh}.subscriber-point{margin-top:25vh;margin-bottom:1rem;font-family:Georgia,Palatino,'Palatino Linotype',Times,'Times New Roman',serif;text-shadow:0 2px 6px rgba(0,0,0,.2);text-align:center;color:var(--text)}.subscriber-point h2{margin-bottom:.5rem}.subscriber-point h3{margin-bottom:1rem;font-weight:400}.ctas{margin:.25rem 0;text-align:center}.ctas button{padding:.5rem;font-size:1rem;border:none;border-radius:.5rem;box-shadow:var(--shadow);margin:1rem}.cta-main{background:var(--primary-color);color:#fff;padding:.5rem;font-size:1rem}.cta-sec{background:var(--secondary-color);color:var(--text)}.footer{color:var(--secondary-color);padding:1rem;text-align:center}.work{max-width:1000px;margin:2rem auto;padding:0 1rem;text-align:center}.section{margin-bottom:3rem}.section-title{margin:0 0 1.5rem 0;font-size:1.75rem;color:var(--text);font-weight:700;text-align:center;letter-spacing:-.3px;line-height:1.3}.section p{max-width:600px;font-size:1rem;line-height:1.6;letter-spacing:-.1px;margin:0 auto;text-align:left}.section p a{color:var(--primary-color);text-decoration:none;font-weight:500;transition:opacity .2s ease;border-bottom:1px solid transparent}.section p a:hover{opacity:.8;border-bottom-color:var(--primary-color)}.work h4{margin-top:1rem;font-size:1.1rem}.work h4 a{color:var(--primary-color);text-decoration:none}.highlight-container,.highlight{position:relative}.highlight-container{display:inline-block}.highlight-container:before{content:" ";display:block;height:90%;width:100%;margin-left:-3px;margin-right:-3px;position:absolute;background:#ffd500;transform:rotate(2deg);top:0;left:-1px;border-radius:20% 25% 20% 24%;padding:10px 3px 3px 10px}.cyber-separator{width:100%;max-width:600px;height:3px;margin:1rem auto;background:linear-gradient(90deg,transparent 0%,color-mix(in oklab,var(--primary-color) 20%,transparent) 15%,var(--primary-color) 50%,color-mix(in oklab,var(--primary-color) 20%,transparent) 85%,transparent 100%);position:relative;overflow:hidden}.cyber-separator::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,var(--separator-shine),transparent);animation:shine 3s infinite}@keyframes shine{to{left:100%}}.profile{margin-bottom:1rem}.section ul{max-width:600px;margin:1rem auto 0;text-align:left;padding-left:0;list-style:none}.section li{margin:1rem 0;padding:0.75rem 1rem;background:var(--card-bg);border-radius:8px;border-left:3px solid var(--primary-color);box-shadow:var(--shadow);transition:transform 0.2s ease,box-shadow 0.2s ease}.section li:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}.say-hello{margin-top:2rem;padding:1.5rem 2rem;background:var(--card-bg);border-radius:12px;display:inline-block;font-size:1.25rem;box-shadow:var(--shadow)}.say-hello a{color:var(--primary-color);font-weight:600;border-bottom:2px solid var(--primary-color);transition:opacity .2s ease}.say-hello a:hover{opacity:.7}
- </style>
-  <meta name="description" content="Cybersecurity consultant & vCISO. Writing on security, AI & tech. Free books, training, and a roadmap call. Subscribe for practical insights.">
-  <title>Peter Skaronis</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peter Skaronis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 8rem 0 6rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .hero h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 5rem;
+            font-weight: 400;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 2rem;
+            color: #fff;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            max-width: 600px;
+            line-height: 1.4;
+            color: #999;
+        }
+
+        /* Statement */
+        .statement {
+            padding: 5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .statement p {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .statement p em {
+            font-style: italic;
+            color: #888;
+        }
+
+        /* Grid sections */
+        .grid-section {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 4rem;
+            padding: 4rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .grid-section:last-of-type {
+            border-bottom: 1px solid #333;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            padding-top: 0.3rem;
+        }
+
+        .section-content h3 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .section-content p {
+            color: #888;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Link list */
+        .link-list {
+            list-style: none;
+        }
+
+        .link-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        .link-list li:first-child {
+            padding-top: 0;
+        }
+
+        .link-list li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .link-list a {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+        }
+
+        .link-list .meta {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Speaking */
+        .talk {
+            margin-bottom: 2rem;
+        }
+
+        .talk:last-child {
+            margin-bottom: 0;
+        }
+
+        .talk-date {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #555;
+            margin-bottom: 0.25rem;
+        }
+
+        .talk-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            color: #ccc;
+        }
+
+        .talk-title a {
+            color: #fff;
+        }
+
+        /* Latest Post */
+        .latest-post {
+            padding: 4rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .latest-post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .latest-post-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+        }
+
+        .stamp {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #c45c3e;
+            border: 2px solid #c45c3e;
+            border-radius: 3px;
+            transform: rotate(-2deg);
+            opacity: 0.9;
+        }
+
+        .latest-post-content {
+            display: block;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .latest-post-content:hover {
+            opacity: 0.8;
+            text-decoration: none;
+        }
+
+        .latest-post-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 400;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .latest-post-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .latest-post-source {
+            color: #888;
+        }
+
+        .archive-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .archive-link:hover {
+            color: #fff;
+        }
+
+        /* CTA */
+        .cta {
+            padding: 5rem 0;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .cta h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            color: #fff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #fff;
+            color: #000;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #ddd;
+            text-decoration: none;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            .hero { padding: 5rem 0 4rem; }
+            .hero h1 { font-size: 3rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+
+            .statement p { font-size: 1.8rem; }
+
+            .grid-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .cta h2 { font-size: 2rem; }
+
+            .latest-post-title { font-size: 1.5rem; }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <section class="hero">
+            <h1>Peter Skaronis</h1>
+            <p class="hero-subtitle">Cybersecurity consultant. vCISO. I help startups build security programs that actually work.</p>
+        </section>
 
-  <section class="front-page">
-    <nav class="site-nav" ><button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">🌙</button>
-    </nav>
+        <section class="statement">
+            <p>I've immigrated twice. I know what it means to build something from scratch in unfamiliar territory. <em>Security programs are no different.</em></p>
+        </section>
 
-    <div class="profile">
-      <img src="./assets/Peter-Skaronis-Profile-Photo-Small-circle.webp" alt="Peter Skaronis">
+        <section class="latest-post">
+            <div class="latest-post-header">
+                <span class="latest-post-label">Latest</span>
+                <span class="stamp">Off the Press</span>
+            </div>
+            <a href="https://blog.skaronis.com/p/you-are-not-a-tree" class="latest-post-content">
+                <h2 class="latest-post-title">You Are Not a Tree</h2>
+                <p class="latest-post-meta">January 2026 · <span class="latest-post-source">Substack</span></p>
+            </a>
+            <a href="archive.html" class="archive-link">View all posts →</a>
+        </section>
+
+        <div class="grid-section">
+            <div class="section-label">Company</div>
+            <div class="section-content">
+                <h3><a href="https://techimpossible.com">Techimpossible</a></h3>
+                <p>My consultancy. SOC 2, ISO 27001, HIPAA compliance. Risk management and security strategy for growing companies.</p>
+            </div>
+        </div>
+
+        <div class="grid-section">
+            <div class="section-label">Writing</div>
+            <div class="section-content">
+                <ul class="link-list">
+                    <li>
+                        <a href="https://blog.skaronis.com">Substack</a>
+                        <span class="meta">Essays</span>
+                    </li>
+                    <li>
+                        <a href="https://notes.techimpossible.com">Cybersecurity Notes</a>
+                        <span class="meta">Technical</span>
+                    </li>
+                    <li>
+                        <a href="https://books.techimpossible.com">Free Books</a>
+                        <span class="meta">Resources</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid-section">
+            <div class="section-label">Speaking</div>
+            <div class="section-content">
+                <div class="talk">
+                    <p class="talk-date">May 2025</p>
+                    <p class="talk-title"><a href="https://www.bsidesvancouver.com">BSides Vancouver</a> — Beyond Algorithms: Human Reasoning in Cybersecurity Compliance</p>
+                </div>
+                <div class="talk">
+                    <p class="talk-date">March 2025</p>
+                    <p class="talk-title">VCC Panel — Getting Started in Cybersecurity in Canada</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-section">
+            <div class="section-label">Side Projects</div>
+            <div class="section-content">
+                <ul class="link-list">
+                    <li>
+                        <a href="https://skaronis.com/cyber">Life of a Cybersecurity Consultant</a>
+                        <span class="meta">Game</span>
+                    </li>
+                    <li>
+                        <a href="https://refinement.techimpossible.com/">GRC Refinement</a>
+                        <span class="meta">Game</span>
+                    </li>
+                    <li>
+                        <a href="https://unsplash.com/@skaronis">Photography</a>
+                        <span class="meta">Unsplash</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <section class="cta">
+            <h2>Let's talk security.</h2>
+            <a href="https://techimpossible.com/meetings/peterskaronis/roadmap" class="cta-button">Book a free call</a>
+        </section>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">© 2025</p>
+        </footer>
     </div>
-
-    <div class="subscriber-point">
-      <h2>✋ Hi, I'm Peter Skaronis</h2>
-      <h3>Founder of <a href="https://techimpossible.com" style="color:var(--primary-color);border-bottom:2px dotted var(--primary-color);font-size:inherit;font-family:inherit;font-weight:inherit">Techimpossible</a> • vCISO • Writer</h3>
-
-      <section class="work">
-        <div class="section">
-          <h3 class="section-title">👨🏻 My Story</h3>
-          <p><strong>Me in 10 seconds:</strong><br><br>
-          Cybersecurity consultant and vCISO helping startups build secure foundations. 2x immigrant who turned challenges into opportunities.</p>
-
-          <br>
-
-          <p><strong>Me in 2 minutes:</strong><br><br>
-          I help startups navigate cybersecurity compliance and risk management as a virtual CISO. Having immigrated twice, I understand building something from scratch in unfamiliar territory - whether that's a new country or a security program.</p>
-
-          <p>I believe cybersecurity shouldn't be intimidating or boring. When I'm not consulting or writing, you'll find me behind a camera lens or speaking at conferences about bridging the talent gap in our industry.</p>
-        </div>
-
-        <div class="cyber-separator"></div>
-
-        <div class="section">
-          <h3 class="section-title">💼 Work With Me</h3>
-          <p>I offer <a href="https://books.techimpossible.com">free cybersecurity books</a> and a <a href="https://techimpossible.com/meetings/peterskaronis/roadmap">free roadmap call</a> to help startups get started on their security readiness.</p>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">👨🏻‍💻 Long-form Writing</h3>
-          <p>I write regularly on cybersecurity and technology: <a href="https://notes.techimpossible.com">Cybersecurity Notes</a> for technical insights and my <a href="https://blog.skaronis.com">Substack</a> for deeper thoughts.</p>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">🗣️ Speaking</h3>
-          <p>Speaking on cybersecurity, compliance, and bridging the industry talent gap.</p>
-          <ul>
-            <li>March 2025 - VCC Panel Talk on Cybersecurity, Risk and Compliance and how to get started in the industry in Canada <a href="https://www.linkedin.com/posts/peterskaronis_cybersecurity-careergrowth-networking-activity-7311948595077754881-2CqN?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAHN1-UBFYb89Dzy8icelEt2FS7z6gnLObA">VCC Panel Discussion</a></li>
-            <li>May 2025 - I spoke at BSides Vancouver about <a href="https://www.bsidesvancouver.com/speakers-workshops/speakers/track-2-grc-room-14001410#h.lnzmyz3c39t0">Beyond Algorithms: Human Reasoning in Cybersecurity Compliance</a></li>
-            <li>May 2025 - Fast Five interview with Helen from PORTFOLIO.YVR about tech's boldest minds <a href="https://www.linkedin.com/posts/portfolio-yvr-magazine_fast-five-with-techs-boldest-minds-activity-7342206025141207041-FSVk?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAHN1-UBFYb89Dzy8icelEt2FS7z6gnLObA">PORTFOLIO.YVR Interview</a></li>
-          </ul>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">🎮 Games</h3>
-          <p>I've created games including <a href="https://skaronis.com/cyber">Life of a Cybersecurity Consultant</a> and <a href="https://refinement.techimpossible.com/">GRC Refinement</a> to make learning cybersecurity more engaging.</p>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">🛠️ Tools</h3>
-          <p>Free tools to help you understand cybersecurity better:</p>
-          <ul>
-            <li><a href="awareness.html">Digital Awareness</a> - See what websites know about you just by visiting.</li>
-            <li><a href="autofill.html">Autofill Security Demo</a> - How autofill can leak your data to hidden fields.</li>
-          </ul>
-        </div>
-
-        <div class="section">
-          <h3 class="section-title">📷 Photography</h3>
-          <p>When I'm not working on security, I capture moments through my lens. Check out my <a href="https://unsplash.com/@skaronis">photography portfolio on Unsplash</a>.</p>
-        </div>
-
-        <div class="say-hello">Say Hello on <a href="https://x.com/peter_skaronis">X</a> or <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a></div>
-      </section>
-
-      <footer class="footer-text">
-        <p>© 2023–2025 Peter Skaronis — <a href="https://youtu.be/dQw4w9WgXcQ" aria-label="Do Not Click — YouTube">Do Not Click</a></p>
-      </footer>
-    </div>
-  </section>
-<script>
-(function () {
-  var root = document.documentElement;
-  var btn = document.getElementById('themeToggle');
-  var KEY = 'theme';
-  function current() { return root.dataset.theme || 'light'; }
-  function setTheme(t) {
-    root.dataset.theme = t;
-    try { localStorage.setItem(KEY, t); } catch(e) {}
-    if (btn) btn.textContent = (t === 'dark') ? '☀️' : '🌙';
-  }
-  setTheme(current());
-  if (btn) btn.addEventListener('click', function(){ setTheme(current() === 'dark' ? 'light' : 'dark'); });
-})();
-</script>
-
 </body>
 </html>
