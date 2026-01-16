@@ -296,6 +296,82 @@
             color: #fff;
         }
 
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 0;
+            border-bottom: 1px solid #333;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .testimonials-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 200px;
+        }
+
+        .testimonial {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .testimonial.active {
+            opacity: 1;
+        }
+
+        .testimonial-text {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: #ccc;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .testimonial-author strong {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .testimonial-dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .testimonial-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .testimonial-dot.active {
+            background: #666;
+        }
+
         /* CTA */
         .cta {
             padding: 5rem 0;
@@ -515,6 +591,24 @@
             </div>
         </div>
 
+        <section class="testimonials">
+            <p class="testimonials-label">What Clients Say</p>
+            <div class="testimonial-slider">
+                <div class="testimonial active">
+                    <p class="testimonial-text">"Peter combines deep expertise with a level of kindness, diligence, and patience that isn't easy to find. He guided us through every step of the process. I cannot recommend him highly enough."</p>
+                    <p class="testimonial-author"><strong>Keyann Al-Kheder</strong> — CEO, Neuroware AI</p>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-text">"The auditor consistently went above and beyond, demonstrating deep expertise and a collaborative approach. Thanks to their dedication, we were thoroughly prepared and confident going into the external audit."</p>
+                    <p class="testimonial-author"><strong>Kwasi Asante</strong> — Ntirety</p>
+                </div>
+            </div>
+            <div class="testimonial-dots">
+                <span class="testimonial-dot active" data-index="0"></span>
+                <span class="testimonial-dot" data-index="1"></span>
+            </div>
+        </section>
+
         <section class="cta">
             <h2>Let's talk security.</h2>
             <a href="https://techimpossible.com/meetings/peterskaronis/roadmap" class="cta-button">Book a free call</a>
@@ -522,6 +616,7 @@
 
         <footer>
             <div class="footer-links">
+                <a href="about.html">About</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
@@ -542,6 +637,33 @@
                     '"' + quote.quote + '"<div class="author">— ' + quote.author + '</div>';
             })
             .catch(() => {});
+
+        // Testimonial rotation
+        const testimonials = document.querySelectorAll('.testimonial');
+        const dots = document.querySelectorAll('.testimonial-dot');
+        let currentIndex = 0;
+
+        function showTestimonial(index) {
+            testimonials.forEach((t, i) => {
+                t.classList.toggle('active', i === index);
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+            currentIndex = index;
+        }
+
+        // Auto-rotate every 6 seconds
+        setInterval(() => {
+            showTestimonial((currentIndex + 1) % testimonials.length);
+        }, 6000);
+
+        // Click on dots to navigate
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                showTestimonial(parseInt(dot.dataset.index));
+            });
+        });
     })();
     </script>
 </body>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Peter Skaronis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        header .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        /* Content */
+        .content {
+            padding: 3rem 0;
+        }
+
+        .content p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        .content h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 3rem 0 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .content h2:first-child {
+            margin-top: 0;
+        }
+
+        blockquote {
+            border-left: 2px solid #444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #999;
+        }
+
+        blockquote .author {
+            font-style: normal;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">← Back home</a>
+            <h1>About</h1>
+            <p class="subtitle">Polymath. Working across disciplines.</p>
+        </header>
+
+        <div class="content">
+            <p>I'm a cybersecurity consultant and CEO of <a href="https://techimpossible.com">Techimpossible</a>, helping businesses understand cybersecurity and emerging technologies.</p>
+
+            <p>I write essays about "invisible prisons"—geographic, economic, and psychological constraints that people don't recognize until escaping them. My approach uses lived experience to help readers identify patterns in their own lives, emphasizing testimony over advice.</p>
+
+            <h2>Background</h2>
+
+            <p>I left Greece two decades ago and have since lived in four countries. Each location taught me different lessons about how people become trapped and how they find liberation.</p>
+
+            <h2>Photography</h2>
+
+            <p>Beyond writing and consulting, I'm a landscape photographer. I share my work on <a href="https://unsplash.com/@skaronis">Unsplash</a>. Walking and framing what I see is how I slow down.</p>
+
+            <h2>Guiding Ideas</h2>
+
+            <blockquote>
+                "If one advances confidently in the direction of his dreams... he will meet with success unexpected in common hours."
+                <div class="author">— Henry David Thoreau</div>
+            </blockquote>
+
+            <blockquote>
+                "No matter how isolated you are... if you do your work truly and conscientiously, unknown friends will come and seek you."
+                <div class="author">— Carl Jung</div>
+            </blockquote>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">© 2025</p>
+        </footer>
+    </div>
+</body>
+</html>
