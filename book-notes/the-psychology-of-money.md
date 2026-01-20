@@ -1,0 +1,1 @@
+Changed how I think about wealth. The chapter on compounding was eye-opening.

@@ -13,6 +13,7 @@ const path = require('path');
 const GOODREADS_USER_ID = '20462898';
 const GOODREADS_RSS = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=read`;
 const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
+const NOTES_DIR = path.join(__dirname, '..', 'book-notes');
 
 function fetch(url) {
   return new Promise((resolve, reject) => {
@@ -35,6 +36,21 @@ function escapeHtml(text) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function generateSlug(title) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
+function loadBookNote(slug) {
+  const notePath = path.join(NOTES_DIR, `${slug}.md`);
+  if (fs.existsSync(notePath)) {
+    return fs.readFileSync(notePath, 'utf8').trim();
+  }
+  return null;
 }
 
 function stripCDATA(str) {
@@ -62,6 +78,8 @@ function parseGoodreadsRSS(xml) {
     const dateAdded = (item.match(/<user_date_added>(.*?)<\/user_date_added>/) || [])[1];
 
     if (title && author) {
+      const slug = generateSlug(title.trim());
+      const note = loadBookNote(slug);
       books.push({
         title: title.trim(),
         author: author.trim(),
@@ -69,7 +87,9 @@ function parseGoodreadsRSS(xml) {
         cover: cover || '',
         link: link || '',
         dateRead: dateRead ? new Date(dateRead) : null,
-        dateAdded: dateAdded ? new Date(dateAdded) : null
+        dateAdded: dateAdded ? new Date(dateAdded) : null,
+        slug,
+        note
       });
     }
   }
@@ -91,20 +111,29 @@ function generateLibraryHTML(books) {
   });
 
   let booksHTML = '';
+  let notesCount = 0;
   for (const book of books) {
     const coverImg = book.cover
       ? `<img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
-    booksHTML += `            <a href="${escapeHtml(book.link)}" class="book" target="_blank" rel="noopener">
-                ${coverImg}
+    if (book.note) notesCount++;
+    const noteHTML = book.note
+      ? `\n                    <p class="book-note">${escapeHtml(book.note)}</p>`
+      : '';
+
+    booksHTML += `            <div class="book-card">
+                <a href="${escapeHtml(book.link)}" class="book" target="_blank" rel="noopener">
+                    ${coverImg}
+                </a>
                 <div class="book-info">
                     <p class="book-title">${escapeHtml(book.title)}</p>
                     <p class="book-author">${escapeHtml(book.author)}</p>
-                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}
+                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}${noteHTML}
                 </div>
-            </a>\n`;
+            </div>\n`;
   }
+  console.log(`  Found ${notesCount} book note(s)`);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -219,13 +248,20 @@ function generateLibraryHTML(books) {
             border-bottom: 1px solid #333;
         }
 
+        .book-card {
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+        }
+
         .book {
             text-decoration: none;
-            transition: transform 0.2s, opacity 0.2s;
+            display: block;
         }
 
         .book:hover {
-            transform: translateY(-4px);
             text-decoration: none;
             opacity: 0.9;
         }
@@ -277,6 +313,14 @@ function generateLibraryHTML(books) {
             color: #c45c3e;
             margin-top: 0.25rem;
             letter-spacing: 1px;
+        }
+
+        .book-note {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+            line-height: 1.4;
         }
 
         /* Footer */

@@ -111,13 +111,20 @@
             border-bottom: 1px solid #333;
         }
 
+        .book-card {
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: translateY(-4px);
+        }
+
         .book {
             text-decoration: none;
-            transition: transform 0.2s, opacity 0.2s;
+            display: block;
         }
 
         .book:hover {
-            transform: translateY(-4px);
             text-decoration: none;
             opacity: 0.9;
         }
@@ -169,6 +176,14 @@
             color: #c45c3e;
             margin-top: 0.25rem;
             letter-spacing: 1px;
+        }
+
+        .book-note {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+            line-height: 1.4;
         }
 
         /* Footer */
@@ -224,198 +239,247 @@
         </header>
 
         <div class="book-grid">
-            <a href="https://www.goodreads.com/review/show/6331639589?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1581443441l/51181015._SY475_.jpg" alt="The Psychology of Money" loading="lazy">
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/6331639589?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1581443441l/51181015._SY475_.jpg" alt="The Psychology of Money" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Psychology of Money</p>
                     <p class="book-author">Morgan Housel</p>
                     <p class="book-rating">★★★★★</p>
+                    <p class="book-note">Changed how I think about wealth. The chapter on compounding was eye-opening.</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/4120405018?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1466865681l/25076674._SY475_.jpg" alt="The Alchemist: A Fable About Following Your Dream" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/4120405018?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1466865681l/25076674._SY475_.jpg" alt="The Alchemist: A Fable About Following Your Dream" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Alchemist: A Fable About Following Your Dream</p>
                     <p class="book-author">Paulo Coelho</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1978262936?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1386745495l/81995.jpg" alt="Quantum-Touch: The Power to Heal" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1978262936?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1386745495l/81995.jpg" alt="Quantum-Touch: The Power to Heal" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Quantum-Touch: The Power to Heal</p>
                     <p class="book-author">Richard  Gordon</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1978263031?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1363048869l/15792585.jpg" alt="Quantum-Touch 2.0 - The New Human: Discovering and Becoming" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1978263031?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1363048869l/15792585.jpg" alt="Quantum-Touch 2.0 - The New Human: Discovering and Becoming" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Quantum-Touch 2.0 - The New Human: Discovering and Becoming</p>
                     <p class="book-author">Richard  Gordon</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1978257547?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441288539l/18950496._SX318_.jpg" alt="The Reconnection: Heal Others, Heal Yourself" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1978257547?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441288539l/18950496._SX318_.jpg" alt="The Reconnection: Heal Others, Heal Yourself" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Reconnection: Heal Others, Heal Yourself</p>
                     <p class="book-author">Eric Pearl</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1725639673?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1467831951l/30829551._SX318_.jpg" alt="The Witnesses" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1725639673?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1467831951l/30829551._SX318_.jpg" alt="The Witnesses" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Witnesses</p>
                     <p class="book-author">James  Patterson</p>
                     
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1746451362?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328332220l/11221769.jpg" alt="I Will Teach You To Be Rich" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1746451362?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328332220l/11221769.jpg" alt="I Will Teach You To Be Rich" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">I Will Teach You To Be Rich</p>
                     <p class="book-author">Ramit Sethi</p>
                     
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1746451635?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1471052887l/31435857._SY475_.jpg" alt="99 Minute Millionaire: The Simplest and Easiest Book Ever On Getting Started Investing And Becoming Rock Star Rich" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1746451635?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1471052887l/31435857._SY475_.jpg" alt="99 Minute Millionaire: The Simplest and Easiest Book Ever On Getting Started Investing And Becoming Rock Star Rich" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">99 Minute Millionaire: The Simplest and Easiest Book Ever On Getting Started Investing And Becoming Rock Star Rich</p>
                     <p class="book-author">Scott Alan Turner</p>
                     <p class="book-rating">★★★★☆</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/618319273?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1631968383l/2318271._SX318_.jpg" alt="The Last Lecture" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/618319273?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1631968383l/2318271._SX318_.jpg" alt="The Last Lecture" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Last Lecture</p>
                     <p class="book-author">Randy Pausch</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1592213856?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388177008l/1005.jpg" alt="Think and Grow Rich" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1592213856?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1388177008l/1005.jpg" alt="Think and Grow Rich" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Think and Grow Rich</p>
                     <p class="book-author">Napoleon Hill</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1376288275?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441405402l/24966969._SY475_.jpg" alt="Find Your Thing: How to Discover What You Do Best, Own It and Get Known for It" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1376288275?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441405402l/24966969._SY475_.jpg" alt="Find Your Thing: How to Discover What You Do Best, Own It and Get Known for It" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Find Your Thing: How to Discover What You Do Best, Own It and Get Known for It</p>
                     <p class="book-author">Lucy Whittington</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1319328695?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441590984l/78427._SX318_.jpg" alt="The Total Money Makeover: A Proven Plan for Financial Fitness" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1319328695?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1441590984l/78427._SX318_.jpg" alt="The Total Money Makeover: A Proven Plan for Financial Fitness" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Total Money Makeover: A Proven Plan for Financial Fitness</p>
                     <p class="book-author">Dave Ramsey</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1319328188?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1442801553l/6072133._SY475_.jpg" alt="Escape from Cubicle Nation: From Corporate Prisoner to Thriving Entrepreneur" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1319328188?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1442801553l/6072133._SY475_.jpg" alt="Escape from Cubicle Nation: From Corporate Prisoner to Thriving Entrepreneur" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Escape from Cubicle Nation: From Corporate Prisoner to Thriving Entrepreneur</p>
                     <p class="book-author">Pamela Slim</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1314098662?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1347796575l/155980.jpg" alt="The New Psycho-Cybernetics: The Original Science of Self-Improvement and Success That Has Changed the Lives of 30 Million People" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1314098662?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1347796575l/155980.jpg" alt="The New Psycho-Cybernetics: The Original Science of Self-Improvement and Success That Has Changed the Lives of 30 Million People" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The New Psycho-Cybernetics: The Original Science of Self-Improvement and Success That Has Changed the Lives of 30 Million People</p>
                     <p class="book-author">Dan S.   Kennedy</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1314098627?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1432744873l/252465._SY475_.jpg" alt="Pain Free: A Revolutionary Method for Stopping Chronic Pain" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1314098627?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1432744873l/252465._SY475_.jpg" alt="Pain Free: A Revolutionary Method for Stopping Chronic Pain" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Pain Free: A Revolutionary Method for Stopping Chronic Pain</p>
                     <p class="book-author">Pete Egoscue</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1314098417?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1384323467l/18802222.jpg" alt="Remote: Office Not Required" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1314098417?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1384323467l/18802222.jpg" alt="Remote: Office Not Required" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Remote: Office Not Required</p>
                     <p class="book-author">David Heinemeier Hansson</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1314098326?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328353516l/9118033.jpg" alt="ReWork" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1314098326?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328353516l/9118033.jpg" alt="ReWork" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">ReWork</p>
                     <p class="book-author">Jason Fried</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1314097985?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1410162810l/19248367.jpg" alt="Callous Disregard: Autism and Vaccines: The Truth Behind a Tragedy" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1314097985?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1410162810l/19248367.jpg" alt="Callous Disregard: Autism and Vaccines: The Truth Behind a Tragedy" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Callous Disregard: Autism and Vaccines: The Truth Behind a Tragedy</p>
                     <p class="book-author">Andrew J. Wakefield</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/1251624929?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1334942684l/13610173.jpg" alt="You Are A Writer (So Start Acting Like One)" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/1251624929?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1334942684l/13610173.jpg" alt="You Are A Writer (So Start Acting Like One)" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">You Are A Writer (So Start Acting Like One)</p>
                     <p class="book-author">Jeff Goins</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/963048555?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1384803133l/18625303.jpg" alt="How to Live on 24 Hours a Day" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/963048555?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1384803133l/18625303.jpg" alt="How to Live on 24 Hours a Day" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">How to Live on 24 Hours a Day</p>
                     <p class="book-author">Arnold Bennett</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/960379205?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1459775078l/17166225.jpg" alt="The Miracle Morning: The Not-So-Obvious Secret Guaranteed to Transform Your Life: Before 8AM" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/960379205?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1459775078l/17166225.jpg" alt="The Miracle Morning: The Not-So-Obvious Secret Guaranteed to Transform Your Life: Before 8AM" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Miracle Morning: The Not-So-Obvious Secret Guaranteed to Transform Your Life: Before 8AM</p>
                     <p class="book-author">Hal Elrod</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/903232195?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1396491821l/21840893.jpg" alt="The Truth Which Was Kept From Us" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/903232195?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1396491821l/21840893.jpg" alt="The Truth Which Was Kept From Us" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Truth Which Was Kept From Us</p>
                     <p class="book-author">Klaus E. Berger</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/878201435?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1394259445l/21352248.jpg" alt="The Book of Occult" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/878201435?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1394259445l/21352248.jpg" alt="The Book of Occult" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">The Book of Occult</p>
                     <p class="book-author">Simon W. Clark</p>
                     <p class="book-rating">★★★★☆</p>
                 </div>
-            </a>
-            <a href="https://www.goodreads.com/review/show/860476789?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
-                <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1392805141l/20870860.jpg" alt="Autism Free" loading="lazy">
+            </div>
+            <div class="book-card">
+                <a href="https://www.goodreads.com/review/show/860476789?utm_medium=api&amp;utm_source=rss" class="book" target="_blank" rel="noopener">
+                    <img src="https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1392805141l/20870860.jpg" alt="Autism Free" loading="lazy">
+                </a>
                 <div class="book-info">
                     <p class="book-title">Autism Free</p>
                     <p class="book-author">Peter Green</p>
                     <p class="book-rating">★★★★★</p>
                 </div>
-            </a>
+            </div>
         </div>
 
         <footer>
