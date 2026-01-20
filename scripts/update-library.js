@@ -14,6 +14,7 @@ const GOODREADS_USER_ID = '20462898';
 const GOODREADS_RSS = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=read`;
 const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
 const NOTES_DIR = path.join(__dirname, '..', 'book-notes');
+const LIBRARY_DIR = path.join(__dirname, '..', 'library');
 
 function fetch(url) {
   return new Promise((resolve, reject) => {
@@ -51,6 +52,70 @@ function loadBookNote(slug) {
     return fs.readFileSync(notePath, 'utf8').trim();
   }
   return null;
+}
+
+function convertMarkdownToHtml(markdown) {
+  let html = markdown;
+  html = html.replace(/\r\n/g, '\n');
+  html = html.split('\n').map(line => line.trimStart()).join('\n');
+
+  // Code blocks
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
+    const escaped = escapeHtml(code.trim());
+    return `<pre><code>${escaped}</code></pre>`;
+  });
+
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Headings
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+
+  // Bold and italic
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // Blockquotes
+  html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+
+  // Unordered lists
+  const lines = html.split('\n');
+  let inList = false;
+  const processed = [];
+  for (const line of lines) {
+    const listMatch = line.match(/^[-*] (.+)$/);
+    if (listMatch) {
+      if (!inList) { processed.push('<ul>'); inList = true; }
+      processed.push(`<li>${listMatch[1]}</li>`);
+    } else {
+      if (inList) { processed.push('</ul>'); inList = false; }
+      processed.push(line);
+    }
+  }
+  if (inList) processed.push('</ul>');
+  html = processed.join('\n');
+
+  // Paragraphs
+  const blocks = html.split(/\n\n+/);
+  const wrapped = blocks.map(block => {
+    const trimmed = block.trim();
+    if (!trimmed) return '';
+    if (/^<(h[1-6]|p|ul|ol|li|blockquote|pre)/.test(trimmed)) return trimmed;
+    if (/^<\//.test(trimmed)) return trimmed;
+    return `<p>${trimmed.replace(/\n/g, ' ')}</p>`;
+  });
+
+  return wrapped.filter(b => b).join('\n\n');
+}
+
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
 }
 
 function stripCDATA(str) {
@@ -102,6 +167,223 @@ function generateStars(rating) {
   return '★'.repeat(rating) + '☆'.repeat(5 - rating);
 }
 
+function generateBookPageHTML(book, noteHtml) {
+  const dateRead = book.dateRead
+    ? book.dateRead.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    : null;
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(book.title)} — Library — Peter Skaronis</title>
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_6CyUWxgRs6ZttIvOqVpaPsTXMwguewRUFU12duBvCtZ',{api_host:'https://us.i.posthog.com', person_profiles: 'identified_only'})
+    </script>
+    <meta name="description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+    <link rel="canonical" href="https://skaronis.com/library/${book.slug}/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="${escapeHtml(book.title)} — My Notes">
+    <meta property="og:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+    <meta property="og:url" content="https://skaronis.com/library/${book.slug}/">
+    <meta property="og:site_name" content="Peter Skaronis">
+    ${book.cover ? `<meta property="og:image" content="${escapeHtml(book.cover)}">` : ''}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="${escapeHtml(book.title)} — My Notes">
+    <meta name="twitter:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 18px; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: #fff; color: #000; }
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+        a:hover { text-decoration-thickness: 2px; }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .back-link:hover { color: #fff; }
+        .book-header {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        .book-cover {
+            width: 140px;
+            flex-shrink: 0;
+        }
+        .book-cover img {
+            width: 100%;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .book-meta h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.2rem;
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+        .book-author {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 0.75rem;
+        }
+        .book-rating {
+            font-size: 1rem;
+            color: #c45c3e;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        .book-date {
+            font-size: 0.85rem;
+            color: #555;
+        }
+        .goodreads-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        article {
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+        article h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2rem 0 1rem;
+            letter-spacing: -0.02em;
+        }
+        article h2:first-child { margin-top: 0; }
+        article h3 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 1.5rem 0 0.75rem;
+        }
+        article p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+        article ul, article ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: #ccc;
+        }
+        article li { margin-bottom: 0.5rem; }
+        article blockquote {
+            border-left: 3px solid #444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #999;
+        }
+        article pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+        article code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+        article strong { color: #fff; font-weight: 600; }
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-links { display: flex; gap: 2rem; }
+        .footer-links a { font-size: 0.9rem; color: #888; }
+        .footer-links a:hover { color: #fff; }
+        .copyright { font-size: 0.8rem; color: #444; }
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+            .container { padding: 0 1.5rem; }
+            header { padding: 3rem 0 2rem; }
+            .book-header { flex-direction: column; gap: 1.5rem; }
+            .book-cover { width: 120px; }
+            .book-meta h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/library.html" class="back-link">&larr; Back to library</a>
+            <div class="book-header">
+                ${book.cover ? `<div class="book-cover"><img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}"></div>` : ''}
+                <div class="book-meta">
+                    <h1>${escapeHtml(book.title)}</h1>
+                    <p class="book-author">${escapeHtml(book.author)}</p>
+                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}
+                    ${dateRead ? `<p class="book-date">Read ${dateRead}</p>` : ''}
+                    <a href="${escapeHtml(book.link)}" class="goodreads-link" target="_blank" rel="noopener">View on Goodreads &rarr;</a>
+                </div>
+            </div>
+        </header>
+
+        <article>
+            <h2>My Notes</h2>
+${noteHtml}
+        </article>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+</body>
+</html>`;
+}
+
 function generateLibraryHTML(books) {
   // Sort by date read (most recent first), then by date added
   books.sort((a, b) => {
@@ -118,8 +400,8 @@ function generateLibraryHTML(books) {
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
     if (book.note) notesCount++;
-    const noteHTML = book.note
-      ? `\n                    <p class="book-note">${escapeHtml(book.note)}</p>`
+    const noteLink = book.note
+      ? `\n                    <a href="/library/${book.slug}/" class="book-notes-link">Read notes &rarr;</a>`
       : '';
 
     booksHTML += `            <div class="book-card">
@@ -129,7 +411,7 @@ function generateLibraryHTML(books) {
                 <div class="book-info">
                     <p class="book-title">${escapeHtml(book.title)}</p>
                     <p class="book-author">${escapeHtml(book.author)}</p>
-                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}${noteHTML}
+                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}${noteLink}
                 </div>
             </div>\n`;
   }
@@ -315,12 +597,16 @@ function generateLibraryHTML(books) {
             letter-spacing: 1px;
         }
 
-        .book-note {
-            font-size: 0.8rem;
-            color: #888;
+        .book-notes-link {
+            display: inline-block;
+            font-size: 0.75rem;
+            color: #c45c3e;
             margin-top: 0.5rem;
-            font-style: italic;
-            line-height: 1.4;
+            text-decoration: none;
+        }
+
+        .book-notes-link:hover {
+            text-decoration: underline;
         }
 
         /* Footer */
@@ -405,9 +691,26 @@ async function main() {
       process.exit(1);
     }
 
+    // Generate individual book pages for books with notes
+    ensureDir(LIBRARY_DIR);
+    let pagesGenerated = 0;
+    for (const book of books) {
+      if (book.note) {
+        const noteHtml = convertMarkdownToHtml(book.note);
+        const pageHtml = generateBookPageHTML(book, noteHtml);
+        const bookDir = path.join(LIBRARY_DIR, book.slug);
+        ensureDir(bookDir);
+        fs.writeFileSync(path.join(bookDir, 'index.html'), pageHtml);
+        pagesGenerated++;
+        console.log(`  Generated library/${book.slug}/index.html`);
+      }
+    }
+
+    // Generate main library listing
     const html = generateLibraryHTML(books);
     fs.writeFileSync(OUTPUT_PATH, html);
     console.log(`\nGenerated library.html with ${books.length} books`);
+    console.log(`Generated ${pagesGenerated} book detail page(s)`);
 
     console.log('\nDone!');
   } catch (err) {
