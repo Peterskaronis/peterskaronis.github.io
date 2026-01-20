@@ -375,6 +375,7 @@ ${noteHtml}
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+    <script src="/scripts/share-selection.js"></script>
 </body>
 </html>`;
 }
@@ -663,6 +664,7 @@ ${booksHTML}        </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+    <script src="/scripts/share-selection.js"></script>
 </body>
 </html>`;
 }
@@ -875,6 +877,7 @@ function generateNotesIndexHTML(books) {
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+    <script src="/scripts/share-selection.js"></script>
 </body>
 </html>`;
 }

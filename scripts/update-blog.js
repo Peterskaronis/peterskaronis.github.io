@@ -475,6 +475,7 @@ ${content}
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+    <script src="/scripts/share-selection.js"></script>
 </body>
 </html>`;
 }
@@ -744,6 +745,7 @@ ${posts.length === 0 ? '        <div class="empty-state"><p>No posts yet. Check 
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+    <script src="/scripts/share-selection.js"></script>
 </body>
 </html>`;
 }
