@@ -475,7 +475,7 @@ ${content}
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
-            <p class="copyright">Made in Vancouver</p>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
 </body>
@@ -744,7 +744,7 @@ ${posts.length === 0 ? '        <div class="empty-state"><p>No posts yet. Check 
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
-            <p class="copyright">Made in Vancouver</p>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
 </body>
