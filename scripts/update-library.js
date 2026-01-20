@@ -1,0 +1,375 @@
+#!/usr/bin/env node
+
+/**
+ * Fetches books from Goodreads RSS feed and generates a library page.
+ *
+ * Usage: node scripts/update-library.js
+ */
+
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
+
+const GOODREADS_USER_ID = '20462898';
+const GOODREADS_RSS = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=read`;
+const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
+
+function fetch(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetch(res.headers.location).then(resolve).catch(reject);
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function stripCDATA(str) {
+  if (!str) return str;
+  return str.replace(/<!\[CDATA\[(.*?)\]\]>/g, '$1').trim();
+}
+
+function parseGoodreadsRSS(xml) {
+  const books = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const item = match[1];
+
+    const title = (item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
+                   item.match(/<title>(.*?)<\/title>/) || [])[1];
+    const author = (item.match(/<author_name>(.*?)<\/author_name>/) || [])[1];
+    const rating = (item.match(/<user_rating>(\d+)<\/user_rating>/) || [])[1];
+    const cover = stripCDATA((item.match(/<book_large_image_url>(.*?)<\/book_large_image_url>/) ||
+                   item.match(/<book_medium_image_url>(.*?)<\/book_medium_image_url>/) ||
+                   item.match(/<book_image_url>(.*?)<\/book_image_url>/) || [])[1]);
+    const link = stripCDATA((item.match(/<link>(.*?)<\/link>/) || [])[1]);
+    const dateRead = (item.match(/<user_read_at>(.*?)<\/user_read_at>/) || [])[1];
+    const dateAdded = (item.match(/<user_date_added>(.*?)<\/user_date_added>/) || [])[1];
+
+    if (title && author) {
+      books.push({
+        title: title.trim(),
+        author: author.trim(),
+        rating: parseInt(rating) || 0,
+        cover: cover || '',
+        link: link || '',
+        dateRead: dateRead ? new Date(dateRead) : null,
+        dateAdded: dateAdded ? new Date(dateAdded) : null
+      });
+    }
+  }
+
+  return books;
+}
+
+function generateStars(rating) {
+  if (!rating) return '';
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
+
+function generateLibraryHTML(books) {
+  // Sort by date read (most recent first), then by date added
+  books.sort((a, b) => {
+    const dateA = a.dateRead || a.dateAdded || new Date(0);
+    const dateB = b.dateRead || b.dateAdded || new Date(0);
+    return dateB - dateA;
+  });
+
+  let booksHTML = '';
+  for (const book of books) {
+    const coverImg = book.cover
+      ? `<img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}" loading="lazy">`
+      : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
+
+    booksHTML += `            <a href="${escapeHtml(book.link)}" class="book" target="_blank" rel="noopener">
+                ${coverImg}
+                <div class="book-info">
+                    <p class="book-title">${escapeHtml(book.title)}</p>
+                    <p class="book-author">${escapeHtml(book.author)}</p>
+                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}
+                </div>
+            </a>\n`;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library — Peter Skaronis</title>
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_6CyUWxgRs6ZttIvOqVpaPsTXMwguewRUFU12duBvCtZ',{api_host:'https://us.i.posthog.com', person_profiles: 'identified_only'})
+    </script>
+    <meta name="description" content="Books I've read — my personal library.">
+    <link rel="canonical" href="https://skaronis.com/library.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Library — Peter Skaronis">
+    <meta property="og:description" content="Books I've read — my personal library.">
+    <meta property="og:url" content="https://skaronis.com/library.html">
+    <meta property="og:site_name" content="Peter Skaronis">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="Library — Peter Skaronis">
+    <meta name="twitter:description" content="Books I've read — my personal library.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 500px;
+        }
+
+        .book-count {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* Book grid */
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .book {
+            text-decoration: none;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .book:hover {
+            transform: translateY(-4px);
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .book img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .no-cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: #1a1a1a;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .book-info {
+            margin-top: 0.75rem;
+        }
+
+        .book-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1rem;
+            color: #fff;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .book-author {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .book-rating {
+            font-size: 0.75rem;
+            color: #c45c3e;
+            margin-top: 0.25rem;
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2.5rem; }
+
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">&larr; Back home</a>
+            <h1>Library</h1>
+            <p>Books I've read. Synced from <a href="https://www.goodreads.com/user/show/${GOODREADS_USER_ID}" target="_blank" rel="noopener">Goodreads</a>.</p>
+            <p class="book-count">${books.length} books</p>
+        </header>
+
+        <div class="book-grid">
+${booksHTML}        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+</body>
+</html>`;
+}
+
+async function main() {
+  console.log('Fetching Goodreads library...\n');
+
+  try {
+    console.log(`Fetching ${GOODREADS_RSS}...`);
+    const xml = await fetch(GOODREADS_RSS);
+    const books = parseGoodreadsRSS(xml);
+    console.log(`  Found ${books.length} books`);
+
+    if (books.length === 0) {
+      console.error('No books found. Aborting.');
+      process.exit(1);
+    }
+
+    const html = generateLibraryHTML(books);
+    fs.writeFileSync(OUTPUT_PATH, html);
+    console.log(`\nGenerated library.html with ${books.length} books`);
+
+    console.log('\nDone!');
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
+  }
+}
+
+main();

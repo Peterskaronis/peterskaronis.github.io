@@ -17,6 +17,8 @@ jobs:
         run: node scripts/update-blog.js
       - name: Update posts from RSS feeds
         run: node scripts/update-posts.js
+      - name: Update library from Goodreads
+        run: node scripts/update-library.js
       - name: Install Puppeteer
         run: npm install puppeteer
       - name: Update testimonials
@@ -26,7 +28,7 @@ jobs:
           git diff --quiet && git diff --cached --quiet || (
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add index.html archive.html blog/ blog-posts.json
+            git add index.html archive.html blog/ blog-posts.json library.html
             git commit -m "Update content from feeds"
             git push
           )                             
