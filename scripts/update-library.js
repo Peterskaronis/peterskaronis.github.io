@@ -658,7 +658,7 @@ function generateLibraryHTML(books) {
             <a href="index.html" class="back-link">&larr; Back home</a>
             <h1>Library</h1>
             <p>Books I've read. Synced from <a href="https://www.goodreads.com/user/show/${GOODREADS_USER_ID}" target="_blank" rel="noopener">Goodreads</a>.</p>
-            <p class="book-count">${books.length} books</p>
+            <p class="book-count">${books.length} books · <a href="/library/notes/">View annotated books</a></p>
         </header>
 
         <div class="book-grid">
@@ -667,6 +667,223 @@ ${booksHTML}        </div>
         <footer>
             <div class="footer-links">
                 <a href="index.html">Home</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+</body>
+</html>`;
+}
+
+function generateNotesIndexHTML(books) {
+  const booksWithNotes = books.filter(b => b.note);
+
+  let booksHTML = '';
+  for (const book of booksWithNotes) {
+    const coverImg = book.cover
+      ? `<img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}" loading="lazy">`
+      : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
+
+    booksHTML += `            <a href="/library/${book.slug}/" class="book-card">
+                <div class="book-cover">
+                    ${coverImg}
+                </div>
+                <div class="book-info">
+                    <p class="book-title">${escapeHtml(book.title)}</p>
+                    <p class="book-author">${escapeHtml(book.author)}</p>
+                    ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}
+                </div>
+            </a>\n`;
+  }
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Notes — Peter Skaronis</title>
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_6CyUWxgRs6ZttIvOqVpaPsTXMwguewRUFU12duBvCtZ',{api_host:'https://us.i.posthog.com', person_profiles: 'identified_only'})
+    </script>
+    <meta name="description" content="Books I've read with my personal notes and takeaways.">
+    <link rel="canonical" href="https://skaronis.com/library/notes/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Book Notes — Peter Skaronis">
+    <meta property="og:description" content="Books I've read with my personal notes and takeaways.">
+    <meta property="og:url" content="https://skaronis.com/library/notes/">
+    <meta property="og:site_name" content="Peter Skaronis">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="Book Notes — Peter Skaronis">
+    <meta name="twitter:description" content="Books I've read with my personal notes and takeaways.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-size: 18px; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+        ::selection { background: #fff; color: #000; }
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+        a:hover { text-decoration-thickness: 2px; }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+        .back-link:hover { color: #fff; }
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        header p {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 500px;
+        }
+        .book-count {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+        .book-card {
+            display: flex;
+            gap: 1.25rem;
+            text-decoration: none;
+            padding: 1.25rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .book-card:hover {
+            background: #1a1a1a;
+            text-decoration: none;
+        }
+        .book-cover {
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .book-cover img {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        .no-cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: #1a1a1a;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.5rem;
+            color: #333;
+        }
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .book-title {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.15rem;
+            color: #fff;
+            line-height: 1.3;
+        }
+        .book-author {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+        .book-rating {
+            font-size: 0.75rem;
+            color: #c45c3e;
+            margin-top: 0.35rem;
+            letter-spacing: 1px;
+        }
+        .empty-state {
+            padding: 4rem 0;
+            text-align: center;
+            color: #666;
+            border-bottom: 1px solid #333;
+        }
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-links { display: flex; gap: 2rem; }
+        .footer-links a { font-size: 0.9rem; color: #888; }
+        .footer-links a:hover { color: #fff; }
+        .copyright { font-size: 0.8rem; color: #444; }
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+            .container { padding: 0 1.5rem; }
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2.5rem; }
+            .book-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/library.html" class="back-link">&larr; Back to library</a>
+            <h1>Book Notes</h1>
+            <p>Books I've annotated with personal notes and takeaways.</p>
+            <p class="book-count">${booksWithNotes.length} book${booksWithNotes.length === 1 ? '' : 's'} with notes</p>
+        </header>
+
+        ${booksWithNotes.length === 0 ? '<div class="empty-state"><p>No book notes yet. Check back soon!</p></div>' : `<div class="book-grid">\n${booksHTML}        </div>`}
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
@@ -711,6 +928,13 @@ async function main() {
     fs.writeFileSync(OUTPUT_PATH, html);
     console.log(`\nGenerated library.html with ${books.length} books`);
     console.log(`Generated ${pagesGenerated} book detail page(s)`);
+
+    // Generate notes index page
+    const notesDir = path.join(LIBRARY_DIR, 'notes');
+    ensureDir(notesDir);
+    const notesHtml = generateNotesIndexHTML(books);
+    fs.writeFileSync(path.join(notesDir, 'index.html'), notesHtml);
+    console.log(`Generated library/notes/index.html`);
 
     console.log('\nDone!');
   } catch (err) {
