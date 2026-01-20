@@ -369,8 +369,8 @@ ${noteHtml}
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
-                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
@@ -657,9 +657,9 @@ ${booksHTML}        </div>
 
         <footer>
             <div class="footer-links">
-                <a href="index.html">Home</a>
+                <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
-                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
@@ -871,8 +871,8 @@ function generateNotesIndexHTML(books) {
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
-                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>

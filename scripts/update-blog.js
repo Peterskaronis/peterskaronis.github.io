@@ -469,8 +469,8 @@ ${content}
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
-                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
@@ -739,8 +739,8 @@ ${POSTHOG_SCRIPT}
 ${posts.length === 0 ? '        <div class="empty-state"><p>No posts yet. Check back soon!</p></div>\n\n' : sectionsHTML}        <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
-                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
