@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
 /**
- * Fetches posts from Substack RSS feeds and updates the website.
+ * Fetches posts from Substack RSS feeds, merges with blog posts, and updates the website.
  *
  * Usage: node scripts/update-posts.js
  *
  * This script:
  * 1. Fetches RSS feeds from blog.skaronis.com and notes.techimpossible.com
- * 2. Parses and combines all posts
- * 3. Updates the latest post in index.html
- * 4. Regenerates archive.html with all posts grouped by year/month
+ * 2. Loads self-hosted blog posts from blog-posts.json
+ * 3. Parses and combines all posts
+ * 4. Updates the latest post in index.html
+ * 5. Regenerates archive.html with all posts grouped by year/month
  */
 
 const https = require('https');
@@ -32,6 +33,32 @@ const FEEDS = [
     useForLatest: false
   }
 ];
+
+const BLOG_POSTS_JSON = path.join(__dirname, '..', 'blog-posts.json');
+
+function loadBlogPosts() {
+  if (!fs.existsSync(BLOG_POSTS_JSON)) {
+    return [];
+  }
+
+  try {
+    const data = fs.readFileSync(BLOG_POSTS_JSON, 'utf8');
+    const posts = JSON.parse(data);
+
+    return posts.map(post => ({
+      title: post.title,
+      url: post.url,
+      date: new Date(post.date),
+      source: 'Blog',
+      sourceClass: 'blog',
+      siteName: 'Blog',
+      useForLatest: true  // Blog posts are eligible for the "Latest" section
+    }));
+  } catch (err) {
+    console.error(`Error loading blog posts: ${err.message}`);
+    return [];
+  }
+}
 
 function fetch(url) {
   return new Promise((resolve, reject) => {
@@ -298,6 +325,10 @@ ${monthsHTML}        </section>\n\n`;
             color: #6e7a8b;
         }
 
+        .post-source.blog {
+            color: #8b6e7a;
+        }
+
         /* Footer */
         footer {
             padding: 3rem 0;
@@ -353,7 +384,7 @@ ${monthsHTML}        </section>\n\n`;
         <header>
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
-            <p>All my writing from Substack and Cybersecurity Notes, organized by date.</p>
+            <p>All my writing from Substack, Cybersecurity Notes, and my Blog, organized by date.</p>
         </header>
 
 ${sectionsHTML}        <footer>
@@ -402,6 +433,12 @@ async function main() {
       console.error(`  Error fetching ${feed.url}: ${err.message}`);
     }
   }
+
+  // Load self-hosted blog posts
+  console.log('\nLoading blog posts from blog-posts.json...');
+  const blogPosts = loadBlogPosts();
+  console.log(`  Found ${blogPosts.length} blog post(s)`);
+  allPosts = allPosts.concat(blogPosts);
 
   // Sort by date descending
   allPosts.sort((a, b) => b.date - a.date);

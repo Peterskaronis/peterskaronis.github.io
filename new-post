@@ -1,0 +1,55 @@
+#!/usr/bin/env node
+
+/**
+ * Create a new blog post with frontmatter pre-filled.
+ *
+ * Usage: ./new-post "My Post Title"
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+const title = process.argv.slice(2).join(' ');
+
+if (!title) {
+  console.log('Usage: ./new-post "My Post Title"');
+  process.exit(1);
+}
+
+// Generate slug from title
+const slug = title
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-|-$/g, '');
+
+// Today's date
+const today = new Date();
+const date = today.toISOString().split('T')[0];
+
+// Filename
+const filename = `posts/${date}-${slug}.md`;
+
+// Check if exists
+if (fs.existsSync(filename)) {
+  console.error(`File already exists: ${filename}`);
+  process.exit(1);
+}
+
+// Create post
+const content = `---
+title: "${title}"
+date: ${date}
+slug: ${slug}
+description: ""
+---
+
+`;
+
+fs.writeFileSync(filename, content);
+console.log(`Created: ${filename}`);
+
+// Try to open in editor (optional)
+const editor = process.env.EDITOR;
+if (editor) {
+  require('child_process').spawn(editor, [filename], { stdio: 'inherit', detached: true });
+}
