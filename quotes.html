@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes — Peter Skaronis</title>
+    <meta name="description" content="A collection of quotes that inspire me.">
+    <link rel="canonical" href="https://skaronis.com/quotes.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Quotes — Peter Skaronis">
+    <meta property="og:description" content="A collection of quotes that inspire me.">
+    <meta property="og:url" content="https://skaronis.com/quotes.html">
+    <meta property="og:site_name" content="Peter Skaronis">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="Quotes — Peter Skaronis">
+    <meta name="twitter:description" content="A collection of quotes that inspire me.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 3.5rem;
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #888;
+            max-width: 500px;
+        }
+
+        .quote-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Filters */
+        .filters {
+            padding: 2rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #888;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-radius: 2px;
+        }
+
+        .filter-btn:hover {
+            border-color: #666;
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            border-color: #fff;
+            color: #000;
+        }
+
+        /* Quotes list */
+        .quotes-list {
+            padding: 2rem 0;
+        }
+
+        .quote-item {
+            padding: 2rem 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .quote-item:last-child {
+            border-bottom: none;
+        }
+
+        .quote-item.hidden {
+            display: none;
+        }
+
+        .quote-text {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.5;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        .quote-text::before {
+            content: '"';
+            color: #c45c3e;
+        }
+
+        .quote-text::after {
+            content: '"';
+            color: #c45c3e;
+        }
+
+        .quote-author {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .quote-author::before {
+            content: '— ';
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            border-top: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2.5rem; }
+
+            .quote-text { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/" class="back-link">&larr; Home</a>
+            <h1>Quotes</h1>
+            <p>A collection of quotes that inspire me. One is shown daily on the homepage.</p>
+            <p class="quote-count" id="quote-count"></p>
+        </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by Author</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-author="all">All</button>
+            </div>
+        </div>
+
+        <div class="quotes-list" id="quotes-list">
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">Made in Vancouver</p>
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        fetch('quotes.json')
+            .then(r => r.json())
+            .then(quotes => {
+                // Get unique authors sorted by quote count
+                const authorCounts = {};
+                quotes.forEach(q => {
+                    authorCounts[q.author] = (authorCounts[q.author] || 0) + 1;
+                });
+                const authors = Object.keys(authorCounts).sort((a, b) => authorCounts[b] - authorCounts[a]);
+
+                // Build filter buttons
+                const filterContainer = document.getElementById('filter-buttons');
+                authors.forEach(author => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.dataset.author = author;
+                    btn.textContent = author + ' (' + authorCounts[author] + ')';
+                    filterContainer.appendChild(btn);
+                });
+
+                // Build quotes list
+                const listContainer = document.getElementById('quotes-list');
+                quotes.forEach((q, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'quote-item';
+                    item.dataset.author = q.author;
+                    item.innerHTML = '<p class="quote-text">' + q.quote + '</p>' +
+                                    '<p class="quote-author">' + q.author + '</p>';
+                    listContainer.appendChild(item);
+                });
+
+                // Update count
+                document.getElementById('quote-count').textContent = quotes.length + ' quotes';
+
+                // Filter functionality
+                const buttons = document.querySelectorAll('.filter-btn');
+                const items = document.querySelectorAll('.quote-item');
+
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Update active button
+                        buttons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        // Filter quotes
+                        const author = btn.dataset.author;
+                        let visibleCount = 0;
+                        items.forEach(item => {
+                            if (author === 'all' || item.dataset.author === author) {
+                                item.classList.remove('hidden');
+                                visibleCount++;
+                            } else {
+                                item.classList.add('hidden');
+                            }
+                        });
+
+                        // Update count
+                        if (author === 'all') {
+                            document.getElementById('quote-count').textContent = quotes.length + ' quotes';
+                        } else {
+                            document.getElementById('quote-count').textContent = visibleCount + ' quotes by ' + author;
+                        }
+                    });
+                });
+            })
+            .catch(err => {
+                document.getElementById('quotes-list').innerHTML = '<p style="color:#666">Could not load quotes.</p>';
+            });
+    })();
+    </script>
+</body>
+</html>
