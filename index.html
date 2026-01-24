@@ -185,6 +185,13 @@
             margin-top: 0.3rem;
         }
 
+        .weeks-lived {
+            margin-top: 1.5rem;
+            font-size: 0.8rem;
+            color: #555;
+            font-variant-numeric: tabular-nums;
+        }
+
         /* Grid sections */
         .grid-section {
             display: grid;
@@ -576,6 +583,7 @@
             <h1>Peter Skaronis</h1>
             <p class="hero-subtitle">Cybersecurity consultant. vCISO. I write, build things, and help startups with security that works.</p>
             <div class="daily-quote" id="daily-quote"></div>
+            <div class="weeks-lived" id="weeks-lived"></div>
         </section>
 
         <section class="latest-grid">
@@ -730,6 +738,7 @@
         <footer>
             <div class="footer-links">
                 <a href="about.html">About</a>
+                <a href="now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
@@ -739,6 +748,13 @@
 
     <script>
     (function() {
+        // Weeks lived (Burkeman framing)
+        const birthDate = new Date(1982, 9, 14); // October 14, 1982
+        const now = new Date();
+        const msPerWeek = 7 * 24 * 60 * 60 * 1000;
+        const weeksLived = Math.floor((now - birthDate) / msPerWeek);
+        document.getElementById('weeks-lived').textContent = weeksLived.toLocaleString() + ' weeks lived';
+
         // Daily quote
         fetch('quotes.json')
             .then(r => r.json())
