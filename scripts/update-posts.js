@@ -583,7 +583,7 @@ ${monthsHTML}        </section>\n\n`;
         <header>
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
-            <p>All my writing from Substack, Cybersecurity Notes, and my Blog, organized by date.</p>
+            <p>All my writing, organized by date.</p>
         </header>
 
 ${sectionsHTML}        <footer>
@@ -684,11 +684,12 @@ async function main() {
   console.log(`\nLatest post: "${latestPost.title}" (${formatMonthYear(latestPost.date)})`);
   updateIndexHTML(latestPost);
 
-  // Generate archive.html
+  // Generate archive.html - only show local blog posts (not external RSS)
+  const localPosts = allPosts.filter(p => p.url.startsWith('/blog/'));
   const archivePath = path.join(__dirname, '..', 'archive.html');
-  const archiveHTML = generateArchiveHTML(allPosts);
+  const archiveHTML = generateArchiveHTML(localPosts);
   fs.writeFileSync(archivePath, archiveHTML);
-  console.log(`\nGenerated archive.html with ${allPosts.length} posts`);
+  console.log(`\nGenerated archive.html with ${localPosts.length} local posts`);
 
   console.log('\nDone!');
 }
