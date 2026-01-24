@@ -68,7 +68,7 @@
         e.preventDefault();
         e.stopPropagation();
 
-        const url = window.location.href;
+        const url = 'https://skaronis.com' + window.location.pathname;
         const tweetText = `"${selectedText}" — @peter_skaronis`;
         const shareUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(url)}`;
 
