@@ -268,6 +268,82 @@
 <p>No database. No framework. No dependencies that break.</p>
 
 <p>Just text files that will open in 50 years.</p>
+
+<h2>The Architecture</h2>
+
+<p>I still write on Substack. It's where my subscribers are, where the discussion happens, and where the writing workflow works best.</p>
+
+<p>But every 15 minutes, a GitHub Action wakes up and does something simple: it checks my RSS feeds, pulls in any new posts, converts them to markdown, and commits them to my repository.</p>
+
+<pre><code>Substack → RSS Feed → GitHub Action → Markdown → Static HTML → My Domain</code></pre>
+
+<p>The result: I publish where it's convenient, but I own where it matters.</p>
+
+<h2>How It Works</h2>
+
+<p>The system has three scripts that run in sequence:</p>
+
+<p><strong>1. update-posts.js</strong> — The Importer</p>
+
+<p>This script fetches my RSS feeds (personal Substack and Cybersecurity Notes), extracts the full content from <code><content:encoded></code>, and converts Substack's messy HTML into clean markdown.</p>
+
+<p>It handles: <ul> <li>Hero images preserved from Substack CDN</li> <li>Blockquotes, code blocks, lists</li> <li>Bold, italic, and nested formatting</li> <li>Stripping Substack boilerplate ("Subscribe to...", "Thanks for reading...")</li> </ul></p>
+
+<p>Each imported post gets YAML frontmatter with title, date, slug, and a link back to the original.</p>
+
+<p>Every post ends with: <em>Originally published on Substack</em></p>
+
+<p>Credit where it's due. But the words live here now.</p>
+
+<p><strong>2. update-blog.js</strong> — The Builder</p>
+
+<p>This script reads the <code>posts/</code> directory, parses each markdown file, and generates static HTML pages in <code>blog/</code>.</p>
+
+<p>No build tools. No npm install. Just Node.js reading files and writing files.</p>
+
+<p>The HTML is self-contained — fonts, styles, everything inline. Each post is a single HTML file that will render in any browser, forever.</p>
+
+<p><strong>3. The GitHub Action</strong></p>
+
+<pre><code class="language-yaml">name: Update Content
+
+<p>on: schedule: <ul> <li>cron: '<em>/15 </em> <em> </em> *'</li> </ul> workflow_dispatch:</p>
+
+<p>jobs: update: runs-on: ubuntu-latest steps: <ul> <li>uses: actions/checkout@v4</li> <li>uses: actions/setup-node@v4</li> </ul> with: node-version: '20' <ul> <li>name: Build blog from markdown</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Import posts from RSS feeds</li> </ul> run: node scripts/update-posts.js <ul> <li>name: Rebuild blog with imported posts</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Commit changes</li> </ul> run: | git diff --quiet &amp;&amp; git diff --cached --quiet || ( git config user.name &quot;github-actions[bot]&quot; git config user.email &quot;github-actions[bot]@users.noreply.github.com&quot; git add posts/ blog/ index.html archive.html blog-posts.json git commit -m &quot;Update content from feeds&quot; git push )</code></pre></p>
+
+<p>Every 15 minutes. Automatically. No server to maintain.</p>
+
+<h2>What I Gained</h2>
+
+<p><strong>Ownership</strong> — Every post exists as a markdown file in my repository. If GitHub disappears tomorrow, I have local copies. If Substack changes their terms, my content is already elsewhere.</p>
+
+<p><strong>Durability</strong> — HTML and markdown are the cockroaches of file formats. They'll survive every framework cycle, every JavaScript fatigue wave, every new paradigm.</p>
+
+<p><strong>Speed</strong> — Static files served from GitHub Pages. No database queries. No cold starts. Just bytes over the wire.</p>
+
+<p><strong>Simplicity</strong> — The entire system is three JavaScript files with zero dependencies. I can read every line and understand what it does.</p>
+
+<h2>What I Kept</h2>
+
+<p><strong>Substack for writing</strong> — The editor is good. The email delivery works. The community exists. I don't need to rebuild what's already solved.</p>
+
+<p><strong>Comments and discussion</strong> — They happen on the original Substack post. The attribution link at the bottom of each post takes readers there.</p>
+
+<p><strong>Email subscriptions</strong> — Substack handles this. I don't need another service to manage.</p>
+
+<h2>The Philosophy</h2>
+
+<p>There's a quote I keep coming back to: "The best time to plant a tree was 20 years ago. The second best time is now."</p>
+
+<p>I can't go back and own my content from the beginning. But I can start now. Every post from this point forward lives in two places: where it's convenient and where I control it.</p>
+
+<p>The infrastructure took an afternoon to build. The markdown files will last decades.</p>
+
+<p>That's the trade I'm making.</p>
+
+<hr>
+
+<p><em>The code for this system is open source at <a href="https://github.com/peterskaronis/peterskaronis.github.io">github.com/peterskaronis/peterskaronis.github.io</a></em></p>
         </article>
 
         <footer>
