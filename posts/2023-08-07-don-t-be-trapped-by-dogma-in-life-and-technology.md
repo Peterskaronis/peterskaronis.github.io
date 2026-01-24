@@ -7,7 +7,7 @@ original_url: /blog/don-t-be-trapped-by-dogma-in-life-and-technology/
 ---
 
 > ![](https://substack-post-media.s3.amazonaws.com/public/images/892928da-7563-483d-bbd3-f39b6e9c94d6_1024x1024.jpeg)
-> *Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. Don't let the noise of other's opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary."*– Steve Jobs
+> Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. Don't let the noise of other's opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary." *– Steve Jobs 
 
 # The trappings of technology 
 

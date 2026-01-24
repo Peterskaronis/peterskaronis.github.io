@@ -8,9 +8,7 @@ original_url: /blog/8-life-lessons-i-learned-from-steve-jobs/
 
 ![black and white digital device](https://images.unsplash.com/photo-1611262588019-db6cc2032da3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMDAzMzh8MHwxfHNlYXJjaHwzfHxzdGV2ZSUyMGpvYnN8ZW58MHx8fHwxNjczNjAwNTI2&ixlib=rb-4.0.3&q=80&w=1080)
 
-*Photo by [Alexander Shatov](https://unsplash.com/@alexbemore) on [Unsplash](https://unsplash.com)*
-
-One of the most influential, innovative and disruptive people of our time has undoubtedly been Steve Jobs.
+ Photo by [Alexander Shatov](https://unsplash.com/@alexbemore) on [Unsplash](https://unsplash.com)One of the most influential, innovative and disruptive people of our time has undoubtedly been Steve Jobs.
 
 As commented by Walter Isaacson in Time Magazine,
 
@@ -28,7 +26,9 @@ It is fascinating to listen what drives a person and how they have accomplished 
 
 However, I have broken down his last words in what I believe it to be eight life lessons that emerge from his stories that we can all relate to and incorporate into our life.
 
- 8 LIFE LESSONS I LEARNED FROM STEVE JOBS1. Connectedness 
+ 8 LIFE LESSONS I LEARNED FROM STEVE JOBS 
+
+ 1. Connectedness 
 
 > You can't connect the dots looking forward; you can only connect them looking backward. So you have to trust that the dots will somehow connect in your future. You have to trust in something — your gut, destiny, life, karma, whatever. This approach has never let me down, and it has made all the difference in my life. - Steve Jobs
 
@@ -36,7 +36,7 @@ In his opening story, Steve talked about connecting the dots. We have been condi
 
 We have been told not to believe in coincidences and be realistic. The truth though is that everything that happens in our life, we have created with our thinking.
 
- *Nothing happens without thought.* 
+ Nothing happens without thought. 
 
 We are so much connected to this world that is unfathomable. As Carl Jung spoke first about the [Synchronicity](https://en.wikipedia.org/wiki/Synchronicity) and the [Collective Unconscious](https://en.wikipedia.org/wiki/Collective_unconscious), there is a connection of non-casual events that we call coincidence.
 
@@ -48,7 +48,7 @@ On a more internal level, we have neurons all over our body with the highest con
 
 When reflecting on your life so far, think about what you learned that can be used as a guide for your future. If you look into those memories that might be painful as well, you can draw incredible lessons for your present moment.
 
-> *When one door closes, another opens; but we often look so long and so regretfully upon the closed door that we do not see the one which has opened for us. Alexander Graham BellMuch of what I stumbled into by following my curiosity and intuition turned out to be priceless later on. Steve Jobs*2. Perseverance 
+> When one door closes, another opens; but we often look so long and so regretfully upon the closed door that we do not see the one which has opened for us. Alexander Graham BellMuch of what I stumbled into by following my curiosity and intuition turned out to be priceless later on. Steve Jobs 2. Perseverance 
 
 > Sometimes life hits you in the head with a brick. Don't lose faith. - Steve Jobs
 
@@ -58,7 +58,7 @@ As Brendon Bruchard has said, visualize yourself not only achieving what you des
 
 You need to get yourself in a state where you have overcome or stayed the course in your mind. So when it appears in real life, you know what to do or at least you know that not showing up is not an option.
 
-I'm convinced that about half of what separates the successful entrepreneurs from the non-successful ones is pure perseverance.... Unless you have a lotof passion about this, you're not going to survive. You're going to give it up. So you've got to have an idea, or a problem or a wrong that you want to right that you're passionate about; otherwise, you're not going to have the perseverance to stick it through.― Steve Jobs
+I'm convinced that about half of what separates the successful entrepreneurs from the non-successful ones is pure perseverance.... Unless you have a lotof passion about this, you're not going to survive. You're going to give it up. So you've got to have an idea, or a problem or a wrong that you want to right that you're passionate about; otherwise, you're not going to have the perseverance to stick it through.— Steve Jobs
 
  3. Life Purpose 
 
@@ -74,9 +74,13 @@ Adam Leipzig helps everyone define their Life Purpose as a statement that excite
 
 There are five questions you can to ask yourself now and come up with your Life Purpose in the next five minutes .
 
- *1. Who * You Are *?2. What * You Do *?3. Who * You Do * It For?4. What Those People Want And Need?5. How * They Changed * As A Result?* 
+ 1. Who You Are? 
+2. What You Do? 
+3. Who You Do It For? 
+4. What Those People Want And Need? 
+5. How They Changed As A Result?
 
-The purpose of life is to live it, to taste experience to the utmost, to reach out eagerly and without fear for newer and richer experience. ― Eleanor Roosevelt
+The purpose of life is to live it, to taste experience to the utmost, to reach out eagerly and without fear for newer and richer experience. — Eleanor Roosevelt
 
  4. Meaning 
 
@@ -88,7 +92,7 @@ Do you wake up excited, looking forward to your day or are you dreading every se
 
 This reminds me of the movie Groundhog Day. You have nowhere else to go, so you might as well do something.
 
- *If you don't change your thoughts and subsequently your actions, your day and your life is not going to change.* 
+ If you don't change your thoughts and subsequently your actions, your day and your life is not going to change. 
 
 It is essential to start creating your ideal environment in your head, even before you get up from your bed. Start visualizing while lying down, your life in what would be ideal for you. Feel how you feel, what you smell, notice the colors and the people you are with. Visualization is amazing as part of priming yourself for the day.
 
@@ -100,13 +104,13 @@ A great exercise is to set a timer for every 50 minutes throughout the day and c
 
 You've got to free yourself from fear. As Alan Watts used to say, worrying about death is completely absurd, because once you are dead you will have nothing to worry about.
 
-We all have a part of the brain called *Amygdala* that is responsible for keeping us safe. We have managed to program our subconscious brain to respond the same way to what you wouldn't call actual threats, such as giving a speech or being late for work.
+We all have a part of the brain called Amygdala that is responsible for keeping us safe. We have managed to program our subconscious brain to respond the same way to what you wouldn't call actual threats, such as giving a speech or being late for work.
 
 These events are almost never a single incident that will cause us to cease to exist, but it is more a chain of events that feel like a 1000 cuts. The actuality of such chain of events leading up to our death is highly unlikely and that is where we need to consciously step in and start asking Why going 5 times deep. This will instantly clear out any fears and set us free from dogma, pride and expectations from our environment.
 
 Try it, it is awesome. It is very likely that the barriers and worries originate from you, but it is a truth you have to accept and carry on. Accepting yourself and being able to learn from your mistakes will set you free.
 
-"The truth will set you free, but first it will piss you off." ― Gloria Steinem
+"The truth will set you free, but first it will piss you off." — Gloria Steinem
 
  6. Change 
 
@@ -130,23 +134,23 @@ Just do it.
 
 > "Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma — which is living with the results of other people's thinking. Don't let the noise of others' opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary." - Steve Jobs
 
- *You are the average of the 5 people you spend the most time with* as Jim Rohn used to say. You are your environment . The minute you take the time to listen to your inner voice and realize that your decisions and actions may be a sum of the opinions of the people around you and not a true reflection of your inner world, your life will change.
+ You are the average of the 5 people you spend the most time with* as Jim Rohn used to say. You are your environment . The minute you take the time to listen to your inner voice and realize that your decisions and actions may be a sum of the opinions of the people around you and not a true reflection of your inner world, your life will change.
 
 These days there is a new condition called [Social Anxiety](https://en.wikipedia.org/wiki/Social_anxiety). It is used to describe the anxiety caused by social interaction and fear of being judged by others. This is a common problem for most people these days and something I've seen with my clients. The fear of being judged by your family, friends, co-workers is enough is to stop any thought, dream or concept dead in its tracks.
 
 You have the power to change your life and design it exactly as you want. Don't be a clone. You were born unique and amazing in your own right and you have the right to be here.
 
- *Who are you?* 
+ Who are you? 
 
 What do you really love to do? If you google it, you will certainly find others that are already doing what you think is unattainable.
 
-"To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment." ― Ralph Waldo Emerson
+"To be yourself in a world that is constantly trying to make you something else is the greatest accomplishment." — Ralph Waldo Emerson
 
  8. Innocence 
 
 > "Stay Hungry. Stay Foolish." - Steve Jobs
 
-Everybody loves the innocence of children and their unwithering strength and determination. However, when we grow up and as we are growing up, we hear phrases from adults like, *Be realistic, Grow Up, stop acting like a child.* It doesn't take long before we have blocked our imagination and stopped trying.
+Everybody loves the innocence of children and their unwithering strength and determination. However, when we grow up and as we are growing up, we hear phrases from adults like, Be realistic, Grow Up, stop acting like a child.It doesn't take long before we have blocked our imagination and stopped trying.
 
 It is exactly what they do to elephants when they are babies. They tie them to a big heavy chain and no matter how hard and long the elephants try, they can't free themselves. As they grow up, they have lost the hope and will to try and all they use on them is a tiny rope.
 

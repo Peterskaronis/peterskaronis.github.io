@@ -53,9 +53,11 @@ Here's where you come in. To work as a contractor, you need a few things:
 A business incorporated
 
 - 
+
 A business bank account
 
 - 
+
 Liability insurance
 
 From the company's perspective, engaging a business with its own liability insurance is a risk mitigation strategy. It's often easier for them than hiring you as an employee.

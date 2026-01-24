@@ -10,9 +10,7 @@ original_url: /blog/why-are-you-vegan/
 
 - 
 
-*Photo by [Anna Pelzer](https://unsplash.com/@annapelzer) on [Unsplash](https://unsplash.com)*
-
-I'm waiting in line to order lunch at one of the five restaurants inside the UK Parliament, before I have to sprint across the estate to get to my next meeting. My colleague is looking at the daily specials. Jerked chicken with rice. "That's what I'm having", he utters, looking my way salivating. "Are you having the same?", he asks.
+ Photo by [Anna Pelzer](https://unsplash.com/@annapelzer) on [Unsplash](https://unsplash.com)I'm waiting in line to order lunch at one of the five restaurants inside the UK Parliament, before I have to sprint across the estate to get to my next meeting. My colleague is looking at the daily specials. Jerked chicken with rice. "That's what I'm having", he utters, looking my way salivating. "Are you having the same?", he asks.
 
 This is the point where I am forced to make use of labels. I don't like labels. They put people in boxes. Even worse, they become part of your identity. In an effort not to sound weird, I look at my colleague and reply, "No, I'm Vegan". Usually, I get different types of responses, ranging from ignorance to ridicule. In this instance, my colleague proceeds with, "are you sick?" and this is where I have a trigger ready short answer for this comeback.
 
@@ -26,11 +24,14 @@ I realized over the years that for most people's idea of health is one-dimension
 
 The true answer is that I want to be the best version of myself, in a holistic sense and inspire others to do the same for themselves. Veganism is one of the frameworks to get there. In the dictionary there are two definitions for Veganism.
 
- veganismnoun 
+ veganism 
+
+ noun 
 
 The practice of eating neither [meat](https://www.wordnik.com/words/meat) nor other animal products, such as [fish](https://www.wordnik.com/words/fish), [milk](https://www.wordnik.com/words/milk) and milk products, [eggs](https://www.wordnik.com/words/eggs), and [honey](https://www.wordnik.com/words/honey).
 
 - 
+
 A way of life which strictly avoids use of any kind of animal products and services that are based on [exploitation](https://www.wordnik.com/words/exploitation) of animals.
 
 That's not how it started for me 10 years ago when I became Vegan but I guess I made a decision to embrace non-violence through my food choices and gradually find alternatives to animal by-products where possible.

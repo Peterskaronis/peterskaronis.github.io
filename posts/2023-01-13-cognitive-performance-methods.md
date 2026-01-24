@@ -22,7 +22,9 @@ However, anything that alters the biochemistry of the body tends to have side ef
 
 I will list below some non-intrusive ways I've found over the years with various degrees of effectiveness and some nootropics I've tried.
 
-# Non-Invasive MethodsBinaural Beats 
+# Non-Invasive Methods 
+
+ Binaural Beats 
 [David Monroe discovered binaural beats](https://youtu.be/CBii06UyWwY) by accident and went on to create a technology that was used by the US Government and is till being used today by meditation practitioners and neuroscientists to help entrain the brain into certain frequencies.
 
  [Dr. Joe Dispenza](https://drjoedispenza.com/) 

@@ -8,9 +8,7 @@ original_url: /blog/building-my-own-tools/
 
 ![](https://substack-post-media.s3.amazonaws.com/public/images/b5b11fae-5a50-44ca-bbcf-dd96147550e6_1024x608.png)
 
-*software development*
-
-I started computer programming back in 1993 when I was still in Greece. The first language I learned was BASIC. It was fun to see things I typed come to life. As I grew older and started my Bachelor's Degree in Computer Science, I started learning C++, Visual Basic, Java and Object Oriented Databases.
+*software developmentI started computer programming back in 1993 when I was still in Greece. The first language I learned was BASIC. It was fun to see things I typed come to life. As I grew older and started my Bachelor's Degree in Computer Science, I started learning C++, Visual Basic, Java and Object Oriented Databases.
 
 I built e-commerce websites by hand around 2003, long before there was Shopify and e-commerce platforms were a thing. But in 2005 I moved into 1st/2nd Line Support and break / fix support for PCs. I didn't code anything for a number of years.
 
@@ -60,11 +58,9 @@ I almost forgot. I did create 2 basic games that promote by Substack blog [Cyber
 
 You can check them out.
 
-[A Day in the Life of a Cybersecurity Consultant](https://skaronis.com/cyber) - *Inspired by Space Invaders* 
+[A Day in the Life of a Cybersecurity Consultant](https://skaronis.com/cyber) - Inspired by Space Invaders* 
 
-[GRC Refinement](https://refinement.techimpossible.com/) - *Inspired by the Apple TV Show - Severance (GRC Analyst Course Discount Code included)* 
-
-Year 2025 is going to be the year of AI agents. We will see many workflows and processes being overtaken by AI. Many SaaS services will also be eaten up by AI. This week OpenAI did a demo of the [chatGPT Operator](https://www.youtube.com/live/CSE77wAdDLg?si=hNelA7GbrrdWpIsH) and it is like looking a person performing all the steps and it is only January 2025!
+[GRC Refinement](https://refinement.techimpossible.com/) - Inspired by the Apple TV Show - Severance (GRC Analyst Course Discount Code included)Year 2025 is going to be the year of AI agents. We will see many workflows and processes being overtaken by AI. Many SaaS services will also be eaten up by AI. This week OpenAI did a demo of the [chatGPT Operator](https://www.youtube.com/live/CSE77wAdDLg?si=hNelA7GbrrdWpIsH) and it is like looking a person performing all the steps and it is only January 2025!
 
 These web apps, sites and games I've completed only in the past 2-3 weeks, will be replacing some subscription based software for me at least. As I continue down this path, I am confident that I will create my own tools for things that I am performing manually right now.
 

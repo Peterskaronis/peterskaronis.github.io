@@ -46,7 +46,7 @@ If you have said to yourself, phrases like "Y *ou're always late* ",
 
 "Y *ou are not good enough for this*,"
 
-" *I can't do anything right*,"
+" I can't do anything right*,"
 
 "You are a loser," then you are using affirmations already.
 
@@ -60,7 +60,7 @@ Affirmations are similar to having a coach pumping you up for a big game. Now th
 
 He is telling you that you are tired, and you are a disappointment because you haven't achieved your goals. Would you keep them as a coach? Would you carry on trying?
 
-Notice how you talk to yourself. Instead, start saying to yourself in the mirror, " *I love you, and I accept you as you are"*.
+Notice how you talk to yourself. Instead, start saying to yourself in the mirror, " I love you, and I accept you as you are".
 
 This very simple exercise as Louise Hay says in her book, "[You Can Heal Your Life](https://www.amazon.com/You-Can-Heal-Your-Life-ebook/dp/B000SEHQ96/)", will reveal to you instantly whether you believe yourself or there is something you reject about you.
 
@@ -90,19 +90,14 @@ I love the fact that Jim is encouraging everyone to believe in themselves and do
 
 Finding your purpose in life is one of the two most important dates. In Mark Twain's words, "The two most important days in your life are the day you are born and the day you find out why."
 
-Sooner or later comes a day in our life that we face this question, *is this all there is?* 
+Sooner or later comes a day in our life that we face this question, *is this all there is?We get to a point where we have achieved and acquired everything all that we have envisioned it would make us fulfilled, but it is a deceit.
 
-We get to a point where we have achieved and acquired everything all that we have envisioned it would make us fulfilled, but it is a deceit.
+ Because everything you gain in life will rot and fall apart, and all that will be left of you is what was in your heart.One way to of answering this question is start thinking about others. Instead of asking *what do I want, maybe shift the focus to "How will I serve the world?"
 
- *Because everything you gain in life will rot and fall apart, and all that will be left of you is what was in your heart.* 
+ What do they need that my talent can provide?In Jim's words, "The purpose of my life has been to free people from concern, I did something that made people present their best selves to me wherever I go."
 
-One way to of answering this question is start thinking about others. Instead of asking *what do I want, maybe shift the focus to "* How will I serve the world?"
-
- *What do they need that my talent can provide?* 
-
-In Jim's words, "The purpose of my life has been to free people from concern, I did something that made people present their best selves to me wherever I go."
-
- *What is your purpose?*5. Self-Actualisation 
+ What is your purpose? 
+5. Self-Actualisation 
 
 > I am at the top of the mountain and the only one I hadn't freed was myself.
 
@@ -110,11 +105,9 @@ Somewhere along the way of trying to figure out life and what it all means, we t
 
 Below I've added the painting by Jim Carrey and his marvelous description of his work.
 
- *The need for acceptance can make you invisible in this world.To find the * real * peace you have to let the armor go.Don't let anything stand in the way of the light that shines through this form.Risk being seen in all of your glory.* 
+ The need for acceptance can make you invisible in this world. To find the* real *peace you have to let the armor go. Don't let anything stand in the way of the light that shines through this form. Risk being seen in all of your glory.It's about picking up the light and daring to be seen. Everyone is attracted to the light.
 
-It's about picking up the light and daring to be seen. Everyone is attracted to the light.
-
- *The party host who thinks ignorance is bliss and is always offering to drink from the bottles that empty you.Misery despises the light, can't * stand * when you're doing well. Wishes you nothing but the worst.The queen of diamonds under him needs a king to build her house of cards.The hollow one down the bottom * there * will cling to your leg and say, please don't leave me behind, for I have * abandoned *myself.Even those who are closest to you and most in love with you, the most you love most in the world, will find clarity confronting at times.*6. Creative Meditation 
+ The party host who thinks ignorance is bliss and is always offering to drink from the bottles that empty you. Misery despises the light, can't* stand *when you're doing well. Wishes you nothing but the worst. The queen of diamonds under him needs a king to build her house of cards. The hollow one down the bottom* there *will cling to your leg and say, please don't leave me behind, for I have* abandoned *myself. Even those who are closest to you and most in love with you, the most you love most in the world, will find clarity confronting at times. 6. Creative Meditation 
 
 > Our eyes are not viewers, they're also projectors that are running a second story over the picture that we see in front of us all the time. Fear is writing the script and the working title is "I'll never be enough".
 
@@ -128,13 +121,13 @@ You can read more about the Zentangle Method and its benefits [here](https://www
 
 Jim uses painting, but you can use some other form of expression that helps you be present, not thinking about the past or worrying about the future.
 
- *Painting is one of the ways I free myself.A way to stop the world through total mental, spiritual and physical involvement.*7. The Ego 
+ Painting is one of the ways I free myself. A way to stop the world through total mental, spiritual and physical involvement. 7. The Ego 
 
 > How tricky is that ego that it will tempt us with the promise of something that we already possess. Relax and dream up a good life. Ask the universe of what you want and working towards it without worrying of how it comes to pass.Your job is not to figure out how It's gonna happen for you but to open the door in your head and when the door opens in real life, just walk through it.
 
 As Eckhart Tolle describes the [Ego](http://www.oprah.com/oprahs-lifeclass/Eckhart-Tolle-on-How-to-Free-Yourself-from-Your-Ego-Armor), it is a protective shell that tries to differentiate us from other people. Awareness is the first step to a free life. It is crucial to realize those moments that you don't have thoughts, but your thoughts have you.
 
- *As that shift happens in you, you won't be feeling the world, you will be felt by it, you'll be embraced by it.Now I'm always at the beginning. I have a reset button and I ride that button constantly.Once that button is functioning in your life, there's no story that the mind can create that will be as compelling.Imagination is always manufacturing scenarios both good and bad and the ego tries to keep you trapped in the multiplex of the mind.* 
+ As that shift happens in you, you won't be feeling the world, you will be felt by it, you'll be embraced by it. Now I'm always at the beginning. I have a reset button and I ride that button constantly. Once that button is functioning in your life, there's no story that the mind can create that will be as compelling. Imagination is always manufacturing scenarios both good and bad and the ego tries to keep you trapped in the multiplex of the mind.* 
 
 > I've often said that I wish people could realise all their dreams in wealth and fame so that they could see that it's not where you're going to find your sense of completion.
 
@@ -174,15 +167,13 @@ Jim created an amazing children's book with a great moral story called [How Rola
 
  10. Choice 
 
- *You always have two choices. Fear or love.* 
+ You always have two choices. Fear or love.* 
 
 > So many of us choose our path our of fear disguised as practicality.What we really want seems impossibly out of reach and ridiculous to expect, so we never dared ask the universe for it.I'm saying, I'm the proof that you can ask the universe for it, please.
 
 When I heard Jim Carrey saying that we choose our path out of fear disguised as practicality, It was a wake-up call for me that added another lens through which I view my life.
 
- *Choose love and don't ever let fear turn you against your playful heart.* 
-
-Neural Impulse is a reader-supported publication.
+ Choose love and don't ever let fear turn you against your playful heart.Neural Impulse is a reader-supported publication.
 
 ---
 

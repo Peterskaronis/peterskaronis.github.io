@@ -82,6 +82,19 @@ function decodeHtmlEntities(text) {
 function htmlToMarkdown(html) {
   let md = html;
 
+  // Decode HTML entities first
+  md = md.replace(/&nbsp;/g, ' ');
+  md = md.replace(/&#8213;/g, '—');
+  md = md.replace(/&#8212;/g, '—');
+  md = md.replace(/&#8211;/g, '–');
+
+  // Normalize br tags
+  md = md.replace(/<br\s*\/?>/gi, '<br>');
+
+  // Remove br tags at end of paragraphs (they'll get newlines from </p>)
+  md = md.replace(/<br><\/p>/g, '</p>');
+  md = md.replace(/<br><\/(strong|em|b|i)><\/p>/g, '</$1></p>');
+
   // Remove Substack-specific wrappers and classes (but keep content)
   md = md.replace(/<div class="[^"]*">/g, '');
   md = md.replace(/<\/div>/g, '\n');
@@ -190,14 +203,14 @@ function htmlToMarkdown(html) {
   md = md.replace(/<\/ol>/g, '\n');
   md = md.replace(/<li[^>]*>([\s\S]*?)<\/li>/g, '- $1\n');
 
-  // Paragraphs
-  md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '\n$1\n');
+  // Paragraphs - ensure proper spacing
+  md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '\n\n$1\n\n');
 
   // Horizontal rules
   md = md.replace(/<hr[^>]*>/g, '\n---\n');
 
-  // Line breaks
-  md = md.replace(/<br[^>]*>/g, '\n');
+  // Line breaks - convert to newlines
+  md = md.replace(/<br[^>]*>/gi, '\n');
 
   // Remove remaining HTML tags
   md = md.replace(/<[^>]+>/g, '');
@@ -215,6 +228,27 @@ function htmlToMarkdown(html) {
   md = md.replace(/Start writing today.*?(?=\n\n|$)/gs, '');
   md = md.replace(/Upgrade to paid.*?(?=\n\n|$)/gs, '');
   md = md.replace(/To receive new posts.*?(?=\n\n|$)/gs, '');
+
+  // Merge adjacent/broken formatting markers
+  // Fix patterns like "*text* more *text*" that should be "*text more text*"
+  md = md.replace(/\*\s*\*/g, ' ');  // Adjacent italics with space
+  md = md.replace(/\*\*\s*\*\*/g, ' ');  // Adjacent bold with space
+
+  // Fix numbered list items that have broken italics
+  // Pattern: "1. Who* You Are *?" → "1. Who You Are?"
+  md = md.replace(/(\d+\.\s+\w+)\*\s*/g, '$1 ');  // "1. Who* " → "1. Who "
+  md = md.replace(/\s*\*\s*(\?|\.|!)/g, '$1');  // " *?" → "?"
+  md = md.replace(/\*(\d+\.)\s*/g, '$1 ');  // "*1. " → "1. "
+
+  // Remove orphaned asterisks (single * not part of formatting)
+  md = md.replace(/\s\*\s/g, ' ');  // " * " → " "
+  md = md.replace(/\*\s+(?=[A-Z])/g, '');  // "* You" → "You"
+  md = md.replace(/\s\*([A-Z])/g, ' $1');  // " *It" → " It"
+  md = md.replace(/\*([A-Z][a-z]+\?)/g, '$1');  // "*As A Result?" → "As A Result?"
+
+  // Put numbered list items on separate lines
+  md = md.replace(/(\?\s*)(\d+\.)/g, '$1\n$2');  // "? 2." → "?\n2."
+  md = md.replace(/(\?)(The\s)/g, '$1\n\n$2');  // "?The" → "?\n\nThe"
 
   // Normalize multiple spaces to single space
   md = md.replace(/  +/g, ' ');

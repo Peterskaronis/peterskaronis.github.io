@@ -24,13 +24,11 @@ The premise of the book bears Kazantzakis unique viewpoint and it is a guide for
 
 The book is densely written with vivid descriptions from which I have distilled what stood out for me and was of great significance.
 
-The five ascending circles are *Ego, Mankind, Earth, Universe and God*. It is characteristic throughout the book that God is not depicted as being almighty but as an army General who fights alongside us with victory being uncertain. Kazantzakis explains his relationship to God by providing a view to his prayer.
+The five ascending circles are Ego, Mankind, Earth, Universe and God. It is characteristic throughout the book that God is not depicted as being almighty but as an army General who fights alongside us with victory being uncertain. Kazantzakis explains his relationship to God by providing a view to his prayer.
 
 > "My prayer is not the whimpering of a beggar nor a confession of love. Nor is it the trivial reckoning of a small tradesman: Give me and I shall give you.My prayer is the report of a soldier to his general: This is what I did today, this is how I fought to save the entire battle in my own sector, these are the obstacles I found, this is how I plan to fight tomorrow.
 
-The book has 5 parts , *the preparation , the march , the vision , the action and the silence .The 5 ascending circles mentioned earlier are part of the march and the action steps. We need to raise our awareness before we can fathom such concepts and constructs and be ready to take action.* 
-
-There is a theme of struggle throughout the book between the body and the soul. In more than one ways Nikos Kazantzakis paints this graphic picture of the mind trying to contain and constrain man within the confines of the skull while the soul speaks through the heart and screams to be let free.
+The book has 5 parts , *the preparation , the march , the vision , the action and the silence . The 5 ascending circles mentioned earlier are part of the march and the action steps. We need to raise our awareness before we can fathom such concepts and constructs and be ready to take action.There is a theme of struggle throughout the book between the body and the soul. In more than one ways Nikos Kazantzakis paints this graphic picture of the mind trying to contain and constrain man within the confines of the skull while the soul speaks through the heart and screams to be let free.
 
 The mind has a way of deceiving us into believing that the superficial world that we see with our eyes is all there is and will ever be, while the heart cries to be heard, hoping to grab our attention and express the limitlessness of the soul.
 

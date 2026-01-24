@@ -59,24 +59,31 @@ Here are some notes I took.
 I am
 
 - 
+
 What if
 
 - 
+
 I must
 
 - 
+
 I want to feel
 
 - 
+
 What matters most right now
 
 - 
+
 I care about this because
 
 - 
+
 My intention for this person or interaction
 
 - 
+
 I will become
 
 The words we are add after the "I am" are very powerful. They create our conscious reality.
@@ -89,14 +96,13 @@ In the words of Neville Goddard, in his books "The Feeling is the Secret",
 
 What do you think? You can reply to this email with your thoughts.
 
- *If you want to check out Growth Day and get a 2 week free trial, [follow this link](https://www.growthday.com/?via=skaronis).* 
+ If you want to check out Growth Day and get a 2 week free trial, [follow this link](https://www.growthday.com/?via=skaronis).* 
 
 # Graph of the week - Zooming In vs Zooming Out 
 
 Every week I stumble upon a photo or a design that makes me think.
 
 This week I discovered a design by [Junhan Chin](https://twitter.com/junhanchin).
-  
 
 ![](https://substack-post-media.s3.amazonaws.com/public/images/3830f2d6-86df-47cf-855b-d29f1a5ac282_1846x1415.jpeg)
 

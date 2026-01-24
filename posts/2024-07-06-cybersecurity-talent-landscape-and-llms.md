@@ -8,9 +8,7 @@ original_url: /blog/cybersecurity-talent-landscape-and-llms/
 
 ![](https://substack-post-media.s3.amazonaws.com/public/images/41db7237-899e-4125-8f4b-0e655be3d5bc_1152x640.jpeg)
 
-*Cybersecurity Talent Landscape and LLMs*
-
-Interviews have always been a necessary evil of the recruitment process. It is a performance. Nobody is their real self and can easily pretend to be whatever you want them to be for those 30–45 minutes. With the addition of Zoom interviews, it has become even more difficult to draw meaningful conclusions after the interaction.
+ Cybersecurity Talent Landscape and LLMsInterviews have always been a necessary evil of the recruitment process. It is a performance. Nobody is their real self and can easily pretend to be whatever you want them to be for those 30–45 minutes. With the addition of Zoom interviews, it has become even more difficult to draw meaningful conclusions after the interaction.
 
 You always get a gut feeling within the first 5 minutes, and that is important, but assessing the level of understanding a candidate possesses is both an art and a science. I have interviewed candidates throughout my career for various roles, but it has always been face-to-face interviews.
 

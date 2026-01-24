@@ -20,7 +20,7 @@ This week I've been thinking about the concept of [personal sovereignty](https:/
 
 The definition is clear. In pandemic times, however, the "I" is obscured with "we". There is an effort to associate self-ownership with far-right movements, conspiracy theories and disregard for collective public health. In the article ["Personal sovereignty in pandemics"](https://www.opendemocracy.net/en/can-europe-make-it/personal-sovereignty-in-pandemics-or-why-do-todays-sovereignists-reject-state-sovereignty/) on OpenDemocrary, the author argues that any advice supporting natural immune response is contrary to the collective good and irresponsible.
 
-> For believers, the sovereign body is the body in a "pure" state, not reliant on chemicals to heal, and trusted to fire up its own immune response when confronted with a virus – even a novel one like Covid-19". In the EU context, one striking example is offered by the founder and CEO of the [organic food producer ](https://taz.de/Chef-der-Biomarke-Rapunzel-zu-Corona/!5683866/) *[Rapunzel](https://taz.de/Chef-der-Biomarke-Rapunzel-zu-Corona/!5683866/)*, one of the largest on the European natural foods market, who has publicly described viruses as a 'part of the earth's biological life', contributing to the development of the latter, as too of the human anatomy and psyche.In his words, healthy food is far more important than masks and social distancing measures. Such prescriptions for re-claiming sovereignty over individual health have gone hand in hand with the stoking of anti-vaccination sentiments, in Germany as too in other national contexts. The focus on individual agency and responsibility comes, indeed, with the denial of public health as a collective good (and responsibility).
+> For believers, the sovereign body is the body in a "pure" state, not reliant on chemicals to heal, and trusted to fire up its own immune response when confronted with a virus – even a novel one like Covid-19". In the EU context, one striking example is offered by the founder and CEO of the [organic food producer](https://taz.de/Chef-der-Biomarke-Rapunzel-zu-Corona/!5683866/) *[Rapunzel](https://taz.de/Chef-der-Biomarke-Rapunzel-zu-Corona/!5683866/)*, one of the largest on the European natural foods market, who has publicly described viruses as a 'part of the earth's biological life', contributing to the development of the latter, as too of the human anatomy and psyche.In his words, healthy food is far more important than masks and social distancing measures. Such prescriptions for re-claiming sovereignty over individual health have gone hand in hand with the stoking of anti-vaccination sentiments, in Germany as too in other national contexts. The focus on individual agency and responsibility comes, indeed, with the denial of public health as a collective good (and responsibility). 
 
 The [disinformation playbook](https://www.ucsusa.org/resources/disinformation-playbook) used in the 1950s by the tobacco industry using the tactics of "fear, uncertainty and doubt" , has been put in use by the media during the past 2 years resulting in a divide.
 
@@ -44,11 +44,14 @@ Every week I stumble upon a photo or a design that makes me think. This week I w
 
 @ShaneAParrish: What goes in your mind today is what you think tomorrow. ([View Tweet](https://twitter.com/ShaneAParrish/status/1444257100146909190))
 
- Coolest Thing I learnedRecommended Reading 
+ Coolest Thing I learned 
+
+ Recommended Reading 
 
 On the 10 year anniversary of Steve Jobs's death, I read a post by Jason Fried on "[Idea Protectionism](https://world.hey.com/jason/idea-protectionism-01ef4f59)" worth reading.
 
 - 
+
 Holding your own true opinion is not easy.
 
 > "Doing the work required to hold an opinion means you can argue against yourself better than others can." — [The Work Required to Hold an Opinion](https://click.convertkit-mail4.com/p9u8plnvmef9hq67d3bq/x0hph6hne57d3gt5/aHR0cHM6Ly9mcy5ibG9nLzIwMTMvMDQvdGhlLXdvcmstcmVxdWlyZWQtdG8taGF2ZS1hbi1vcGluaW9uLw==)
