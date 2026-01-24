@@ -188,8 +188,19 @@
         .weeks-lived {
             margin-top: 1.5rem;
             font-size: 0.8rem;
-            color: #555;
+            color: #39ff14;
             font-variant-numeric: tabular-nums;
+        }
+
+        .weeks-lived a {
+            color: inherit;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .weeks-lived a:hover {
+            opacity: 1;
         }
 
         /* Grid sections */
@@ -753,7 +764,9 @@
         const now = new Date();
         const msPerWeek = 7 * 24 * 60 * 60 * 1000;
         const weeksLived = Math.floor((now - birthDate) / msPerWeek);
-        document.getElementById('weeks-lived').textContent = weeksLived.toLocaleString() + ' weeks lived';
+        document.getElementById('weeks-lived').innerHTML =
+            '<a href="https://www.oliverburkeman.com/fourthousandweeks" title="Memento mori — inspired by Four Thousand Weeks">' +
+            weeksLived.toLocaleString() + ' weeks lived</a>';
 
         // Daily quote
         fetch('quotes.json')
