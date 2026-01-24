@@ -36,7 +36,7 @@ const FEEDS = [
     sourceClass: 'technical',
     siteName: 'Cybersecurity Notes',
     useForLatest: false,
-    importContent: false  // Keep as external links only
+    importContent: true  // Import full content to local markdown
   }
 ];
 
@@ -82,28 +82,68 @@ function decodeHtmlEntities(text) {
 function htmlToMarkdown(html) {
   let md = html;
 
-  // Remove Substack-specific wrappers and classes
+  // Remove Substack-specific wrappers and classes (but keep content)
   md = md.replace(/<div class="[^"]*">/g, '');
   md = md.replace(/<\/div>/g, '\n');
-  md = md.replace(/<figure[^>]*>/g, '');
+  md = md.replace(/<figure[^>]*>/g, '\n');
   md = md.replace(/<\/figure>/g, '\n');
-  md = md.replace(/<picture[^>]*>[\s\S]*?<\/picture>/g, '');
+  md = md.replace(/<figcaption[^>]*>([\s\S]*?)<\/figcaption>/g, '*$1*\n');
+
+  // Extract img from picture elements before removing picture wrapper
+  md = md.replace(/<picture[^>]*>([\s\S]*?)<\/picture>/g, (match, content) => {
+    const imgMatch = content.match(/<img[^>]*>/);
+    return imgMatch ? imgMatch[0] : '';
+  });
   md = md.replace(/<source[^>]*>/g, '');
 
-  // Handle images - extract clean src
-  md = md.replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/g, (match, src, alt) => {
-    // Extract the actual image URL from Substack CDN
-    const realSrc = src.match(/https%3A%2F%2Fsubstack-post-media[^"&]+/);
-    if (realSrc) {
-      const decoded = decodeURIComponent(realSrc[0]);
-      return `\n![${alt || ''}](${decoded})\n`;
-    }
-    return `\n![${alt || ''}](${src})\n`;
-  });
-  md = md.replace(/<img[^>]*src="([^"]*)"[^>]*>/g, '\n![]($1)\n');
+  // Handle images - extract the best src URL
+  md = md.replace(/<img[^>]*>/g, (match) => {
+    // Try to get alt text
+    const altMatch = match.match(/alt="([^"]*)"/);
+    const alt = altMatch ? altMatch[1] : '';
 
-  // Handle links
-  md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g, '[$2]($1)');
+    // Try to get src - prefer the direct substack URL from data-attrs or srcset
+    let src = '';
+
+    // First try data-attrs which has the original image URL
+    const dataAttrsMatch = match.match(/data-attrs="\{[^}]*&quot;src&quot;:&quot;([^&]+)&quot;/);
+    if (dataAttrsMatch) {
+      src = dataAttrsMatch[1];
+    }
+
+    // Fallback to regular src
+    if (!src) {
+      const srcMatch = match.match(/src="([^"]*)"/);
+      if (srcMatch) {
+        src = srcMatch[1];
+        // If it's a Substack CDN URL with encoded URL, try to extract the real one
+        const encodedUrl = src.match(/https%3A%2F%2Fsubstack-post-media[^"&\s]+/);
+        if (encodedUrl) {
+          src = decodeURIComponent(encodedUrl[0]);
+        }
+      }
+    }
+
+    if (src) {
+      return `\n![${alt}](${src})\n`;
+    }
+    return '';
+  });
+
+  // Handle links around images - just keep the image, remove the link wrapper
+  md = md.replace(/<a[^>]*class="[^"]*image-link[^"]*"[^>]*>([\s\S]*?)<\/a>/g, '$1');
+
+  // Handle image links (links that only contain whitespace/newlines or just images)
+  md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>\s*<\/a>/g, '');
+
+  // Handle links (but skip empty ones)
+  md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g, (match, href, content) => {
+    const trimmed = content.trim();
+    if (!trimmed || trimmed === '\n') return '';
+    // If the content is just an image, don't wrap it in a link
+    if (/^!\[.*\]\(.*\)$/.test(trimmed)) return trimmed;
+    return `[${trimmed}](${href})`;
+  });
 
   // Headers
   md = md.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/g, '\n# $1\n');

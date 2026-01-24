@@ -3,15 +3,14 @@ title: "Levels of lucidity in people and machines"
 date: 2024-02-19
 slug: levels-of-lucidity-in-people-and-machines
 description: "Some notes and thoughts from watching the @Plinz interview with @lexfridman."
-original_url: https://blog.skaronis.com/p/levels-of-lucidity-in-people-and
+original_url: /blog/levels-of-lucidity-in-people-and-machines/
 ---
 
 Some notes and thoughts from watching the [@Plinz](https://twitter.com/Plinz)  interview with [@lexfridman](https://twitter.com/lexfridman).
 
 First of all, great discussion
-[
 
-](https://substackcdn.com/image/fetch/$s_!UZIw!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fba4793a6-a45c-4b6c-bdf5-b36712bf253b_1792x717.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/ba4793a6-a45c-4b6c-bdf5-b36712bf253b_1792x717.jpeg)
 
 .
 
@@ -63,9 +62,8 @@ This is necessary because Psychologists don't necessarily understand LLMs or the
 Is there another role that could bridge this gap?
 
 [#LLMs](https://twitter.com/hashtag/LLMs?src=hashtag_click) [#AI](https://twitter.com/hashtag/AI?src=hashtag_click) [#psychology](https://twitter.com/hashtag/psychology?src=hashtag_click) [#cybersecurity](https://twitter.com/hashtag/cybersecurity?src=hashtag_click)
-[
 
-](https://substackcdn.com/image/fetch/$s_!TGNy!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2f608d78-5b9f-4a8c-9506-3ae5c0e01e8b_1188x758.png)
+![CleanShot 2023-08-13 at 09.54.02@2x.png](https://substack-post-media.s3.amazonaws.com/public/images/2f608d78-5b9f-4a8c-9506-3ae5c0e01e8b_1188x758.png)
 
 **Originally posted on X:** [here](https://twitter.com/Peter_Skaronis/status/1690612422728630272)
 

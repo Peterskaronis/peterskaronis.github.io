@@ -3,12 +3,10 @@ title: "Nikos Kazantzakis on Life, Death and the meaning of it all"
 date: 2023-01-13
 slug: nikos-kazantzakis-on-life-death-and-the-meaning-of-it-all
 description: "Our first duty is to become aware of the power of the mind. The mind can create the world around us, through our five senses and attach meaning in order to protect us."
-original_url: https://blog.skaronis.com/p/nikos-kazantzakis-on-life-death-and
+original_url: /blog/nikos-kazantzakis-on-life-death-and-the-meaning-of-it-all/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!HGzt!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fa7bbb86b-e767-4338-93b0-97fc49a6934e_2050x780.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/a7bbb86b-e767-4338-93b0-97fc49a6934e_2050x780.png)
 
 The age old questions of why we are here and what is our purpose or mission on this earth has troubled mankind for thousand of years. If we look throughout history we can find reference points when people with the knowledge and understanding of the world at the time had tried to attach meaning and make sense of our existence.
 

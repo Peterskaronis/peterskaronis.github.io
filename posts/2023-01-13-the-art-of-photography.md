@@ -3,12 +3,10 @@ title: "The Art of Photography"
 date: 2023-01-13
 slug: the-art-of-photography
 description: "A picture is worth a thousand words."
-original_url: https://blog.skaronis.com/p/the-art-of-photography
+original_url: /blog/the-art-of-photography/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!ZyZn!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcaef833e-fcc5-4097-8732-81728179f889_960x640.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/caef833e-fcc5-4097-8732-81728179f889_960x640.jpeg)
 
 ﻿
 A picture is worth a thousand words.
@@ -29,15 +27,11 @@ Here are some examples.
 
 This shot was taken in July 2006 on the Magnificent Mile in downtown Chicago with my OLYMPUS C70Z while I was rushing to get a career fair for IT jobs. It was hot, humid and I was sweating a lot and my feet were hurting because of my leather shoes.
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!xHNl!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2e5fca70-5b48-4c37-aac3-c53210f25765_600x300.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/2e5fca70-5b48-4c37-aac3-c53210f25765_600x300.jpeg)
 
 I took this photo in Brighton, UK after visiting a supplier for a day seminar. I ended up in the Brighton Pier and was walking around the beach. I remember feeling uneasy because of the long day and the 2-hour drive to get back home to Milton Keynes.
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!rOCz!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Faa92266e-b7b6-437b-b24b-170060daeaf7_600x300.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/aa92266e-b7b6-437b-b24b-170060daeaf7_600x300.jpeg)
 
 **Overcoming Excuses
 **
@@ -50,9 +44,7 @@ To get this shot of science world in Vancouver, you have to walk alongside the C
 
 Being up at 5:00am on a Sunday to get there at 6:00 am is not something many people would do. I was one of them.
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!7YLV!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F50d926e7-568f-4940-b509-768b91795e89_600x300.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/50d926e7-568f-4940-b509-768b91795e89_600x300.jpeg)
 
 Another excuse that stopped me from going out and taking photos in the past, was that I didn't have the right camera.
 

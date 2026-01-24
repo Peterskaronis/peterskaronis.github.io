@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cybersecurity Talent Landscape and LLMs — Peter Skaronis</title>
+
+    <meta name="description" content="Insights for Aspiring Consultants">
+    <link rel="canonical" href="https://skaronis.com/blog/cybersecurity-talent-landscape-and-llms/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Cybersecurity Talent Landscape and LLMs">
+    <meta property="og:description" content="Insights for Aspiring Consultants">
+    <meta property="og:url" content="https://skaronis.com/blog/cybersecurity-talent-landscape-and-llms/">
+    <meta property="og:site_name" content="Peter Skaronis">
+    <meta property="article:author" content="Peter Skaronis">
+    <meta property="article:published_time" content="2024-07-06T00:00:00.000Z">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="Cybersecurity Talent Landscape and LLMs">
+    <meta name="twitter:description" content="Insights for Aspiring Consultants">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Cybersecurity Talent Landscape and LLMs",
+        "description": "Insights for Aspiring Consultants",
+        "datePublished": "2024-07-06T00:00:00.000Z",
+        "author": {
+            "@type": "Person",
+            "name": "Peter Skaronis",
+            "url": "https://skaronis.com"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Peter Skaronis"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://skaronis.com/blog/cybersecurity-talent-landscape-and-llms/"
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Article */
+        article {
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        article h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2.5rem 0 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        article h3 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2rem 0 0.75rem;
+        }
+
+        article p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        article ul, article ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: #ccc;
+        }
+
+        article li {
+            margin-bottom: 0.5rem;
+        }
+
+        article blockquote {
+            border-left: 3px solid #444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #999;
+        }
+
+        article pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        article code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        article p code {
+            background: #1a1a1a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 3rem 0;
+        }
+
+        article strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/archive.html" class="back-link">&larr; Archive</a>
+            <h1>Cybersecurity Talent Landscape and LLMs</h1>
+            <p class="post-meta">July 6, 2024</p>
+        </header>
+
+        <article>
+<img src="https://substack-post-media.s3.amazonaws.com/public/images/41db7237-899e-4125-8f4b-0e655be3d5bc_1152x640.jpeg" alt="">
+
+<p><em>Cybersecurity Talent Landscape and LLMs</em></p>
+
+<p>Interviews have always been a necessary evil of the recruitment process. It is a performance. Nobody is their real self and can easily pretend to be whatever you want them to be for those 30–45 minutes. With the addition of Zoom interviews, it has become even more difficult to draw meaningful conclusions after the interaction.</p>
+
+<p>You always get a gut feeling within the first 5 minutes, and that is important, but assessing the level of understanding a candidate possesses is both an art and a science. I have interviewed candidates throughout my career for various roles, but it has always been face-to-face interviews.</p>
+
+<p>The pandemic made virtual interactions the new standard. In October 2022, the advent of ChatGPT, a publicly available large language model, changed the world. On the flip side, this elevated the meaning of the phrase "fake it till you make it" to a new stratospheric level.</p>
+
+<p>In the context of interviews, the issue is not entirely with candidates but with the outdated hiring workflow. For years, your chances of being screened through to an interview have relied on keywords within your resume. So, making sure your resume matches the job title of the role you are applying for helps recruiters who do not have a technical understanding to match you with the job description.</p>
+
+<p>I've had to do this too until I realized how this game works and learned to deal with recruiters.</p>
+
+<p>Over the past year, every industry has been affected by the use of LLMs, and hiring and interviewing are no exception. Every few months, the iteration of large language models approaches the capabilities of human intellect. The latest models from OpenAI, ChatGPT-4.0, and Claude 3.5 have the reasoning skills of a teenager, and at some point, AGI will be smarter than 8 billion brains combined.</p>
+
+<p>These are useful and amazing tools that can simplify tasks and amplify our capacity. The one thing they can't do, for the time being at least, is sound human. The output is mechanical, and if you read it out verbatim, pretending that these are your thoughts, you sound like a smart assistant reading a Wikipedia article. In the past year, companies have been using AI to triage resumes, and candidates have been leveraging AI to pass through that triage.</p>
+
+<p>There is nothing wrong with utilizing LLMs where it makes sense, but if you are trying to build a whole other persona through LLMs that manufacture a resume for you based on a job description with no basis in reality, then this is misrepresentation. It is actually a felony in 11 states in the US, in the UK, and other countries.</p>
+
+<p>Cybersecurity Notes is a reader-supported publication.</p>
+
+<p>Over the past 2 months, I've had the experience of interviewing candidates for various levels of cybersecurity roles, all the way from the C-suite to analyst level.</p>
+
+<p>I was shocked to discover that 70% of the candidates were following the same playbook. Specifically, there were 2 playbooks.</p>
+
+<p>The first strategy appeared to be using an LLM to tailor the resume based on the job description and using words like senior, experienced for a work history of 3 years in total.</p>
+
+<p>The second strategy was using a really impressive resume that had a work experience of 15 years and company names like Deloitte, PWC, Accenture. The strategy was to read through the made-up resume and then repeat each question with a pause and then start every response with, "Let me answer that for you."</p>
+
+<p>In either case, when I looked up a LinkedIn profile, the work experience matched the resume, but the roles on LinkedIn were in a completely different department than what was listed on the resume. For example, someone working as an Assistant Store Manager in a retail company had replaced that with Cybersecurity Analyst but had nothing to do with that.</p>
+
+<p>Some candidates had a resume listing senior roles with the Big 4 but no online presence whatsoever.</p>
+
+<p>Having LinkedIn is not a prerequisite, but I find it odd for someone to have spent 15 years with the Big 4 and not have any voice online.</p>
+
+<p>During the interview, the candidates would blatantly read from the screen and in most cases repeat variations of the same answers regardless of the question.</p>
+
+<p>There was no understanding of any of the domains in cybersecurity for the obviously fake resumes, but even the ones that did work in existing cybersecurity roles did not have any understanding outside of their day-to-day tasks.</p>
+
+<p>The next striking observation was the correlation between certifications and actual knowledge. As with most industries, most people are split 50/50 on whether it makes sense to pursue certifications or not. I have obtained various certifications over the years, but I don't do that anymore. I haven't stopped developing my knowledge and understanding, just approach it differently.</p>
+
+<p>Some of the candidates I interviewed had a list of certifications as long as my arm but couldn't explain anything.</p>
+
+<p>One candidate had just passed his CISSP exam. I congratulated him and proceeded to ask what some common domains across frameworks are that we would look to implement policies, processes, and controls in a small business.</p>
+
+<p>The answer was, "I know I just passed the exam, but I don't remember any domains."</p>
+
+<p>This relates to a concept called "The Map is not the territory." This phrase was coined by Polish-American scientist and philosopher Alfred Korzybski in 1931. It means that looking at a map of a city is not the same as walking in it and experiencing it yourself.</p>
+
+<p>The first 3 years of my career in cybersecurity, I was limiting myself to the tasks and activities of my job. As soon as I started getting exposed to other functions and started connecting the dots, I began creating a map in my head after walking through all the domains in cybersecurity. I put in my 10,000 hours and keep going.</p>
+
+<p>Most candidates have a narrow field of vision and understanding of the big picture, and in some cases have no desire to do so, so they turn to ChatGPT as a shortcut.</p>
+
+<p>The instant gratification promised by internet gurus gives people the false hope of going from 5 figures to 6 figures in 30 days, just because they went through a bootcamp or completed a certification.</p>
+
+<p>Now, the current advice is to not even do that. The TikTok influencers are showing people that by using LLMs, you can pass technical interviews even in industries like aerospace without prior knowledge. I watched someone interviewing for Boeing as an engineer, answering questions on material strength, and passing the interview.</p>
+
+<p>This is criminally dangerous. Imagine getting a job at Boeing and being the reason that planes start flying out of the sky.</p>
+
+<p>If you haven't heard it already, LLMs lie.</p>
+
+<p>Specifically, they hallucinate. This is all to do with their original programming. The goal in most cases is to provide an answer. It is not to provide a truthful or factual answer but a complete answer, even if the LLM has to manufacture details that are untrue.</p>
+
+<p>As these models evolve and become more capable, we will always look for people to build relationships based on honesty, integrity, and character. You cannot build these things by repeating words spit out from code. Have more honest conversations. It's okay to say, "I don't know this." Be honest. Be human. People appreciate that.</p>
+
+<p>Put in the hours. Ask ChatGPT questions but then go and actually work on a hands-on project. Write a policy document. Use VMs to create a lab. Build a domain, configure group policies, and harden the OS following CIS guides.</p>
+
+<p>ChatGPT can help with brainstorming project ideas, but you have to actually work on the project. Create something you can talk about and write about. Figure out what interests you and then apply for jobs in that field.</p>
+
+<p>Don't waste other people's time. Do something you are proud to talk about to others.</p>
+
+<p>Cybersecurity Notes is a reader-supported publication.</p>
+
+<hr>
+
+<p><em>Originally published on <a href="https://notes.techimpossible.com/p/cybersecurity-talent-landscape">Cybersecurity Notes</a></em></p>
+        </article>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/now.html">Now</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+    <script src="/scripts/share-selection.js"></script>
+</body>
+</html>

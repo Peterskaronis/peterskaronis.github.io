@@ -3,14 +3,15 @@ title: "Don't be trapped by Dogma in life and technology"
 date: 2023-08-07
 slug: don-t-be-trapped-by-dogma-in-life-and-technology
 description: "Your time is limited, so don't waste it living someone else's life."
-original_url: https://blog.skaronis.com/p/dont-be-trapped-by-dogma-in-life
+original_url: /blog/don-t-be-trapped-by-dogma-in-life-and-technology/
 ---
 
-> [
+> ![](https://substack-post-media.s3.amazonaws.com/public/images/892928da-7563-483d-bbd3-f39b6e9c94d6_1024x1024.jpeg)
+> 
 
 > 
 > 
-> ](https://substackcdn.com/image/fetch/$s_!Zdq7!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F892928da-7563-483d-bbd3-f39b6e9c94d6_1024x1024.jpeg)
+> 
 > 
 > *Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. Don't let the noise of other's opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary."
 *

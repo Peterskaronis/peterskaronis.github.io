@@ -3,13 +3,14 @@ title: "Why Are You Vegan?"
 date: 2023-01-13
 slug: why-are-you-vegan
 description: "One night our son was crying so loud and I couldn't hear a thing. My wife, frustrated and exhausted, punched me on the shoulder and I rolled over and fell off the bed."
-original_url: https://blog.skaronis.com/p/why-are-you-vegan
+original_url: /blog/why-are-you-vegan/
 ---
 
-[
+![bowl of vegetable salads](https://images.unsplash.com/photo-1512621776951-a57141f2eefd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMDAzMzh8MHwxfHNlYXJjaHwxfHx2ZWdhbnxlbnwwfHx8fDE2NzM1MzMwMzY&ixlib=rb-4.0.3&q=80&w=1080)
+
 - 
 
-](https://images.unsplash.com/photo-1512621776951-a57141f2eefd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMDAzMzh8MHwxfHNlYXJjaHwxfHx2ZWdhbnxlbnwwfHx8fDE2NzM1MzMwMzY&ixlib=rb-4.0.3&q=80&w=1080)Photo by [Anna Pelzer](https://unsplash.com/@annapelzer) on [Unsplash](https://unsplash.com)
+*Photo by [Anna Pelzer](https://unsplash.com/@annapelzer) on [Unsplash](https://unsplash.com)*
 
 I'm waiting in line to order lunch at one of the five restaurants inside the UK Parliament, before I have to sprint across the estate to get to my next meeting. My colleague is looking at the daily specials. Jerked chicken with rice. "That's what I'm having", he utters, looking my way salivating. "Are you having the same?", he asks.
 

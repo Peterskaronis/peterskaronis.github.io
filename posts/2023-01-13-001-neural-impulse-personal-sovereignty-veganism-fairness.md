@@ -3,7 +3,7 @@ title: "001: Neural Impulse: Personal sovereignty, Veganism, Fairness"
 date: 2023-01-13
 slug: 001-neural-impulse-personal-sovereignty-veganism-fairness
 description: "Hey friends,"
-original_url: https://blog.skaronis.com/p/001-neural-impulse-personal-sovereignty
+original_url: /blog/001-neural-impulse-personal-sovereignty-veganism-fairness/
 ---
 
 Hey friends,
@@ -36,10 +36,9 @@ What do you think?
 
 Every week I stumble upon a photo or a design that makes me think. This week I was looking at a design by [Jack Butcher](https://twitter.com/jackbutcher)over at [Visualize Value](https://visualizevalue.com/) who creates amazing minimalist designs based on quotes or ideas.
 
-[
-- 
+![](https://substack-post-media.s3.amazonaws.com/public/images/3c4194f4-17f1-46a8-bab0-3a4f6bea2fc7_1920x1080.png)
 
-](https://substackcdn.com/image/fetch/$s_!5dA8!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3c4194f4-17f1-46a8-bab0-3a4f6bea2fc7_1920x1080.png)
+- 
 
 > We have an irrational expectation of any endeavour to be a straight line. It's not. It is more like a maze.
 

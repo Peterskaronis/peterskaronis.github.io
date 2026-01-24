@@ -3,7 +3,7 @@ title: "002: Neural Impulse: Writing, visualization, perspective and the rise of
 date: 2023-01-13
 slug: 002-neural-impulse-writing-visualization-perspective-and-the
 description: "Overcoming the curse of knowledge."
-original_url: https://blog.skaronis.com/p/002-neural-impulse-writing-visualization
+original_url: /blog/002-neural-impulse-writing-visualization-perspective-and-the/
 ---
 
 Hey friends,
@@ -21,24 +21,21 @@ This is the result of idea synthesizing and inspiration from other creative proj
 It's called [Cybersecurity Consultant Notes](https://notes.techimpossible.com/). I've set up the site initially on Ghost but now moved to substack. I will be starting with free and subscriber only content and will be looking to add premium content for a monthly or yearly subscription.
 
 **Version 1**
-[
-- 
 
-](https://substackcdn.com/image/fetch/$s_!LQ5R!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fffb7d9d5-70c4-4344-ac73-4eb21c5945ff_3106x2186.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/ffb7d9d5-70c4-4344-ac73-4eb21c5945ff_3106x2186.png)
+
+- 
 
 **
 Version 2**
-[
 
-](https://substackcdn.com/image/fetch/$s_!dHbx!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F554bcee4-5da6-41e0-8e94-fb90e628be0b_2902x2172.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/554bcee4-5da6-41e0-8e94-fb90e628be0b_2902x2172.png)
 
 I will be documenting business and technical resources I use to run my cybersecurity business and how to create, price, write proposal and deliver cybersecurity programs. This will not be just description of things but actual SOPs and document templates.
 
 This is really exciting and challenging for me, as I also have to work on overcoming the [curse of knowledge](https://en.wikipedia.org/wiki/Curse_of_knowledge).
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!1DkW!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5597cdc0-e7b1-48c3-9eb2-2628fafbc79e_1236x778.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/5597cdc0-e7b1-48c3-9eb2-2628fafbc79e_1236x778.png)
 
 ﻿
 
@@ -105,9 +102,7 @@ Every week I stumble upon a photo or a design that makes me think.
 This week I discovered a design by [Junhan Chin](https://twitter.com/junhanchin).
 ** **
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!S8-H!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3830f2d6-86df-47cf-855b-d29f1a5ac282_1846x1415.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/3830f2d6-86df-47cf-855b-d29f1a5ac282_1846x1415.jpeg)
 
 ﻿
 
@@ -116,16 +111,14 @@ We live our lives zoomed in. Zoom out regularly to reclaim your perspective.
 This is the insight and perspective that daily, weekly, monthly, quarterly and yearly review provide.
 
 # **Tweets Worth Reading**
-[
 
-](https://substackcdn.com/image/fetch/$s_!_IVY!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F67c70abe-630c-406d-99a8-bae52a248118_1418x868.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/67c70abe-630c-406d-99a8-bae52a248118_1418x868.png)
 
 [Cheat codes I know at 36 I wish I knew at 20](https://twitter.com/adcock_brett/status/1609571530404659200?s=20&t=e0n5TOfDjkoU7SRQn02ueg)**[
 ](https://twitter.com/adcock_brett/status/1609571530404659200?s=20&t=e0n5TOfDjkoU7SRQn02ueg)
 **﻿
-[
 
-](https://substackcdn.com/image/fetch/$s_!z-AC!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F46ac0f53-4755-4312-8f3e-0d56da89471b_1326x940.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/46ac0f53-4755-4312-8f3e-0d56da89471b_1326x940.png)
 
 [The Power of visualization](https://twitter.com/nevilledaily/status/1609037886682185730?s=20&t=e0n5TOfDjkoU7SRQn02ueg)
 
@@ -139,9 +132,7 @@ One example is that I tried was asking GPT-3 to write a statement of work for an
 
 ﻿
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!sDwy!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2dbb9bb2-28eb-42f4-a133-1a89f79e48ee_712x800.gif)
+![](https://substack-post-media.s3.amazonaws.com/public/images/2dbb9bb2-28eb-42f4-a133-1a89f79e48ee_712x800.gif)
 
 Now this is not something that will replace me but it is a tool I can leverage to minimize effort on tasks that a machine can do and then use my energy on quality assurance and higher planning tasks.**
 **

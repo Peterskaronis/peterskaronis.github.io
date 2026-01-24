@@ -3,12 +3,10 @@ title: "You Are Not a Tree"
 date: 2026-01-02
 slug: you-are-not-a-tree
 description: "\"How long are you going to wait before you demand the best for yourself?\" — Epictetus"
-original_url: https://blog.skaronis.com/p/you-are-not-a-tree
+original_url: /blog/you-are-not-a-tree/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!i3d1!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5701a3a3-0062-48e8-8a7e-730d98adbea5_1536x1024.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/5701a3a3-0062-48e8-8a7e-730d98adbea5_1536x1024.png)
 
 In Ricky Gervais's Netflix show After Life, he asks a 100-year-old woman about her life.
 

@@ -3,12 +3,10 @@ title: "Starting Over Again!"
 date: 2023-01-13
 slug: starting-over-again
 description: "Over the last 10 years, I have set up many Wordpress blogs, ghost blogs and other things that I have taken down. It's time for this to change."
-original_url: https://blog.skaronis.com/p/coming-soon
+original_url: /blog/starting-over-again/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!PKsb!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc8e2c160-0f38-46a6-864a-42d0504b2a3b_1024x1024.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/c8e2c160-0f38-46a6-864a-42d0504b2a3b_1024x1024.jpeg)
 
 Happy New Year!
 

@@ -3,12 +3,12 @@ title: "Building My Own Tools"
 date: 2025-01-26
 slug: building-my-own-tools
 description: "The year of self-reliance and self-sufficiency"
-original_url: https://blog.skaronis.com/p/building-my-own-tools
+original_url: /blog/building-my-own-tools/
 ---
 
-[
+![](https://substack-post-media.s3.amazonaws.com/public/images/b5b11fae-5a50-44ca-bbcf-dd96147550e6_1024x608.png)
 
-](https://substackcdn.com/image/fetch/$s_!Vibl!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb5b11fae-5a50-44ca-bbcf-dd96147550e6_1024x608.png)software development
+*software development*
 
 I started computer programming back in 1993 when I was still in Greece. The first language I learned was BASIC. It was fun to see things I typed come to life. As I grew older and started my Bachelor's Degree in Computer Science, I started learning C++, Visual Basic, Java and Object Oriented Databases.
 
@@ -51,13 +51,10 @@ I finally updated my personal page, which links to all my other work ([Skaronis.
 I added some fun random particles too.
 
 All these sites are super fast and SEO friendly.
-[
 
-](https://substackcdn.com/image/fetch/$s_!Aswg!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fac2781d9-cbd5-46fc-97dc-ac342203b5b8_800x587.png)
+![CleanShot 2025-01-26 at 02.16.38@2x.png](https://substack-post-media.s3.amazonaws.com/public/images/ac2781d9-cbd5-46fc-97dc-ac342203b5b8_800x587.png)
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!QhuI!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F25abe4d7-37c4-44bf-9500-a55249f8e353_783x600.png)
+![CleanShot 2025-01-26 at 02.19.34@2x.png](https://substack-post-media.s3.amazonaws.com/public/images/25abe4d7-37c4-44bf-9500-a55249f8e353_783x600.png)
 
 I almost forgot. I did create 2 basic games that promote by Substack blog **[Cybersecurity Notes](https://notes.techimpossible.com/)** and a **[GRC Analyst Course](https://store.techimpossible.com/l/grcanalyst?layout=profile)** I'm building.
 

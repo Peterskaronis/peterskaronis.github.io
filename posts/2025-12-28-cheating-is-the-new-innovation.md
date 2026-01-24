@@ -3,12 +3,10 @@ title: "Cheating Is the New Innovation"
 date: 2025-12-28
 slug: cheating-is-the-new-innovation
 description: "What we reward, we become"
-original_url: https://blog.skaronis.com/p/cheating-is-the-new-innovation
+original_url: /blog/cheating-is-the-new-innovation/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!fEBi!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fbf9c96ea-bcc0-4391-b92f-7fe928f6c29a_1536x1024.png)
+![](https://substack-post-media.s3.amazonaws.com/public/images/bf9c96ea-bcc0-4391-b92f-7fe928f6c29a_1536x1024.png)
 
 A 21-year-old launches an AI app that helps people cheat technical interviews.
 

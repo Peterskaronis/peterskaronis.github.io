@@ -10,6 +10,16 @@
     "siteName": "Blog"
   },
   {
+    "title": "The Cybersecurity Career Playbook Broke in 2025",
+    "date": "2026-01-06",
+    "slug": "the-cybersecurity-career-playbook-broke-in-2025",
+    "description": "Work arrangements, market mechanics, and what comes next",
+    "url": "/blog/the-cybersecurity-career-playbook-broke-in-2025/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
     "title": "You Are Not a Tree",
     "date": "2026-01-02",
     "slug": "you-are-not-a-tree",
@@ -45,6 +55,26 @@
     "slug": "the-power-of-simplicity",
     "description": "Less is more",
     "url": "/blog/the-power-of-simplicity/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Episode 1: ISO 27001:2022 Framework",
+    "date": "2024-09-15",
+    "slug": "episode-1-iso-27001-2022-framework",
+    "description": "Decoding ISO 27001 and 27002: Your Blueprint for Information Security",
+    "url": "/blog/episode-1-iso-27001-2022-framework/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Cybersecurity Talent Landscape and LLMs",
+    "date": "2024-07-06",
+    "slug": "cybersecurity-talent-landscape-and-llms",
+    "description": "Insights for Aspiring Consultants",
+    "url": "/blog/cybersecurity-talent-landscape-and-llms/",
     "source": "Blog",
     "sourceClass": "blog",
     "siteName": "Blog"

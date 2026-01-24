@@ -3,12 +3,10 @@ title: "10 Life Lessons I Learned From Jim Carrey"
 date: 2023-01-13
 slug: 10-life-lessons-i-learned-from-jim-carrey
 description: "Life doesn't happen to you, it happens for you."
-original_url: https://blog.skaronis.com/p/10-life-lessons-i-learned-from-jim
+original_url: /blog/10-life-lessons-i-learned-from-jim-carrey/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!cmUz!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F21a430d6-4df7-4f72-a0be-d8136e855feb_2000x1000.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/21a430d6-4df7-4f72-a0be-d8136e855feb_2000x1000.jpeg)
 
 As Jim Carrey started out his commencement speech at the Maharishi University in 2014, I too want to plant a seed.
 

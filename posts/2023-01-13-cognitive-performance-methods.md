@@ -3,12 +3,10 @@ title: "Cognitive Performance Methods"
 date: 2023-01-13
 slug: cognitive-performance-methods
 description: "Limitless"
-original_url: https://blog.skaronis.com/p/cognitive-performance-methods
+original_url: /blog/cognitive-performance-methods/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!Hwso!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcbe63342-e89f-46ed-ba4e-4f4a5257c326_1280x720.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/cbe63342-e89f-46ed-ba4e-4f4a5257c326_1280x720.jpeg)
 
 The movie "Limitless" starring Bradley Cooper came out in 2011 and it is every information worker's dream.
 

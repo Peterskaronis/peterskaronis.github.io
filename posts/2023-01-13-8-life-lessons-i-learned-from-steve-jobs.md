@@ -3,12 +3,12 @@ title: "8 Life Lessons I Learned From Steve Jobs"
 date: 2023-01-13
 slug: 8-life-lessons-i-learned-from-steve-jobs
 description: "Nothing happens without thought."
-original_url: https://blog.skaronis.com/p/8-life-lessons-i-learned-from-steve
+original_url: /blog/8-life-lessons-i-learned-from-steve-jobs/
 ---
 
-[
+![black and white digital device](https://images.unsplash.com/photo-1611262588019-db6cc2032da3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMDAzMzh8MHwxfHNlYXJjaHwzfHxzdGV2ZSUyMGpvYnN8ZW58MHx8fHwxNjczNjAwNTI2&ixlib=rb-4.0.3&q=80&w=1080)
 
-](https://images.unsplash.com/photo-1611262588019-db6cc2032da3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzMDAzMzh8MHwxfHNlYXJjaHwzfHxzdGV2ZSUyMGpvYnN8ZW58MHx8fHwxNjczNjAwNTI2&ixlib=rb-4.0.3&q=80&w=1080)Photo by [Alexander Shatov](https://unsplash.com/@alexbemore) on [Unsplash](https://unsplash.com)
+*Photo by [Alexander Shatov](https://unsplash.com/@alexbemore) on [Unsplash](https://unsplash.com)*
 
 One of the most influential, innovative and disruptive people of our time has undoubtedly been Steve Jobs.
 

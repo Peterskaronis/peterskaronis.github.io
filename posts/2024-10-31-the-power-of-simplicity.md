@@ -3,12 +3,10 @@ title: "The Power of Simplicity"
 date: 2024-10-31
 slug: the-power-of-simplicity
 description: "Less is more"
-original_url: https://blog.skaronis.com/p/the-power-of-simplicity
+original_url: /blog/the-power-of-simplicity/
 ---
 
-[
-
-](https://substackcdn.com/image/fetch/$s_!vjR7!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F22e43e85-5c97-413d-b637-a9791bb9d8e7_1024x768.jpeg)
+![](https://substack-post-media.s3.amazonaws.com/public/images/22e43e85-5c97-413d-b637-a9791bb9d8e7_1024x768.jpeg)
 
 Today I wandered into a Japanese store in my neighbourhood called ITSUMO which translates to "all the time".
 
