@@ -204,12 +204,16 @@ function parseRSS(xml, feedConfig) {
       const description = descMatch ? decodeHtmlEntities(descMatch[1].trim()) : '';
       const content = contentMatch ? contentMatch[1] : '';
 
+      const slug = slugify(title);
+
       posts.push({
         title,
-        url: linkMatch[1].trim(),
+        url: feedConfig.importContent ? `/blog/${slug}/` : linkMatch[1].trim(),
+        originalUrl: linkMatch[1].trim(),
         date,
         description,
         content,
+        slug,
         source: feedConfig.source,
         sourceClass: feedConfig.sourceClass,
         siteName: feedConfig.siteName,
@@ -234,8 +238,8 @@ function generateMarkdownFile(post) {
   // Convert HTML content to markdown
   let markdown = htmlToMarkdown(post.content);
 
-  // Add attribution footer
-  const attribution = `\n\n---\n\n*Originally published on [${post.siteName}](${post.url})*`;
+  // Add attribution footer (use originalUrl for external link)
+  const attribution = `\n\n---\n\n*Originally published on [${post.siteName}](${post.originalUrl})*`;
   markdown += attribution;
 
   // Create frontmatter
@@ -649,11 +653,17 @@ async function main() {
     }
   }
 
-  // Load self-hosted blog posts (these are built by update-blog.js)
-  console.log('\nLoading blog posts from blog-posts.json...');
+  // Load self-hosted blog posts that weren't imported from RSS
+  // (to avoid duplicates - imported posts are already in allPosts from RSS)
+  console.log('\nLoading manually created blog posts from blog-posts.json...');
   const blogPosts = loadBlogPosts();
-  console.log(`  Found ${blogPosts.length} blog post(s)`);
-  allPosts = allPosts.concat(blogPosts);
+  const rssSlugs = new Set(allPosts.filter(p => p.importContent).map(p => p.slug));
+  const manualBlogPosts = blogPosts.filter(p => {
+    const slug = p.url.replace(/^\/blog\//, '').replace(/\/$/, '');
+    return !rssSlugs.has(slug);
+  });
+  console.log(`  Found ${manualBlogPosts.length} manually created blog post(s)`);
+  allPosts = allPosts.concat(manualBlogPosts);
 
   // Sort by date descending
   allPosts.sort((a, b) => b.date - a.date);
