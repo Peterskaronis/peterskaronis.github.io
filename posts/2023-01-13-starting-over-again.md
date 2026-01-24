@@ -12,7 +12,7 @@ Happy New Year!
 
 Last night I couldn't sleep and somehow I ended up on substack reading a post by Michael Dean, an amazing writer and editor I've worked with and value his input and analysis.
 
-The post was called "**[Substack or Bust](https://www.michaeldean.site/p/substack-or-bust)**". 
+The post was called " [Substack or Bust](https://www.michaeldean.site/p/substack-or-bust) ". 
 
 Michael managed in 10 minutes to answer all the same arguments I had in my head for a long time.
 
@@ -28,7 +28,7 @@ This helped me start writing and publishing again as it is just like writing an 
 
 There were still some things that bothered me.
 
-There is no custom domain option at the moment so the URL is long and funny to remember **[world.hey.com/pskaronis](https://world.hey.com/pskaronis) **and there is no commenting option. If someone wants to comment, they have to reply back to your post via email or comment on twitter.
+There is no custom domain option at the moment so the URL is long and funny to remember [world.hey.com/pskaronis](https://world.hey.com/pskaronis) and there is no commenting option. If someone wants to comment, they have to reply back to your post via email or comment on twitter.
 
 I did set up a basic HTML/CSS page on Github Pages that acts as profile page and subscribe form for my Hey World blog and it works fine.
 
@@ -52,7 +52,7 @@ There is a small SEO caveat though with that approach, as substack links will ta
 
 So, back to Substack.
 
-Substack allows you to have your own domain for a one-off $50 fee which is nothing compared to paying for Ghost **$108/year** minimum as Michael mentioned in his post.
+Substack allows you to have your own domain for a one-off $50 fee which is nothing compared to paying for Ghost $108/year minimum as Michael mentioned in his post.
 
 The next thing is the design. If you suffer from ADHD like me at times, having too many options makes progress difficult. Luckily, with Substack you get only 3 themes and these are around structure mostly.
 

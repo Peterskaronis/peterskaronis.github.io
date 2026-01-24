@@ -33,8 +33,7 @@ I took this photo in Brighton, UK after visiting a supplier for a day seminar. I
 
 ![](https://substack-post-media.s3.amazonaws.com/public/images/aa92266e-b7b6-437b-b24b-170060daeaf7_600x300.jpeg)
 
-**Overcoming Excuses
-**
+ Overcoming Excuses 
 
 Some of the best looking photos, are taken during the Golden Hour. This is a term used by photographers to signify the period when the natural sunlight is amazing. This is an hour before sunset and an hour after sunrise.
 

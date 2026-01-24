@@ -151,16 +151,32 @@ function htmlToMarkdown(html) {
   md = md.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, '\n### $1\n');
   md = md.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, '\n#### $1\n');
 
-  // Bold and italic
-  md = md.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**');
-  md = md.replace(/<b[^>]*>([\s\S]*?)<\/b>/g, '**$1**');
-  md = md.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*');
-  md = md.replace(/<i[^>]*>([\s\S]*?)<\/i>/g, '*$1*');
+  // Remove br tags inside inline elements before processing
+  md = md.replace(/<(strong|b|em|i)[^>]*>([^<]*)<br\s*\/?>\s*<\/\1>/g, '<$1>$2</$1>');
 
-  // Blockquotes
+  // Bold and italic - clean content and add spaces around
+  md = md.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, (m, content) => {
+    const clean = content.replace(/<br\s*\/?>/g, '').trim();
+    return clean ? ` **${clean}** ` : '';
+  });
+  md = md.replace(/<b[^>]*>([\s\S]*?)<\/b>/g, (m, content) => {
+    const clean = content.replace(/<br\s*\/?>/g, '').trim();
+    return clean ? ` **${clean}** ` : '';
+  });
+  md = md.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, (m, content) => {
+    const clean = content.replace(/<br\s*\/?>/g, '').trim();
+    return clean ? ` *${clean}* ` : '';
+  });
+  md = md.replace(/<i[^>]*>([\s\S]*?)<\/i>/g, (m, content) => {
+    const clean = content.replace(/<br\s*\/?>/g, '').trim();
+    return clean ? ` *${clean}* ` : '';
+  });
+
+  // Blockquotes - ensure proper spacing
   md = md.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/g, (match, content) => {
-    const lines = content.trim().split('\n').map(line => `> ${line.trim()}`).join('\n');
-    return '\n' + lines + '\n';
+    const cleaned = content.replace(/<[^>]+>/g, '').trim();
+    const lines = cleaned.split('\n').map(line => `> ${line.trim()}`).filter(l => l !== '> ').join('\n');
+    return '\n\n' + lines + '\n\n';
   });
 
   // Code blocks
@@ -199,6 +215,29 @@ function htmlToMarkdown(html) {
   md = md.replace(/Start writing today.*?(?=\n\n|$)/gs, '');
   md = md.replace(/Upgrade to paid.*?(?=\n\n|$)/gs, '');
   md = md.replace(/To receive new posts.*?(?=\n\n|$)/gs, '');
+
+  // Normalize multiple spaces to single space
+  md = md.replace(/  +/g, ' ');
+
+  // Fix bold formatting: ensure no spaces inside markers
+  md = md.replace(/\*\* +/g, '** ');
+  md = md.replace(/ +\*\*/g, ' **');
+  md = md.replace(/\*\*\s*\*\*/g, '');  // Remove empty bold
+  md = md.replace(/\*\*([^*\n]+?)\*\*/g, (match, content) => {
+    const trimmed = content.trim();
+    return trimmed ? '**' + trimmed + '**' : '';
+  });
+
+  // Fix italic formatting
+  md = md.replace(/\* +/g, '* ');
+  md = md.replace(/ +\*/g, ' *');
+  md = md.replace(/\*\s*\*/g, '');  // Remove empty italic (but not bold **)
+
+  // Fix spaces around punctuation after formatting
+  md = md.replace(/\*\* \./g, '**.');
+  md = md.replace(/\*\* ,/g, '**,');
+  md = md.replace(/\* \./g, '*.');
+  md = md.replace(/\* ,/g, '*,');
 
   // Clean up whitespace
   md = md.replace(/\n{3,}/g, '\n\n');

@@ -56,13 +56,13 @@ All these sites are super fast and SEO friendly.
 
 ![CleanShot 2025-01-26 at 02.19.34@2x.png](https://substack-post-media.s3.amazonaws.com/public/images/25abe4d7-37c4-44bf-9500-a55249f8e353_783x600.png)
 
-I almost forgot. I did create 2 basic games that promote by Substack blog **[Cybersecurity Notes](https://notes.techimpossible.com/)** and a **[GRC Analyst Course](https://store.techimpossible.com/l/grcanalyst?layout=profile)** I'm building.
+I almost forgot. I did create 2 basic games that promote by Substack blog [Cybersecurity Notes](https://notes.techimpossible.com/) and a [GRC Analyst Course](https://store.techimpossible.com/l/grcanalyst?layout=profile) I'm building.
 
 You can check them out.
 
-[A Day in the Life of a Cybersecurity Consultant](https://skaronis.com/cyber) - *Inspired by Space Invaders*
+[A Day in the Life of a Cybersecurity Consultant](https://skaronis.com/cyber) - *Inspired by Space Invaders* 
 
-[GRC Refinement](https://refinement.techimpossible.com/) - *Inspired by the Apple TV Show - Severance (GRC Analyst Course Discount Code included)*
+[GRC Refinement](https://refinement.techimpossible.com/) - *Inspired by the Apple TV Show - Severance (GRC Analyst Course Discount Code included)* 
 
 Year 2025 is going to be the year of AI agents. We will see many workflows and processes being overtaken by AI. Many SaaS services will also be eaten up by AI. This week OpenAI did a demo of the [chatGPT Operator](https://www.youtube.com/live/CSE77wAdDLg?si=hNelA7GbrrdWpIsH) and it is like looking a person performing all the steps and it is only January 2025!
 

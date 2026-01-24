@@ -7,17 +7,9 @@ original_url: /blog/don-t-be-trapped-by-dogma-in-life-and-technology/
 ---
 
 > ![](https://substack-post-media.s3.amazonaws.com/public/images/892928da-7563-483d-bbd3-f39b6e9c94d6_1024x1024.jpeg)
-> 
+> *Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. Don't let the noise of other's opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary."*– Steve Jobs
 
-> 
-> 
-> 
-> 
-> *Your time is limited, so don't waste it living someone else's life. Don't be trapped by dogma – which is living with the results of other people's thinking. Don't let the noise of other's opinions drown out your own inner voice. And most important, have the courage to follow your heart and intuition. They somehow already know what you truly want to become. Everything else is secondary."
-*
-**– Steve Jobs**
-
-# **The trappings of technology**
+# The trappings of technology 
 
 We are mimetic creatures. We copy others. Then we join camps. Some people are hardcore Apple fans and have anything that start with an i(Device), myself included and others can't stand Apple and will use Google or Microsoft or literally anything else but Apple.
 
@@ -43,7 +35,7 @@ So I made a list of all my subscriptions and spend 3 weeks, cancelling them. I w
 
 This is an ongoing process as I now realize and need to force myself to think twice before signing up for the next thing that doesn't meet my criteria.
 
-# **Don't be afraid to break things**
+# Don't be afraid to break things 
 
 The next step I took, was to try approaching my needs through a different mindset and specific criteria.
 

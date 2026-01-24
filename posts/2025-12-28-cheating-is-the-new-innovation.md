@@ -16,7 +16,7 @@ VCs throw money at him.
 
 Twitter calls him a genius.
 
-*Welcome to 2025, where cheating is not just tolerated. It is celebrated.*
+ *Welcome to 2025, where cheating is not just tolerated. It is celebrated.* 
 
 For decades, we have been conditioned to believe success equals millions or billions. If you are not sprinting toward unicorn status, you are invisible. This obsession with outsized wealth has created a culture where shortcuts are not just common, they are expected.
 

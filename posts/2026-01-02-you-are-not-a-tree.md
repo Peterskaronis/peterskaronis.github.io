@@ -10,9 +10,9 @@ original_url: /blog/you-are-not-a-tree/
 
 In Ricky Gervais's Netflix show After Life, he asks a 100-year-old woman about her life.
 
-*"You must've seen a lot, though? A hundred years."*
+ *"You must've seen a lot, though? A hundred years."* 
 
-Her reply: "*I was born in Tambury. I'll die in Tambury. Very soon, I hope. I've seen fuck all! I may as well have been a tree."*
+Her reply: " *I was born in Tambury. I'll die in Tambury. Very soon, I hope. I've seen fuck all! I may as well have been a tree."* 
 
 That image has stayed with me. A century of life in one place. Not because she couldn't leave. Because leaving never occurred to her as a real option.
 
