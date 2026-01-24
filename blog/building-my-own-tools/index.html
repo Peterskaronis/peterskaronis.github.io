@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building My Own Tools — Peter Skaronis</title>
+
+    <meta name="description" content="The year of self-reliance and self-sufficiency">
+    <link rel="canonical" href="https://skaronis.com/blog/building-my-own-tools/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Building My Own Tools">
+    <meta property="og:description" content="The year of self-reliance and self-sufficiency">
+    <meta property="og:url" content="https://skaronis.com/blog/building-my-own-tools/">
+    <meta property="og:site_name" content="Peter Skaronis">
+    <meta property="article:author" content="Peter Skaronis">
+    <meta property="article:published_time" content="2025-01-26T00:00:00.000Z">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="Building My Own Tools">
+    <meta name="twitter:description" content="The year of self-reliance and self-sufficiency">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Building My Own Tools",
+        "description": "The year of self-reliance and self-sufficiency",
+        "datePublished": "2025-01-26T00:00:00.000Z",
+        "author": {
+            "@type": "Person",
+            "name": "Peter Skaronis",
+            "url": "https://skaronis.com"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Peter Skaronis"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://skaronis.com/blog/building-my-own-tools/"
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Article */
+        article {
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        article h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2.5rem 0 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        article h3 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2rem 0 0.75rem;
+        }
+
+        article p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        article ul, article ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: #ccc;
+        }
+
+        article li {
+            margin-bottom: 0.5rem;
+        }
+
+        article blockquote {
+            border-left: 3px solid #444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #999;
+        }
+
+        article pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        article code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        article p code {
+            background: #1a1a1a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 3rem 0;
+        }
+
+        article strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/archive.html" class="back-link">&larr; Archive</a>
+            <h1>Building My Own Tools</h1>
+            <p class="post-meta">January 26, 2025</p>
+        </header>
+
+        <article>
+<p><a href="https://substackcdn.com/image/fetch/$s<em>!Vibl!,f</em>auto,q<em>auto:good,fl</em>progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb5b11fae-5a50-44ca-bbcf-dd96147550e6_1024x608.png"></p>
+
+</a>software development
+
+<p>I started computer programming back in 1993 when I was still in Greece. The first language I learned was BASIC. It was fun to see things I typed come to life. As I grew older and started my Bachelor's Degree in Computer Science, I started learning C++, Visual Basic, Java and Object Oriented Databases.</p>
+
+<p>I built e-commerce websites by hand around 2003, long before there was Shopify and e-commerce platforms were a thing. But in 2005 I moved into 1st/2nd Line Support and break / fix support for PCs. I didn't code anything for a number of years.</p>
+
+<p>A few years later in 2008, I was now living in the UK and started messing around with WordPress. I learned through trial and error how to setup, manage, host and protect WordPress. I created several sites for myself and others.</p>
+
+<p>In 2012, as I was getting more involved in Cybersecurity, I got interested in iOS apps as a side project. I had transitioned to Mac OS at that point, had an iPhone and I had access to xCode. I built some games with help from another developer and a designer and had fun coding again. This however, lasted for a couple years and as It happens, life got in the way and I slowly abandoned iOS apps. However, during that time I learned Git and became comfortable with Github and publishing apps on the App Store.</p>
+
+<p>Fast forward, 10 years later, it was December 2022 and I was going through my annual subscriptions. I had moved to managed hosting services, Squarespace for my business, a personal Ghost blog and some other side projects. Due to personal circumstances, I couldn't afford to renew any of them.</p>
+
+<p>My sites went offline that week. It was a sad moment, but I was also disappointed in myself that I had become so dependent on SaaS. despite all of my knowledge and experience.</p>
+
+<p>For the next week, I spent my free time dusting off my Git, HTML, CSS, Javascript knowledge to create at least some landing page for my business and personal site. I didn't want to have to manage WordPress, Ghost or Jekyll sites again.</p>
+
+<p>I ended up building static sites that I could publish on Github Pages or Cloudflare Pages for FREE.</p>
+
+<p>These sites were fast and looked great and I didn't have to pay anything to keep them online.</p>
+
+<p>Last year, I wanted to create more things and had spent quite some time trying to figure out LLMs for coding. I went through quite a few. My conclusion was that at some point the LLM broke the code and you ended up trying to fix the errors than actually building anything operational or the thing you originally had in mind.</p>
+
+<p>LLMs like Claude and ChatGPT would not take the full codebase due to context limits and Cursor needed some figuring out to be used effectively. So I parked doing anything more with development last year.</p>
+
+<p>This year, I signed up for a course that <a href="https://x.com/nateliason">Nat Eliason</a> created, called <a href="https://www.buildyourownapps.com/">Build Your Own Apps</a>. This course takes you through the basics of using Cursor.com to create your own apps and gradually build more complex webapps. Nat's approach helped me use Cursor in a way that helped understand the generated code, get back into using Github and troubleshoot more effectively.</p>
+
+<p>These apps can run as static sites and there is no cost for most use cases. Some of the apps that I want to create will require more resources but still will be a fraction of the cost of subscriptions.</p>
+
+<p>Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.</p>
+
+<p>So, onto the webapps.</p>
+
+<p>I created a pomodoro timer, with lofi music and task labelling that is visible on the browser tab. (<a href="https://focus.skaronis.com/">Focus</a>)</p>
+
+<p>I created a blog for my company website. This works great. I only need to create markdown files with the correct frontmatter and a script runs and builds the html pages. As my website is hosted on Cloudflare Pages, any change in the Github code, such as adding a new markdown file, triggers a site re-build in seconds. It is super SEO friendly as well. (<a href="https://www.techimpossible.com/blog/">Techimpossible Blog</a>).</p>
+
+<p>I also updated my company website to make it more uniform (<a href="https://www.techimpossible.com/">Techimpossible Security Inc.</a>).</p>
+
+<p>I finally updated my personal page, which links to all my other work (<a href="https://skaronis.com/">Skaronis.com</a>)).</p>
+
+<p>I added some fun random particles too.</p>
+
+<p>All these sites are super fast and SEO friendly. <a href="https://substackcdn.com/image/fetch/$s<em>!Aswg!,f</em>auto,q<em>auto:good,fl</em>progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fac2781d9-cbd5-46fc-97dc-ac342203b5b8_800x587.png"></p>
+
+</a>
+
+<p><a href="https://substackcdn.com/image/fetch/$s<em>!QhuI!,f</em>auto,q<em>auto:good,fl</em>progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F25abe4d7-37c4-44bf-9500-a55249f8e353_783x600.png"></p>
+
+</a>
+
+<p>I almost forgot. I did create 2 basic games that promote by Substack blog <strong><a href="https://notes.techimpossible.com/">Cybersecurity Notes</a></strong> and a <strong><a href="https://store.techimpossible.com/l/grcanalyst?layout=profile">GRC Analyst Course</a></strong> I'm building.</p>
+
+<p>You can check them out.</p>
+
+<p><a href="https://skaronis.com/cyber">A Day in the Life of a Cybersecurity Consultant</a> - <em>Inspired by Space Invaders</em></p>
+
+<p><a href="https://refinement.techimpossible.com/">GRC Refinement</a> - <em>Inspired by the Apple TV Show - Severance (GRC Analyst Course Discount Code included)</em></p>
+
+<p>Year 2025 is going to be the year of AI agents. We will see many workflows and processes being overtaken by AI. Many SaaS services will also be eaten up by AI. This week OpenAI did a demo of the <a href="https://www.youtube.com/live/CSE77wAdDLg?si=hNelA7GbrrdWpIsH">chatGPT Operator</a> and it is like looking a person performing all the steps and it is only January 2025!</p>
+
+<p>These web apps, sites and games I've completed only in the past 2-3 weeks, will be replacing some subscription based software for me at least. As I continue down this path, I am confident that I will create my own tools for things that I am performing manually right now.</p>
+
+<p>There are so many ad-hoc processes in Cybersecurity that could be automated and I am looking forward to delving into those too and creating Mac OS and iOS apps again.</p>
+
+<p>Let's build!</p>
+
+<p>Originally Posted on: <a href="https://world.hey.com/pskaronis/building-my-own-tools-7d937ef4">HEY</a></p>
+
+<hr>
+
+<p><em>Originally published on <a href="https://blog.skaronis.com/p/building-my-own-tools">Substack</a></em></p>
+        </article>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/now.html">Now</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+    <script src="/scripts/share-selection.js"></script>
+</body>
+</html>

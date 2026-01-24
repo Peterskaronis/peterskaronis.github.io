@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Power of Simplicity — Peter Skaronis</title>
+
+    <meta name="description" content="Less is more">
+    <link rel="canonical" href="https://skaronis.com/blog/the-power-of-simplicity/">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="The Power of Simplicity">
+    <meta property="og:description" content="Less is more">
+    <meta property="og:url" content="https://skaronis.com/blog/the-power-of-simplicity/">
+    <meta property="og:site_name" content="Peter Skaronis">
+    <meta property="article:author" content="Peter Skaronis">
+    <meta property="article:published_time" content="2024-10-31T00:00:00.000Z">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:title" content="The Power of Simplicity">
+    <meta name="twitter:description" content="Less is more">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "The Power of Simplicity",
+        "description": "Less is more",
+        "datePublished": "2024-10-31T00:00:00.000Z",
+        "author": {
+            "@type": "Person",
+            "name": "Peter Skaronis",
+            "url": "https://skaronis.com"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Peter Skaronis"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://skaronis.com/blog/the-power-of-simplicity/"
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { font-size: 18px; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection {
+            background: #fff;
+            color: #000;
+        }
+
+        a {
+            color: #fff;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 3px;
+        }
+
+        a:hover {
+            text-decoration-thickness: 2px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Header */
+        header {
+            padding: 4rem 0 3rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .back-link {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            color: #fff;
+        }
+
+        header h1 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .post-meta {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Article */
+        article {
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        article h2 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2.5rem 0 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        article h3 {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #fff;
+            margin: 2rem 0 0.75rem;
+        }
+
+        article p {
+            margin-bottom: 1.5rem;
+            color: #ccc;
+        }
+
+        article ul, article ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: #ccc;
+        }
+
+        article li {
+            margin-bottom: 0.5rem;
+        }
+
+        article blockquote {
+            border-left: 3px solid #444;
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #999;
+        }
+
+        article pre {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        article code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        article p code {
+            background: #1a1a1a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin: 1.5rem 0;
+        }
+
+        article hr {
+            border: none;
+            border-top: 1px solid #333;
+            margin: 3rem 0;
+        }
+
+        article strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #444;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            html { font-size: 16px; }
+
+            .container { padding: 0 1.5rem; }
+
+            header { padding: 3rem 0 2rem; }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="/archive.html" class="back-link">&larr; Archive</a>
+            <h1>The Power of Simplicity</h1>
+            <p class="post-meta">October 31, 2024</p>
+        </header>
+
+        <article>
+<p><a href="https://substackcdn.com/image/fetch/$s<em>!vjR7!,f</em>auto,q<em>auto:good,fl</em>progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F22e43e85-5c97-413d-b637-a9791bb9d8e7_1024x768.jpeg"></p>
+
+</a>
+
+<p>Today I wandered into a Japanese store in my neighbourhood called ITSUMO which translates to "all the time".</p>
+
+<p>The simplicity of Japanese products, the craftsmanship and level of detail is present in every single item.</p>
+
+<p>The store owner greeted me with, thank you visiting our store and went back behind the counter as I roamed around the store and marvelled at every single item. Everything from cookware to incense and tools used for flower arrangements that I have never seen in my life, where beautifully placed around the store.</p>
+
+<p>Owning a few simple, well build, high quality items brings an unexpected feeling of calm. Aesthetically pleasing items that you want to use every day.</p>
+
+<p>Pencel Japanese pens that feel like you're writing on clouds and bath towels named "marshmallow" made out of 100% premium cotton, that actually feel like you are touching cotton candy.</p>
+
+<p>I've come to understand over the years why Steve Jobs visited Japan multiple times a year.</p>
+
+<p>The feeling of experiencing another perspective to life that does not rely on bigger, better, latest and greatest but rather on minimal creations grounded in mastery and love of the art that stand the test of time.</p>
+
+<p>It's completely the opposite of western civilization where most items don't make it past the first year and end up in garbage yards and subsequently burned or end up at the bottom of the ocean.</p>
+
+<p>I've made conscious decisions over the years to simplify my daily life and invest in quality products that last.</p>
+
+<p>It is not always feasible, but this approach is my antidote to consumerism and leading a less stressful life.</p>
+
+<p>Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.</p>
+
+<hr>
+
+<p><em>Originally published on <a href="https://blog.skaronis.com/p/the-power-of-simplicity">Substack</a></em></p>
+        </article>
+
+        <footer>
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/now.html">Now</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+            </div>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
+        </footer>
+    </div>
+    <script src="/scripts/share-selection.js"></script>
+</body>
+</html>

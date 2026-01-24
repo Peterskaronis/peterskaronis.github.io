@@ -8,5 +8,155 @@
     "source": "Blog",
     "sourceClass": "blog",
     "siteName": "Blog"
+  },
+  {
+    "title": "You Are Not a Tree",
+    "date": "2026-01-02",
+    "slug": "you-are-not-a-tree",
+    "description": "\\\"How long are you going to wait before you demand the best for yourself?\\\" — Epictetus",
+    "url": "/blog/you-are-not-a-tree/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Cheating Is the New Innovation",
+    "date": "2025-12-28",
+    "slug": "cheating-is-the-new-innovation",
+    "description": "What we reward, we become",
+    "url": "/blog/cheating-is-the-new-innovation/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Building My Own Tools",
+    "date": "2025-01-26",
+    "slug": "building-my-own-tools",
+    "description": "The year of self-reliance and self-sufficiency",
+    "url": "/blog/building-my-own-tools/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "The Power of Simplicity",
+    "date": "2024-10-31",
+    "slug": "the-power-of-simplicity",
+    "description": "Less is more",
+    "url": "/blog/the-power-of-simplicity/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Levels of lucidity in people and machines",
+    "date": "2024-02-19",
+    "slug": "levels-of-lucidity-in-people-and-machines",
+    "description": "Some notes and thoughts from watching the @Plinz interview with @lexfridman.",
+    "url": "/blog/levels-of-lucidity-in-people-and-machines/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Don't be trapped by Dogma in life and technology",
+    "date": "2023-08-07",
+    "slug": "don-t-be-trapped-by-dogma-in-life-and-technology",
+    "description": "Your time is limited, so don't waste it living someone else's life.",
+    "url": "/blog/don-t-be-trapped-by-dogma-in-life-and-technology/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "001: Neural Impulse: Personal sovereignty, Veganism, Fairness",
+    "date": "2023-01-13",
+    "slug": "001-neural-impulse-personal-sovereignty-veganism-fairness",
+    "description": "Hey friends,",
+    "url": "/blog/001-neural-impulse-personal-sovereignty-veganism-fairness/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "002: Neural Impulse: Writing, visualization, perspective and the rise of AI",
+    "date": "2023-01-13",
+    "slug": "002-neural-impulse-writing-visualization-perspective-and-the",
+    "description": "Overcoming the curse of knowledge.",
+    "url": "/blog/002-neural-impulse-writing-visualization-perspective-and-the/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "10 Life Lessons I Learned From Jim Carrey",
+    "date": "2023-01-13",
+    "slug": "10-life-lessons-i-learned-from-jim-carrey",
+    "description": "Life doesn't happen to you, it happens for you.",
+    "url": "/blog/10-life-lessons-i-learned-from-jim-carrey/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "8 Life Lessons I Learned From Steve Jobs",
+    "date": "2023-01-13",
+    "slug": "8-life-lessons-i-learned-from-steve-jobs",
+    "description": "Nothing happens without thought.",
+    "url": "/blog/8-life-lessons-i-learned-from-steve-jobs/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Cognitive Performance Methods",
+    "date": "2023-01-13",
+    "slug": "cognitive-performance-methods",
+    "description": "Limitless",
+    "url": "/blog/cognitive-performance-methods/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Nikos Kazantzakis on Life, Death and the meaning of it all",
+    "date": "2023-01-13",
+    "slug": "nikos-kazantzakis-on-life-death-and-the-meaning-of-it-all",
+    "description": "Our first duty is to become aware of the power of the mind. The mind can create the world around us, through our five senses and attach meaning in order to protect us.",
+    "url": "/blog/nikos-kazantzakis-on-life-death-and-the-meaning-of-it-all/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Starting Over Again!",
+    "date": "2023-01-13",
+    "slug": "starting-over-again",
+    "description": "Over the last 10 years, I have set up many Wordpress blogs, ghost blogs and other things that I have taken down. It's time for this to change.",
+    "url": "/blog/starting-over-again/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "The Art of Photography",
+    "date": "2023-01-13",
+    "slug": "the-art-of-photography",
+    "description": "A picture is worth a thousand words.",
+    "url": "/blog/the-art-of-photography/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
+  },
+  {
+    "title": "Why Are You Vegan?",
+    "date": "2023-01-13",
+    "slug": "why-are-you-vegan",
+    "description": "One night our son was crying so loud and I couldn't hear a thing. My wife, frustrated and exhausted, punched me on the shoulder and I rolled over and fell off the bed.",
+    "url": "/blog/why-are-you-vegan/",
+    "source": "Blog",
+    "sourceClass": "blog",
+    "siteName": "Blog"
   }
 ]

@@ -1,0 +1,266 @@
+---
+title: "10 Life Lessons I Learned From Jim Carrey"
+date: 2023-01-13
+slug: 10-life-lessons-i-learned-from-jim-carrey
+description: "Life doesn't happen to you, it happens for you."
+original_url: https://blog.skaronis.com/p/10-life-lessons-i-learned-from-jim
+---
+
+[
+
+](https://substackcdn.com/image/fetch/$s_!cmUz!,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F21a430d6-4df7-4f72-a0be-d8136e855feb_2000x1000.jpeg)
+
+As Jim Carrey started out his commencement speech at the Maharishi University in 2014, I too want to plant a seed.
+
+> 
+I'm here to plant a seed today, a seed that will inspire you to move forward in life, with enthusiastic hearts and a clear sense of wholeness.
+
+If you have only known Jim Carrey through the characters he portrayed in his 40 movies so far, you might be happily surprised that Jim is a charismatic person on and off screen. The more I've looked into his work, the more I discovered that he has a depth to everything he does that exemplifies the fact that his success in life is not an accident.
+
+Once you watch his commencement speech, you should go back and re-watch his movies from a different perspective.
+
+As Jim Rohn used to say, invest in yourself and your personal development. Read a book, listen to a speech, just do something that will nurture your brain.
+
+So today through the power of technology you can listen to someone like Jim Carrey from anywhere in the world and get advice that has the potential to change your life if implemented.
+
+I have broken down his speech into sections, each representing an area of focus that will improve your life.
+
+**1. Mindset
+**
+
+> 
+Life doesn't happen to you, it happens for you.
+
+This mindset can create a life of happiness or misery, pain or pleasure.
+
+Although everything in our life is a result of our thinking patterns and choices, we rarely assert that to ourselves and get into the blame game. We will do anything to meet our needs and get away from pain and gain pleasure.
+
+A significant and conscious distinction is essential. We can start by designing our life.
+
+We want to be proactive as we get up in the morning looking forward to being embraced by life. The alternative would be to reaffirm in our minds the hopelessness of our life thinking that our past equals the future.
+
+The realization that life is in agreement with your pure intentions can have an impact on your life and everyone in it.
+
+**2. Affirmations
+**
+
+> 
+I have no limits. I cannot be contained because I am the container. You can't contain the container.My soul is not contained within the limits of my body. My body is contained within the limitlessness of my soul.I am ready and able to do beautiful things in this world.I am just making a conscious choice to perceive challenges as beneficial. so that I can deal with them in the most productive way.
+
+We use affirmations every second of every minute of our waking hours, whether we realize it or not. These are usually for most people internal monologs that gravitate towards the negative spectrum.
+
+If you have said to yourself, phrases like "Y*ou're always late*",
+
+"Y*ou are not good enough for this*,"
+
+"*I can't do anything right*,"
+
+"You are a loser," then you are using affirmations already.
+
+The result though will not be what you desire, as you can see that there is a conflict of interest in your mind. You want to ace an exam, get that job, exercise every day, but what you are telling yourself at the same time is that there is something wrong with you.
+
+What if you said to yourself every day looking in the mirror, "I have no limits", how would that feel?
+
+If you knew there was no physical or mental story that could stop you from taking action how would you go on about your day?
+
+Affirmations are similar to having a coach pumping you up for a big game. Now think that this coach is in your head talking to you every morning as you get up.
+
+He is telling you that you are tired, and you are a disappointment because you haven't achieved your goals. Would you keep them as a coach? Would you carry on trying?
+
+Notice how you talk to yourself. Instead, start saying to yourself in the mirror, "*I love you, and I accept you as you are"*.
+
+This very simple exercise as Louise Hay says in her book, "[You Can Heal Your Life](https://www.amazon.com/You-Can-Heal-Your-Life-ebook/dp/B000SEHQ96/)", will reveal to you instantly whether you believe yourself or there is something you reject about you.
+
+**3. Focus
+**
+
+> 
+Fear is going to be a player in your life, but you get to decide how much.
+
+Everyone holds certain beliefs in their mind about themselves and life itself. Beliefs are like tables; they need legs to stand on.
+
+Depending on where you focus your mind, you will attract events in your life that will support this belief.
+
+As Jim describes it, decisions you focus on at this moment based on either love or fear, will shape your the life, instead of worrying about the pathway to the future.
+
+> 
+You can spend your whole life imagining ghosts, worrying about the pathway to the future, but all that will ever be is what's happening here and the decisions we make in this moment, which are based in either love or fear.
+
+It is so tempting to focus on the things that you don't want.
+
+You play the same video in your mind, but the truth of the matter is that giving up or lowering your standards will guarantee your outcome.
+
+I love the fact that Jim is encouraging everyone to believe in themselves and do what they love, as he has already been there and done that.
+
+> 
+You can fail at what you don't want, so you might as well take a chance on doing what you love.
+
+**4. Purpose
+**
+
+> 
+The effect you have on others is the most valuable currency there is.
+
+Finding your purpose in life is one of the two most important dates. In Mark Twain's words, "The two most important days in your life are the day you are born and the day you find out why."
+
+Sooner or later comes a day in our life that we face this question, *is this all there is?
+*
+
+We get to a point where we have achieved and acquired everything all that we have envisioned it would make us fulfilled, but it is a deceit.
+
+*Because everything you gain in life will rot and fall apart, and all that will be left of you is what was in your heart.
+*
+
+One way to of answering this question is start thinking about others. Instead of asking *what do I want, maybe shift the focus to "*How will I serve the world?"
+
+*What do they need that my talent can provide?
+*
+
+In Jim's words, "The purpose of my life has been to free people from concern, I did something that made people present their best selves to me wherever I go."
+
+***What is your purpose?
+***
+
+**5. Self-Actualisation
+**
+
+> 
+I am at the top of the mountain and the only one I hadn't freed was myself.
+
+Somewhere along the way of trying to figure out life and what it all means, we try to fit, adjust, suppress who we are to feel accepted.
+
+Below I've added the painting by Jim Carrey and his marvelous description of his work.
+
+*The need for acceptance can make you invisible in this world.
+*
+
+*To find the *real* peace you have to let the armor go.
+*
+
+*Don't let anything stand in the way of the light that shines through this form.
+*
+
+*Risk being seen in all of your glory.
+*
+
+It's about picking up the light and daring to be seen. Everyone is attracted to the light.
+
+*The party host who thinks ignorance is bliss and is always offering to drink from the bottles that empty you.
+*
+
+*Misery despises the light, can't *stand* when you're doing well. Wishes you nothing but the worst.
+*
+
+*The queen of diamonds under him needs a king to build her house of cards.
+*
+
+*The hollow one down the bottom *there* will cling to your leg and say, please don't leave me behind, for I have *abandoned*myself.
+*
+
+*Even those who are closest to you and most in love with you, the most you love most in the world, will find clarity confronting at times.
+*
+
+**6. Creative Meditation
+**
+
+> 
+Our eyes are not viewers, they're also projectors that are running a second story over the picture that we see in front of us all the time. Fear is writing the script and the working title is "I'll never be enough".
+
+One of the ways that you can use to change the stories that you project is through [meditation](https://en.wikipedia.org/wiki/Meditation). It is as old as history and has many health benefits. It is a way of taming the mind.
+
+If you can't meditate with your eyes closed trying or not to observe your thoughts you can try meditating through some form or art.
+
+I recently came across something called [Zentangle](https://www.zentangle.com/) which is a way of drawing patterns using a pen and focusing on each stroke. There are no mistakes, you can't erase anything, you just keep moving forward. Like you do in life.
+
+You can read more about the Zentangle Method and its benefits [here](https://www.zentangle.com/zentangle-method). In the past couple of years, there's been an explosion of art books for coloring meditation. You can find them on Amazon.
+
+Jim uses painting, but you can use some other form of expression that helps you be present, not thinking about the past or worrying about the future.
+
+*Painting is one of the ways I free myself.
+*
+
+*A way to stop the world through total mental, spiritual and physical involvement.
+*
+
+**7. The Ego
+**
+
+> 
+How tricky is that ego that it will tempt us with the promise of something that we already possess. Relax and dream up a good life. Ask the universe of what you want and working towards it without worrying of how it comes to pass.Your job is not to figure out how It's gonna happen for you but to open the door in your head and when the door opens in real life, just walk through it.
+
+As Eckhart Tolle describes the [Ego](http://www.oprah.com/oprahs-lifeclass/Eckhart-Tolle-on-How-to-Free-Yourself-from-Your-Ego-Armor), it is a protective shell that tries to differentiate us from other people. Awareness is the first step to a free life. It is crucial to realize those moments that you don't have thoughts, but your thoughts have you.
+
+*As that shift happens in you, you won't be feeling the world, you will be felt by it, you'll be embraced by it.
+*
+
+*Now I'm always at the beginning. I have a reset button and I ride that button constantly.
+*
+
+*Once that button is functioning in your life, there's no story that the mind can create that will be as compelling.
+*
+
+*Imagination is always manufacturing scenarios both good and bad and the ego tries to keep you trapped in the multiplex of the mind.
+*
+
+> 
+I've often said that I wish people could realise all their dreams in wealth and fame so that they could see that it's not where you're going to find your sense of completion.
+
+**8. Faith
+**
+
+> 
+I don't believe in hope, hope is a beggar. Hope walks through the fire and faith leaps over it.
+
+There is one common denominator in every religion, and that is Faith. Nothing comes close.
+
+You can't achieve anything in this life with sheer willpower, hope or optimism.
+
+You need to have faith in a higher power that has created everything in wisdom. We are so much more than just our body and the limiting beliefs we have about it.
+
+([Heb. 11:1](https://bible.com/1/heb.11.1.kjv)). Now faith is the substance of things hoped for, the evidence of things not seen.
+
+**9. Contribution
+**
+
+One of the 7 human needs that are important for being fulfilled as a person is the need for Contribution.
+
+Jim Carrey has created two separate foundations, both unique yet powerful. The impact that can have on humanity is phenomenal.
+
+He is also not afraid to speak up when it comes to our children's health and the big pharma interests.
+
+**BETTER U FOUNDATION
+**
+
+The [Better U foundation](http://www.betterufoundation.org/) is focused on educating farmers on how to increase their rice crops by 100-150% by using less seeds, less water and no pesticides or GMO.
+
+It is remarkable that this foundation is not selling anything. They are spreading knowledge by teaching farmers the [SRI method](https://en.wikipedia.org/wiki/System_of_Rice_Intensification) (System of Rice Intensification).
+
+**GATE
+**
+
+[GATE](http://gatecommunity.org/) stands for Global Alliance for Transformational Entertainment, and it is focused on helping the industry with evolving the transformation entertainment genre. Two of the founding members were Jim Carrey and Eckhart Tolle, and their mission is to project a more positive and life enhancing reality through the use of entertainment and media.
+
+**Books
+**
+
+Jim created an amazing children's book with a great moral story called [How Roland Rolls](http://howrolandrolls.com/). What a great example for others to follow on producing material that will teach, educate and inspire kids.
+
+**10. Choice
+**
+
+*You always have two choices. Fear or love.
+*
+
+> 
+So many of us choose our path our of fear disguised as practicality.What we really want seems impossibly out of reach and ridiculous to expect, so we never dared ask the universe for it.I'm saying, I'm the proof that you can ask the universe for it, please.
+
+When I heard Jim Carrey saying that we choose our path out of fear disguised as practicality, It was a wake-up call for me that added another lens through which I view my life.
+
+*Choose love and don't ever let fear turn you against your playful heart.
+*
+
+Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+
+---
+
+*Originally published on [Substack](https://blog.skaronis.com/p/10-life-lessons-i-learned-from-jim)*

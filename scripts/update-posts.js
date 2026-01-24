@@ -1,21 +1,25 @@
 #!/usr/bin/env node
 
 /**
- * Fetches posts from Substack RSS feeds, merges with blog posts, and updates the website.
+ * Fetches posts from Substack RSS feeds, creates local markdown copies, and updates the website.
  *
  * Usage: node scripts/update-posts.js
  *
  * This script:
  * 1. Fetches RSS feeds from blog.skaronis.com and notes.techimpossible.com
- * 2. Loads self-hosted blog posts from blog-posts.json
- * 3. Parses and combines all posts
- * 4. Updates the latest post in index.html
- * 5. Regenerates archive.html with all posts grouped by year/month
+ * 2. Extracts full content from <content:encoded>
+ * 3. Converts HTML to markdown and saves to posts/ directory
+ * 4. Loads all posts (imported + manually created)
+ * 5. Updates the latest post in index.html
+ * 6. Regenerates archive.html with all posts grouped by year/month
  */
 
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+
+const POSTS_DIR = path.join(__dirname, '..', 'posts');
+const BLOG_POSTS_JSON = path.join(__dirname, '..', 'blog-posts.json');
 
 const FEEDS = [
   {
@@ -23,18 +27,245 @@ const FEEDS = [
     source: 'Essays',
     sourceClass: 'essays',
     siteName: 'Substack',
-    useForLatest: true  // Only this feed is used for the "Latest" section on homepage
+    useForLatest: true,
+    importContent: true  // Import full content to local markdown
   },
   {
     url: 'https://notes.techimpossible.com/feed',
     source: 'Technical',
     sourceClass: 'technical',
     siteName: 'Cybersecurity Notes',
-    useForLatest: false
+    useForLatest: false,
+    importContent: false  // Keep as external links only
   }
 ];
 
-const BLOG_POSTS_JSON = path.join(__dirname, '..', 'blog-posts.json');
+// ============================================================================
+// HTTP Fetch
+// ============================================================================
+
+function fetch(url) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetch(res.headers.location).then(resolve).catch(reject);
+      }
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => resolve(data));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// ============================================================================
+// HTML to Markdown Converter
+// ============================================================================
+
+function decodeHtmlEntities(text) {
+  return text
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8216;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/&#8212;/g, '—')
+    .replace(/&#8211;/g, '–')
+    .replace(/&#8230;/g, '...')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#(\d+);/g, (match, dec) => String.fromCharCode(dec));
+}
+
+function htmlToMarkdown(html) {
+  let md = html;
+
+  // Remove Substack-specific wrappers and classes
+  md = md.replace(/<div class="[^"]*">/g, '');
+  md = md.replace(/<\/div>/g, '\n');
+  md = md.replace(/<figure[^>]*>/g, '');
+  md = md.replace(/<\/figure>/g, '\n');
+  md = md.replace(/<picture[^>]*>[\s\S]*?<\/picture>/g, '');
+  md = md.replace(/<source[^>]*>/g, '');
+
+  // Handle images - extract clean src
+  md = md.replace(/<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>/g, (match, src, alt) => {
+    // Extract the actual image URL from Substack CDN
+    const realSrc = src.match(/https%3A%2F%2Fsubstack-post-media[^"&]+/);
+    if (realSrc) {
+      const decoded = decodeURIComponent(realSrc[0]);
+      return `\n![${alt || ''}](${decoded})\n`;
+    }
+    return `\n![${alt || ''}](${src})\n`;
+  });
+  md = md.replace(/<img[^>]*src="([^"]*)"[^>]*>/g, '\n![]($1)\n');
+
+  // Handle links
+  md = md.replace(/<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g, '[$2]($1)');
+
+  // Headers
+  md = md.replace(/<h1[^>]*>([\s\S]*?)<\/h1>/g, '\n# $1\n');
+  md = md.replace(/<h2[^>]*>([\s\S]*?)<\/h2>/g, '\n## $1\n');
+  md = md.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, '\n### $1\n');
+  md = md.replace(/<h4[^>]*>([\s\S]*?)<\/h4>/g, '\n#### $1\n');
+
+  // Bold and italic
+  md = md.replace(/<strong[^>]*>([\s\S]*?)<\/strong>/g, '**$1**');
+  md = md.replace(/<b[^>]*>([\s\S]*?)<\/b>/g, '**$1**');
+  md = md.replace(/<em[^>]*>([\s\S]*?)<\/em>/g, '*$1*');
+  md = md.replace(/<i[^>]*>([\s\S]*?)<\/i>/g, '*$1*');
+
+  // Blockquotes
+  md = md.replace(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/g, (match, content) => {
+    const lines = content.trim().split('\n').map(line => `> ${line.trim()}`).join('\n');
+    return '\n' + lines + '\n';
+  });
+
+  // Code blocks
+  md = md.replace(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/g, '\n```\n$1\n```\n');
+  md = md.replace(/<code[^>]*>([\s\S]*?)<\/code>/g, '`$1`');
+
+  // Lists
+  md = md.replace(/<ul[^>]*>/g, '\n');
+  md = md.replace(/<\/ul>/g, '\n');
+  md = md.replace(/<ol[^>]*>/g, '\n');
+  md = md.replace(/<\/ol>/g, '\n');
+  md = md.replace(/<li[^>]*>([\s\S]*?)<\/li>/g, '- $1\n');
+
+  // Paragraphs
+  md = md.replace(/<p[^>]*>([\s\S]*?)<\/p>/g, '\n$1\n');
+
+  // Horizontal rules
+  md = md.replace(/<hr[^>]*>/g, '\n---\n');
+
+  // Line breaks
+  md = md.replace(/<br[^>]*>/g, '\n');
+
+  // Remove remaining HTML tags
+  md = md.replace(/<[^>]+>/g, '');
+
+  // Decode HTML entities
+  md = decodeHtmlEntities(md);
+
+  // Clean up whitespace
+  md = md.replace(/\n{3,}/g, '\n\n');
+  md = md.trim();
+
+  return md;
+}
+
+// ============================================================================
+// RSS Parser
+// ============================================================================
+
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 60);
+}
+
+function parseRSS(xml, feedConfig) {
+  const posts = [];
+  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+  let match;
+
+  while ((match = itemRegex.exec(xml)) !== null) {
+    const item = match[1];
+
+    const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
+                       item.match(/<title>(.*?)<\/title>/);
+    const linkMatch = item.match(/<link>(.*?)<\/link>/);
+    const pubDateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
+    const descMatch = item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) ||
+                      item.match(/<description>(.*?)<\/description>/);
+    const contentMatch = item.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/);
+
+    if (titleMatch && linkMatch && pubDateMatch) {
+      const title = titleMatch[1].trim();
+      // Skip placeholder posts
+      if (title.toLowerCase() === 'coming soon') continue;
+
+      const date = new Date(pubDateMatch[1].trim());
+      const description = descMatch ? decodeHtmlEntities(descMatch[1].trim()) : '';
+      const content = contentMatch ? contentMatch[1] : '';
+
+      posts.push({
+        title,
+        url: linkMatch[1].trim(),
+        date,
+        description,
+        content,
+        source: feedConfig.source,
+        sourceClass: feedConfig.sourceClass,
+        siteName: feedConfig.siteName,
+        useForLatest: feedConfig.useForLatest,
+        importContent: feedConfig.importContent
+      });
+    }
+  }
+
+  return posts;
+}
+
+// ============================================================================
+// Markdown File Generator
+// ============================================================================
+
+function generateMarkdownFile(post) {
+  const dateStr = post.date.toISOString().split('T')[0];
+  const slug = slugify(post.title);
+  const filename = `${dateStr}-${slug}.md`;
+
+  // Convert HTML content to markdown
+  let markdown = htmlToMarkdown(post.content);
+
+  // Add attribution footer
+  const attribution = `\n\n---\n\n*Originally published on [${post.siteName}](${post.url})*`;
+  markdown += attribution;
+
+  // Create frontmatter
+  const frontmatter = `---
+title: "${post.title.replace(/"/g, '\\"')}"
+date: ${dateStr}
+slug: ${slug}
+description: "${post.description.replace(/"/g, '\\"').substring(0, 200)}"
+original_url: ${post.url}
+---
+
+`;
+
+  return {
+    filename,
+    slug,
+    content: frontmatter + markdown
+  };
+}
+
+function importPostToMarkdown(post) {
+  const result = generateMarkdownFile(post);
+  const filepath = path.join(POSTS_DIR, result.filename);
+
+  // Check if already imported (by slug match in filename)
+  const existingFiles = fs.readdirSync(POSTS_DIR);
+  const alreadyExists = existingFiles.some(f => f.includes(result.slug));
+
+  if (alreadyExists) {
+    console.log(`  Skipping "${post.title}" (already imported)`);
+    return null;
+  }
+
+  fs.writeFileSync(filepath, result.content);
+  console.log(`  Imported "${post.title}" → posts/${result.filename}`);
+  return result.filename;
+}
+
+// ============================================================================
+// Load Blog Posts
+// ============================================================================
 
 function loadBlogPosts() {
   if (!fs.existsSync(BLOG_POSTS_JSON)) {
@@ -52,7 +283,7 @@ function loadBlogPosts() {
       source: 'Blog',
       sourceClass: 'blog',
       siteName: 'Blog',
-      useForLatest: true  // Blog posts are eligible for the "Latest" section
+      useForLatest: true
     }));
   } catch (err) {
     console.error(`Error loading blog posts: ${err.message}`);
@@ -60,56 +291,9 @@ function loadBlogPosts() {
   }
 }
 
-function fetch(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetch(res.headers.location).then(resolve).catch(reject);
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-      res.on('error', reject);
-    }).on('error', reject);
-  });
-}
-
-function parseRSS(xml, feedConfig) {
-  const posts = [];
-  const itemRegex = /<item>([\s\S]*?)<\/item>/g;
-  let match;
-
-  while ((match = itemRegex.exec(xml)) !== null) {
-    const item = match[1];
-
-    const titleMatch = item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) ||
-                       item.match(/<title>(.*?)<\/title>/);
-    const linkMatch = item.match(/<link>(.*?)<\/link>/);
-    const pubDateMatch = item.match(/<pubDate>(.*?)<\/pubDate>/);
-
-    if (titleMatch && linkMatch && pubDateMatch) {
-      const title = titleMatch[1].trim();
-      // Skip placeholder posts
-      if (title.toLowerCase() === 'coming soon') continue;
-
-      posts.push({
-        title,
-        url: linkMatch[1].trim(),
-        date: new Date(pubDateMatch[1].trim()),
-        source: feedConfig.source,
-        sourceClass: feedConfig.sourceClass,
-        siteName: feedConfig.siteName,
-        useForLatest: feedConfig.useForLatest
-      });
-    }
-  }
-
-  return posts;
-}
-
-function formatMonth(date) {
-  return date.toLocaleDateString('en-US', { month: 'long' });
-}
+// ============================================================================
+// HTML Generators
+// ============================================================================
 
 function formatMonthYear(date) {
   return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -403,7 +587,7 @@ function updateIndexHTML(latestPost) {
   const indexPath = path.join(__dirname, '..', 'index.html');
   let html = fs.readFileSync(indexPath, 'utf8');
 
-  // Update the latest post section (updated for new class names)
+  // Update the latest post section
   const latestPostRegex = /(<section class="latest-grid">[\s\S]*?<span class="stamp">Off the Press<\/span>[\s\S]*?<a href=")[^"]+(" class="latest-content">[\s\S]*?<h2 class="latest-title">)[^<]+(<\/h2>[\s\S]*?<p class="latest-meta">)[^<]+(<span class="latest-source">)[^<]+(<\/span><\/p>)/;
 
   const monthYear = formatMonthYear(latestPost.date);
@@ -417,10 +601,20 @@ function updateIndexHTML(latestPost) {
   console.log(`Updated index.html with latest post: "${latestPost.title}"`);
 }
 
+// ============================================================================
+// Main
+// ============================================================================
+
 async function main() {
-  console.log('Fetching RSS feeds...\n');
+  console.log('Fetching RSS feeds and importing content...\n');
+
+  // Ensure posts directory exists
+  if (!fs.existsSync(POSTS_DIR)) {
+    fs.mkdirSync(POSTS_DIR, { recursive: true });
+  }
 
   let allPosts = [];
+  let importedCount = 0;
 
   for (const feed of FEEDS) {
     try {
@@ -428,13 +622,23 @@ async function main() {
       const xml = await fetch(feed.url);
       const posts = parseRSS(xml, feed);
       console.log(`  Found ${posts.length} posts from ${feed.siteName}`);
+
+      // Import content for feeds that have importContent: true
+      if (feed.importContent) {
+        console.log(`  Importing content to local markdown...`);
+        for (const post of posts) {
+          const imported = importPostToMarkdown(post);
+          if (imported) importedCount++;
+        }
+      }
+
       allPosts = allPosts.concat(posts);
     } catch (err) {
       console.error(`  Error fetching ${feed.url}: ${err.message}`);
     }
   }
 
-  // Load self-hosted blog posts
+  // Load self-hosted blog posts (these are built by update-blog.js)
   console.log('\nLoading blog posts from blog-posts.json...');
   const blogPosts = loadBlogPosts();
   console.log(`  Found ${blogPosts.length} blog post(s)`);
@@ -444,16 +648,19 @@ async function main() {
   allPosts.sort((a, b) => b.date - a.date);
 
   console.log(`\nTotal posts: ${allPosts.length}`);
+  if (importedCount > 0) {
+    console.log(`New posts imported: ${importedCount}`);
+  }
 
   if (allPosts.length === 0) {
     console.error('No posts found. Aborting.');
     process.exit(1);
   }
 
-  // Update index.html with the latest post from personal Substack only
-  const personalPosts = allPosts.filter(p => p.useForLatest);
-  const latestPost = personalPosts[0];
-  console.log(`\nLatest post (from personal Substack): "${latestPost.title}" (${formatMonthYear(latestPost.date)})`);
+  // Update index.html with the latest post that's eligible
+  const eligiblePosts = allPosts.filter(p => p.useForLatest);
+  const latestPost = eligiblePosts[0];
+  console.log(`\nLatest post: "${latestPost.title}" (${formatMonthYear(latestPost.date)})`);
   updateIndexHTML(latestPost);
 
   // Generate archive.html
