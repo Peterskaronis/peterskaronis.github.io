@@ -15,7 +15,7 @@ First of all, great discussion
 
 .
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication. 
 
 Joscha discusses the stages of lucidity that to me are similar to Maslow's pyramid but with the twist of contemplating additional stages on your way to self-actualization.
 
@@ -69,7 +69,7 @@ Is there another role that could bridge this gap?
 
 **Originally posted on X:** [here](https://twitter.com/Peter_Skaronis/status/1690612422728630272)
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 

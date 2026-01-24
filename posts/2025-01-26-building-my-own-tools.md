@@ -36,7 +36,7 @@ This year, I signed up for a course that [Nat Eliason](https://x.com/nateliason)
 
 These apps can run as static sites and there is no cost for most use cases. Some of the apps that I want to create will require more resources but still will be a fraction of the cost of subscriptions.
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication. 
 
 So, onto the webapps.
 

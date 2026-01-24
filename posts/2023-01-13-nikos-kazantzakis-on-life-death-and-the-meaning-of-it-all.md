@@ -305,7 +305,7 @@ In his closing paragraphs Nikos Kazantzakis remains unconventional and uncomprom
 
 [The Saviors of God: Spiritual Exercises](https://www.amazon.com/Saviors-God-Nikos-Kazantzakis-ebook/dp/B0092PNES4/) is fascinating in the ways it approaches this multi-dimensional subject of meaning and life and is worth reading and drawing your own interpretations of it. Complement it with [The Course In Miracles](https://www.amazon.com/Course-Miracles-Dr-Helen-Schucman-ebook/dp/B0018A01L4/) that also explains the meaning of  our journey and the ways to come closer to nature and essential living as described in [Walden](https://www.amazon.com/Walden-Civil-Disobedience-Henry-Thoreau/dp/0451532163/).
 
-Peter Skaronis is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Peter Skaronis is a reader-supported publication.
 
 ---
 

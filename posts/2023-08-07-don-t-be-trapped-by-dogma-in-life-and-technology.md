@@ -60,7 +60,7 @@ I finally use HEY for my personal email and blog and this brings me joy.
 
 If you are trapped by dogma, make some changes today! You'll thank me later.
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 

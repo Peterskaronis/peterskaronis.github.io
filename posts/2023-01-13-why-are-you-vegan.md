@@ -15,7 +15,7 @@ I'm waiting in line to order lunch at one of the five restaurants inside the UK 
 
 This is the point where I am forced to make use of labels. I don't like labels. They put people in boxes. Even worse, they become part of your identity. In an effort not to sound weird, I look at my colleague and reply, "No, I'm Vegan". Usually, I get different types of responses, ranging from ignorance to ridicule. In this instance, my colleague proceeds with, "are you sick?" and this is where I have a trigger ready short answer for this comeback.
 
-Peter Skaronis is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Peter Skaronis is a reader-supported publication. 
 
 **The Short Answer
 **
@@ -95,7 +95,7 @@ We threw out all the Panadol and sick medicine and for the last 10 years we have
 
 Being Vegan has allowed me to think clearer and allow my body to repair itself and be a great vehicle for me to experience life. Try it for a week, you will be happily surprised.
 
-Peter Skaronis is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Peter Skaronis is a reader-supported publication.
 
 ---
 

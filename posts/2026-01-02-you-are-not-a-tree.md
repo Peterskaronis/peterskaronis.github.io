@@ -136,8 +136,6 @@ The red dice are still in storage in Athens. Last year, I bought my son his own 
 
 You are not a tree.
 
-This Substack is reader-supported. To receive new posts and support my work, consider becoming a free or paid subscriber.
-
 ---
 
 *Originally published on [Substack](https://blog.skaronis.com/p/you-are-not-a-tree)*

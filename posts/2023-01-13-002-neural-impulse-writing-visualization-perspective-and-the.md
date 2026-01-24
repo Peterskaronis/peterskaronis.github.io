@@ -158,7 +158,7 @@ I got the collection of books for Kindle by Noah Press.
 
 Have a wonderful and productive week!
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 

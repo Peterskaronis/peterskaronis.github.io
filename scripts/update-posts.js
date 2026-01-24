@@ -149,6 +149,17 @@ function htmlToMarkdown(html) {
   // Decode HTML entities
   md = decodeHtmlEntities(md);
 
+  // Remove Substack boilerplate/CTAs
+  md = md.replace(/This Substack is reader-supported\..*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Thanks for reading.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Subscribe to.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Share this post.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Leave a comment.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Get more from.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Start writing today.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/Upgrade to paid.*?(?=\n\n|$)/gs, '');
+  md = md.replace(/To receive new posts.*?(?=\n\n|$)/gs, '');
+
   // Clean up whitespace
   md = md.replace(/\n{3,}/g, '\n\n');
   md = md.trim();

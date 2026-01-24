@@ -46,7 +46,7 @@ So, I will start cross-posting on substack as an experiment and review after a f
 
 I will keep writing on Hey World as it helps me focus and re-post on Substack. Hey World will also serve as my personal archive and as minimal mirror version of this blog, if you prefer to read posts there.
 
-[Subscribe to my Hey World Blog](https://skaronis.com)
+[
 
 Sometimes, It can get overwhelming trying to read something on substack, especially if you have a lot of subscriptions.
 
@@ -64,7 +64,7 @@ I keep track of everything I learn during the week in my Obsidian Second Brain a
 
 See you soon!
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 

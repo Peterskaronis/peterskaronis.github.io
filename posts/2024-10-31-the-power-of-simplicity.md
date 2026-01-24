@@ -30,7 +30,7 @@ I've made conscious decisions over the years to simplify my daily life and inves
 
 It is not always feasible, but this approach is my antidote to consumerism and leading a less stressful life.
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 

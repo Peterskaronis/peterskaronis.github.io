@@ -58,8 +58,6 @@ If we care about security, trust, and real resilience, then we have to be clear:
 
 Originally Posted on: [HEY](https://world.hey.com/pskaronis/cheating-is-the-new-innovation-00f6ba4b)
 
-This Substack is reader-supported. To receive new posts and support my work, consider becoming a free or paid subscriber.
-
 ---
 
 *Originally published on [Substack](https://blog.skaronis.com/p/cheating-is-the-new-innovation)*

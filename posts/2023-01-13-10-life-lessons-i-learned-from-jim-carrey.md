@@ -259,7 +259,7 @@ When I heard Jim Carrey saying that we choose our path out of fear disguised as 
 *Choose love and don't ever let fear turn you against your playful heart.
 *
 
-Neural Impulse is a reader-supported publication. To receive new posts and support my work, consider becoming a free or paid subscriber.
+Neural Impulse is a reader-supported publication.
 
 ---
 
