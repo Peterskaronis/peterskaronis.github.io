@@ -459,7 +459,7 @@ function generateArchiveHTML(posts) {
 
       let postsHTML = '';
       for (const post of monthPosts) {
-        postsHTML += `                    <li>
+        postsHTML += `                    <li data-category="${post.sourceClass}">
                         <a href="${post.url}" class="post-title">${post.title}</a>
                         <span class="post-source ${post.sourceClass}">${post.source}</span>
                     </li>\n`;
@@ -641,6 +641,61 @@ ${monthsHTML}        </section>\n\n`;
             color: #8b6e7a;
         }
 
+        /* Filters */
+        .filters {
+            padding: 2rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #555;
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .post-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* Footer */
         footer {
             padding: 3rem 0;
@@ -697,7 +752,18 @@ ${monthsHTML}        </section>\n\n`;
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
             <p>All my writing, organized by date.</p>
+            <p class="post-count" id="post-count">${posts.length} posts</p>
         </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by Category</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="essays">Essays</button>
+                <button class="filter-btn" data-category="technical">Technical</button>
+                <button class="filter-btn" data-category="blog">Blog</button>
+            </div>
+        </div>
 
 ${sectionsHTML}        <footer>
             <div class="footer-links">
@@ -707,6 +773,40 @@ ${sectionsHTML}        <footer>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+
+    <script>
+        var buttons = document.querySelectorAll('.filter-btn');
+        var items = document.querySelectorAll('.post-list li');
+        var postCount = document.getElementById('post-count');
+        var totalPosts = items.length;
+
+        buttons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var category = this.getAttribute('data-category');
+
+                buttons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var visibleCount = 0;
+                items.forEach(function(item) {
+                    var itemCategory = item.getAttribute('data-category');
+                    if (category === 'all' || itemCategory === category) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                if (category === 'all') {
+                    postCount.textContent = totalPosts + ' posts';
+                } else {
+                    var categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                    postCount.textContent = visibleCount + ' posts in ' + categoryName;
+                }
+            });
+        });
+    </script>
 </body>
 </html>`;
 }
