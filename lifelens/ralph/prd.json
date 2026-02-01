@@ -1,0 +1,704 @@
+{
+  "project": "LifeLens",
+  "branchName": "ralph/lifelens-app",
+  "description": "Life reflection and future planning app combining philosophical frameworks (Ikigai, Memento Mori, 4000 Weeks, Bronnie Ware Regrets) with AI-generated narratives. Users input birth year, profile, and life experiences to visualize their mortality, discover purpose, and plan intentionally.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create project structure and shared CSS",
+      "description": "As a developer, I need the base project structure and shared styles so all pages have consistent design.",
+      "acceptanceCriteria": [
+        "Create lifelens/index.html with basic HTML5 structure",
+        "Add inline CSS with design system: bg #0a0a0a, text #e5e5e5, accent #c45c3e, weeks-lived #39ff14",
+        "Include Google Fonts: Instrument Serif (headings) and Inter (body)",
+        "Add Fathom analytics script (data-site='WMVSPTHG')",
+        "Container max-width 900px, centered",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Create localStorage wrapper utility",
+      "description": "As a developer, I need a localStorage utility to persist user data across pages.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/storage.js",
+        "Export functions: saveSession(data), getSession(), clearSession()",
+        "Store under key 'lifelens_session'",
+        "Handle JSON stringify/parse",
+        "Return null if no session exists",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Build landing page hero section",
+      "description": "As a visitor, I want to see a compelling headline about mortality so I understand the app's purpose.",
+      "acceptanceCriteria": [
+        "Headline: 'In approximately 4,000 weeks, your life will be over.'",
+        "Subheadline: 'This isn't morbid. It's motivating. See your life. Plan your future.'",
+        "Dark theme with Instrument Serif for headline",
+        "Centered layout, mobile responsive",
+        "Typecheck passes",
+        "Verify in browser hero displays correctly"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Add birth year input with validation",
+      "description": "As a visitor, I want to enter my birth year so the app can calculate my weeks lived.",
+      "acceptanceCriteria": [
+        "Number input field for birth year (4 digits)",
+        "Validation: year between 1920 and current year minus 10",
+        "Input uses numeric keyboard on mobile",
+        "Placeholder text: 'Enter your birth year'",
+        "Error message for invalid input",
+        "Typecheck passes",
+        "Verify in browser input validates correctly"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Implement week calculation and display",
+      "description": "As a visitor, I want to see my weeks lived calculated in real-time as I type my birth year.",
+      "acceptanceCriteria": [
+        "Calculate weeks: floor((today - Jan 1 of birthYear) / (7 * 24 * 60 * 60 * 1000))",
+        "Display: 'You've lived X weeks. Y remain.' (where Y = 4000 - X, min 0)",
+        "Update calculation on each keystroke (debounced)",
+        "Use neon green (#39ff14) for the numbers",
+        "Save birth year to localStorage when valid",
+        "Typecheck passes",
+        "Verify in browser calculation updates in real-time"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Add mini week preview grid on landing",
+      "description": "As a visitor, I want to see a small preview of the week grid to understand the visualization.",
+      "acceptanceCriteria": [
+        "Display 100 small dots (10x10 grid) as preview",
+        "First N dots filled based on percentage of weeks lived",
+        "Dots use #39ff14 for lived, #1a1a1a for remaining",
+        "Grid animates: dots fill in sequentially on valid input",
+        "Grid centered below week calculation text",
+        "Typecheck passes",
+        "Verify in browser preview grid animates correctly"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Add CTA button to begin reflection",
+      "description": "As a visitor, I want a clear call-to-action to start the reflection process.",
+      "acceptanceCriteria": [
+        "Button text: 'Begin Your Reflection'",
+        "Button disabled until valid birth year entered",
+        "White background, black text, padding 1rem 2.5rem",
+        "Hover state: slightly darker background",
+        "On click: navigate to profile.html",
+        "Typecheck passes",
+        "Verify in browser button enables/disables correctly"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Create progress indicator component",
+      "description": "As a user, I want to see my progress through the 5-step reflection process.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/progress.js component",
+        "Display 'Step X of 5' text",
+        "Five dots showing progress (filled for completed, outlined for remaining)",
+        "Current step highlighted with accent color",
+        "Component accepts currentStep parameter",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Create profile page structure",
+      "description": "As a user, I want a profile page to enter my occupation, skills, and interests.",
+      "acceptanceCriteria": [
+        "Create lifelens/profile.html",
+        "Include progress indicator showing Step 2 of 5",
+        "Header: 'Tell me a bit about yourself'",
+        "Back button linking to index.html",
+        "Continue button (initially disabled)",
+        "Same dark theme styling as landing",
+        "Typecheck passes",
+        "Verify in browser page loads with progress indicator"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Add occupation text input",
+      "description": "As a user, I want to enter my occupation so the AI understands my professional identity.",
+      "acceptanceCriteria": [
+        "Label: 'What do you do?'",
+        "Text input with placeholder 'e.g., Software Engineer, Teacher, Entrepreneur'",
+        "Input saves to localStorage on change",
+        "Required field",
+        "Typecheck passes",
+        "Verify in browser input saves to localStorage"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Build reusable tag input component",
+      "description": "As a user, I want to add multiple skills/interests using a tag input component.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/tag-input.js",
+        "Text input with placeholder 'Type and press Enter'",
+        "On Enter: add text as pill/chip below input, clear input",
+        "Pills show X button on hover for removal",
+        "Prevent duplicate entries (case-insensitive)",
+        "Maximum 10 items (show message at limit)",
+        "Return array of tags via getTags() method",
+        "Typecheck passes"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Add skills and interests tag inputs to profile",
+      "description": "As a user, I want to enter my skills and interests using the tag input component.",
+      "acceptanceCriteria": [
+        "Skills section with label 'What are you good at?'",
+        "Interests section with label 'What are you interested in?'",
+        "Both use tag-input component",
+        "Minimum 1 tag each required to continue",
+        "Save tags to localStorage on change",
+        "Continue button enables when validation passes",
+        "Typecheck passes",
+        "Verify in browser tags add/remove and persist"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-013",
+      "title": "Create Ikigai page structure",
+      "description": "As a user, I want an Ikigai page to explore the four quadrants of purpose.",
+      "acceptanceCriteria": [
+        "Create lifelens/ikigai.html",
+        "Progress indicator showing Step 3 of 5",
+        "Brief explanation: 'Ikigai is the Japanese concept of finding purpose at the intersection of what you love, what you're good at, what the world needs, and what you can be paid for.'",
+        "Back button to profile.html",
+        "Continue button to experiences.html",
+        "Typecheck passes",
+        "Verify in browser page loads correctly"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-014",
+      "title": "Add four Ikigai quadrant textareas",
+      "description": "As a user, I want to fill in the four Ikigai quadrants with my reflections.",
+      "acceptanceCriteria": [
+        "Four sections with textareas (3-5 lines visible each):",
+        "1. 'What You Love' - prompt: 'What activities make you lose track of time?'",
+        "2. 'What You're Good At' - prompt: 'What do people come to you for help with?'",
+        "3. 'What The World Needs' - prompt: 'What problems in the world concern you most?'",
+        "4. 'What You Can Be Paid For' - prompt: 'What have you been paid for? What could you be?'",
+        "Each section has distinct color accent matching Ikigai colors",
+        "Minimum 1 entry per quadrant required to continue",
+        "Save to localStorage under ikigai object",
+        "Typecheck passes",
+        "Verify in browser all four sections save correctly"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-015",
+      "title": "Add Ikigai diagram hint on desktop",
+      "description": "As a user, I want to see a visual Ikigai diagram while filling in the form.",
+      "acceptanceCriteria": [
+        "SVG Venn diagram with 4 overlapping circles",
+        "Colors: Love #ff6b6b, Skill #4ecdc4, Need #45b7d1, Payment #96ceb4",
+        "Labels on circles: Love, Skill, Need, Payment",
+        "Center labeled 'Ikigai'",
+        "Current section highlighted as user focuses each textarea",
+        "Hidden on mobile (width < 768px)",
+        "Typecheck passes",
+        "Verify in browser diagram displays and highlights correctly"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-016",
+      "title": "Create experiences page structure",
+      "description": "As a user, I want an experiences page to record key life moments.",
+      "acceptanceCriteria": [
+        "Create lifelens/experiences.html",
+        "Progress indicator showing Step 4 of 5",
+        "Header: 'Key Life Experiences'",
+        "Prompt: 'What moments shaped who you are today?'",
+        "Back button to ikigai.html",
+        "Continue button to dashboard.html",
+        "Typecheck passes",
+        "Verify in browser page loads correctly"
+      ],
+      "priority": 16,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-017",
+      "title": "Build experience entry form",
+      "description": "As a user, I want to add life experiences with description, impact, and decade.",
+      "acceptanceCriteria": [
+        "Form with: textarea for description, textarea for impact, dropdown for decade",
+        "Decade options: Childhood, Teens, 20s, 30s, 40s, 50s, 60s+",
+        "'Add Experience' button appends to list below",
+        "List shows experiences with remove button",
+        "Minimum 1, maximum 10 experiences",
+        "Save experiences array to localStorage",
+        "Typecheck passes",
+        "Verify in browser experiences add and persist"
+      ],
+      "priority": 17,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-018",
+      "title": "Add Bronnie Ware regret assessment sliders",
+      "description": "As a user, I want to assess myself against the 5 common regrets.",
+      "acceptanceCriteria": [
+        "Section header: 'Life Balance Check'",
+        "Context: 'Based on research of end-of-life reflections, these 5 areas often bring regret. How are you doing?'",
+        "Five range sliders (1-5 scale) with labels:",
+        "1. 'I live true to myself, not others' expectations'",
+        "2. 'I maintain good work-life balance'",
+        "3. 'I express my feelings honestly'",
+        "4. 'I stay in touch with friends'",
+        "5. 'I allow myself to be happy'",
+        "Show current value, labels: 'Needs Focus' / 'Doing Well'",
+        "Save values to localStorage under regrets object",
+        "Typecheck passes",
+        "Verify in browser sliders work and values persist"
+      ],
+      "priority": 18,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-019",
+      "title": "Create dashboard page layout",
+      "description": "As a user, I want a dashboard page to see all my visualizations and insights.",
+      "acceptanceCriteria": [
+        "Create lifelens/dashboard.html",
+        "Full-width hero section for weeks grid",
+        "Section for AI narrative below grid",
+        "Two-column layout (desktop) for Ikigai and Regret charts",
+        "Single column on mobile",
+        "'Explore Future Paths' CTA button at bottom",
+        "Back button to experiences.html",
+        "Typecheck passes",
+        "Verify in browser layout renders correctly"
+      ],
+      "priority": 19,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-020",
+      "title": "Build 4000 weeks mortality grid with Canvas",
+      "description": "As a user, I want to see my entire life as 4000 dots to understand time's passage.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/weeks-grid.js using Canvas API",
+        "Render 4000 dots in 80 rows x 50 columns",
+        "Weeks lived: filled with #39ff14",
+        "Weeks remaining: dark #1a1a1a",
+        "Current week: white with CSS pulse animation",
+        "Responsive: smaller dots on mobile",
+        "Stats above grid: 'X weeks lived · Y weeks remaining · Z% of life'",
+        "Typecheck passes",
+        "Verify in browser grid renders with correct counts"
+      ],
+      "priority": 20,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-021",
+      "title": "Add hover tooltip and load animation to weeks grid",
+      "description": "As a user, I want to hover on dots to see details and watch them animate on load.",
+      "acceptanceCriteria": [
+        "Hover on any dot shows tooltip: 'Week X - Age Y years'",
+        "Load animation: dots fill in sequentially (~2 seconds total)",
+        "Color coding by decade (subtle shade variations of green)",
+        "Tooltip positioned near cursor, doesn't overflow viewport",
+        "Animation can be skipped by clicking",
+        "Typecheck passes",
+        "Verify in browser hover works and animation plays"
+      ],
+      "priority": 21,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-022",
+      "title": "Build Ikigai SVG diagram component",
+      "description": "As a user, I want to see my Ikigai inputs as an interactive Venn diagram.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/ikigai-chart.js",
+        "Four overlapping circles in SVG",
+        "Colors: Love #ff6b6b, Skill #4ecdc4, Need #45b7d1, Payment #96ceb4",
+        "Circles animate in on load (grow from center)",
+        "Intersection labels: Passion, Profession, Vocation, Mission, Ikigai (center)",
+        "Hover on circle shows user's entries for that quadrant in tooltip",
+        "Typecheck passes",
+        "Verify in browser circles animate and tooltips show"
+      ],
+      "priority": 22,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-023",
+      "title": "Build regret radar chart with Canvas",
+      "description": "As a user, I want to see my Bronnie Ware assessment as a radar chart.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/radar-chart.js using Canvas",
+        "Five-axis radar chart",
+        "Axes: Authenticity, Work-Life, Feelings, Friends, Happiness",
+        "Plot user's scores (1-5) with filled polygon",
+        "Show ideal (5 on all) as faint outer boundary",
+        "Axes with low scores (1-2) highlighted in warning color (#c45c3e)",
+        "Legend explaining each axis",
+        "Typecheck passes",
+        "Verify in browser chart renders with correct values"
+      ],
+      "priority": 23,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-024",
+      "title": "Create Cloudflare Worker project structure",
+      "description": "As a developer, I need the Cloudflare Worker set up to proxy Claude API calls.",
+      "acceptanceCriteria": [
+        "Create lifelens/worker/index.js with basic router",
+        "Create lifelens/worker/wrangler.toml with name 'lifelens-api'",
+        "Configure CORS for localhost and lifelens.pages.dev",
+        "Add placeholder for ANTHROPIC_API_KEY secret",
+        "Return JSON error format: { error: string, status: number }",
+        "Handle OPTIONS preflight requests",
+        "Typecheck passes"
+      ],
+      "priority": 24,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-025",
+      "title": "Add rate limiting to Worker with KV",
+      "description": "As a developer, I need rate limiting to prevent API abuse.",
+      "acceptanceCriteria": [
+        "Configure KV namespace 'RATE_LIMITS' in wrangler.toml",
+        "Limit: 10 requests per IP per hour",
+        "Store request count with TTL in KV",
+        "Return 429 status with error message when limit exceeded",
+        "Include X-RateLimit-Remaining header in responses",
+        "Typecheck passes"
+      ],
+      "priority": 25,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-026",
+      "title": "Implement narrative generation endpoint",
+      "description": "As a frontend, I need POST /api/narrative to generate life narratives.",
+      "acceptanceCriteria": [
+        "Endpoint: POST /api/narrative",
+        "Validate input: birthYear, occupation, skills[], interests[], experiences[]",
+        "Call Claude API with prompt for warm, specific 2-3 paragraph narrative",
+        "Return: { narrative: string, themes: string[] }",
+        "Return 400 for invalid input",
+        "30 second timeout",
+        "Typecheck passes"
+      ],
+      "priority": 26,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-027",
+      "title": "Implement Ikigai analysis endpoint",
+      "description": "As a frontend, I need POST /api/ikigai to analyze Ikigai inputs.",
+      "acceptanceCriteria": [
+        "Endpoint: POST /api/ikigai",
+        "Validate input: love[], skill[], need[], payment[]",
+        "Call Claude API to identify intersections and gaps",
+        "Return: { hypothesis: string, intersections: object, gaps: string[], strengths: string[] }",
+        "Return 400 for invalid input",
+        "Typecheck passes"
+      ],
+      "priority": 27,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-028",
+      "title": "Implement future paths endpoint",
+      "description": "As a frontend, I need POST /api/paths to get AI-suggested life directions.",
+      "acceptanceCriteria": [
+        "Endpoint: POST /api/paths",
+        "Accept full profile object as input",
+        "Call Claude API to generate exactly 3 distinct paths",
+        "Each path: { name, description, alignment, challenges[], firstSteps[] }",
+        "Return: { paths: [] }",
+        "Typecheck passes"
+      ],
+      "priority": 28,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-029",
+      "title": "Implement mental model analysis endpoint",
+      "description": "As a frontend, I need POST /api/analyze to apply mental models to a path.",
+      "acceptanceCriteria": [
+        "Endpoint: POST /api/analyze",
+        "Input: { path: object, profile: object, models: string[] }",
+        "Supported models: eisenhower, 80-20, stoic, opportunity-cost, regret-minimization",
+        "Call Claude API with appropriate prompts for each model",
+        "Return structured analysis for each requested model",
+        "Typecheck passes"
+      ],
+      "priority": 29,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-030",
+      "title": "Create API client utility for frontend",
+      "description": "As a developer, I need a frontend utility to call the Worker API.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/api.js",
+        "Export: generateNarrative(data), analyzeIkigai(data), suggestPaths(data), analyzeWithModels(data)",
+        "Handle fetch with 30 second timeout",
+        "Parse JSON responses",
+        "Throw descriptive errors for non-200 responses",
+        "Typecheck passes"
+      ],
+      "priority": 30,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-031",
+      "title": "Add AI narrative section to dashboard",
+      "description": "As a user, I want to see my AI-generated life narrative on the dashboard.",
+      "acceptanceCriteria": [
+        "Section header: 'Your Story So Far'",
+        "Loading state: skeleton placeholder with pulse animation",
+        "Call generateNarrative API on page load",
+        "Display 2-3 paragraph narrative in Instrument Serif italic",
+        "Show life themes as tags below narrative",
+        "Error state: message with retry button if API fails",
+        "Typecheck passes",
+        "Verify in browser narrative loads and displays"
+      ],
+      "priority": 31,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-032",
+      "title": "Add Ikigai hypothesis to diagram",
+      "description": "As a user, I want to see AI analysis of my Ikigai below the diagram.",
+      "acceptanceCriteria": [
+        "Call analyzeIkigai API when dashboard loads",
+        "Display hypothesis statement below Ikigai diagram",
+        "Show strengths as green tags",
+        "Show gaps as orange tags with suggestions",
+        "Loading state while API call in progress",
+        "Typecheck passes",
+        "Verify in browser hypothesis displays correctly"
+      ],
+      "priority": 32,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-033",
+      "title": "Create paths page structure",
+      "description": "As a user, I want a paths page to see AI-suggested future directions.",
+      "acceptanceCriteria": [
+        "Create lifelens/paths.html",
+        "Header: 'Your Future Paths'",
+        "Subheader: 'Based on your reflection, here are three directions to consider.'",
+        "Loading state while paths generate",
+        "Back button to dashboard.html",
+        "Typecheck passes",
+        "Verify in browser page loads correctly"
+      ],
+      "priority": 33,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-034",
+      "title": "Display three path cards",
+      "description": "As a user, I want to see the three suggested paths as cards.",
+      "acceptanceCriteria": [
+        "Call suggestPaths API on page load",
+        "Display 3 cards in grid (single column mobile)",
+        "Each card shows: name (heading), description, 'Why it fits you', challenges list, first steps list",
+        "Cards have distinct accent colors",
+        "Hover state: slight lift effect",
+        "'Analyze This Path' button on each card",
+        "Typecheck passes",
+        "Verify in browser cards display with correct data"
+      ],
+      "priority": 34,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-035",
+      "title": "Build mental model analysis panel",
+      "description": "As a user, I want to analyze a selected path through mental models.",
+      "acceptanceCriteria": [
+        "Clicking 'Analyze This Path' opens analysis panel below cards",
+        "Panel shows path name and description at top",
+        "Loading state while analysis generates",
+        "Call analyzeWithModels API with selected path",
+        "'Try Another Path' button closes panel",
+        "Typecheck passes",
+        "Verify in browser panel opens and loads analysis"
+      ],
+      "priority": 35,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-036",
+      "title": "Display mental model analysis sections",
+      "description": "As a user, I want to see the analysis results organized by mental model.",
+      "acceptanceCriteria": [
+        "Five collapsible accordion sections:",
+        "1. Eisenhower Matrix - quadrant placement and insight",
+        "2. 80/20 Principle - high-impact actions to focus on",
+        "3. Stoic Dichotomy - what you can/cannot control",
+        "4. Opportunity Cost - what you're giving up",
+        "5. Regret Minimization - future-self perspective",
+        "First section expanded by default",
+        "Click header to expand/collapse",
+        "Typecheck passes",
+        "Verify in browser accordions expand/collapse correctly"
+      ],
+      "priority": 36,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-037",
+      "title": "Add session summary and export section",
+      "description": "As a user, I want to save or share my reflection results.",
+      "acceptanceCriteria": [
+        "Section at bottom of paths page: 'Save Your Reflection'",
+        "'Copy Summary' button: copies text summary to clipboard, shows confirmation",
+        "'Start Fresh' button: clears localStorage, navigates to landing with confirmation dialog",
+        "Summary includes: weeks stats, narrative excerpt, Ikigai hypothesis, selected path",
+        "Typecheck passes",
+        "Verify in browser copy and clear functions work"
+      ],
+      "priority": 37,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-038",
+      "title": "Add loading state components",
+      "description": "As a user, I want clear visual feedback when AI is generating content.",
+      "acceptanceCriteria": [
+        "Create lifelens/js/loading.js with skeleton loader component",
+        "Skeleton shows animated pulse effect",
+        "Message: 'Generating your insights...'",
+        "Optional: 'Usually takes 10-15 seconds' subtitle",
+        "Apply to all API-dependent sections on dashboard and paths",
+        "Typecheck passes",
+        "Verify in browser loading states display correctly"
+      ],
+      "priority": 38,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-039",
+      "title": "Add error handling for API failures",
+      "description": "As a user, I want helpful error messages when something goes wrong.",
+      "acceptanceCriteria": [
+        "Create error display component",
+        "Show user-friendly message: 'Something went wrong. Please try again.'",
+        "Include 'Retry' button that re-calls the failed API",
+        "Network offline detection: 'You appear to be offline'",
+        "Rate limit exceeded: 'Too many requests. Please wait and try again.'",
+        "Apply to all API calls on dashboard and paths",
+        "Typecheck passes",
+        "Verify in browser error states display correctly"
+      ],
+      "priority": 39,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-040",
+      "title": "Ensure mobile responsiveness across all pages",
+      "description": "As a mobile user, I want the app to work well on my phone.",
+      "acceptanceCriteria": [
+        "All pages render correctly at 375px width",
+        "Touch targets minimum 44px",
+        "No horizontal scrolling on any page",
+        "Weeks grid uses smaller dots on mobile",
+        "Forms use appropriate mobile keyboards",
+        "Progress indicator fits in mobile header",
+        "Typecheck passes",
+        "Verify in browser using device emulation for iPhone SE"
+      ],
+      "priority": 40,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
