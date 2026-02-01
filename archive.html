@@ -7,209 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { font-size: 18px; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #0a0a0a;
-            color: #e5e5e5;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        ::selection {
-            background: #fff;
-            color: #000;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 3px;
-        }
-
-        a:hover {
-            text-decoration-thickness: 2px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header */
-        header {
-            padding: 4rem 0 3rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .back-link {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 2rem;
-            display: inline-block;
-        }
-
-        .back-link:hover {
-            color: #fff;
-        }
-
-        header h1 {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 3.5rem;
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            color: #fff;
-            margin-bottom: 1rem;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: #888;
-            max-width: 500px;
-        }
-
-        /* Year section */
-        .year-section {
-            padding: 3rem 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .year-section:last-of-type {
-            border-bottom: 1px solid #333;
-        }
-
-        .year-label {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 2.5rem;
-            font-weight: 400;
-            color: #fff;
-            margin-bottom: 2rem;
-            letter-spacing: -0.02em;
-        }
-
-        /* Month group */
-        .month-group {
-            margin-bottom: 2.5rem;
-        }
-
-        .month-group:last-child {
-            margin-bottom: 0;
-        }
-
-        .month-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #555;
-            margin-bottom: 1rem;
-        }
-
-        /* Post list */
-        .post-list {
-            list-style: none;
-        }
-
-        .post-list li {
-            padding: 1rem 0;
-            border-bottom: 1px solid #1a1a1a;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            gap: 1rem;
-        }
-
-        .post-list li:first-child {
-            padding-top: 0;
-        }
-
-        .post-list li:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
-
-        .post-title {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 1.3rem;
-            flex: 1;
-        }
-
-        .post-source {
-            font-size: 0.75rem;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            white-space: nowrap;
-        }
-
-        .post-source.essays {
-            color: #7a8b6e;
-        }
-
-        .post-source.technical {
-            color: #6e7a8b;
-        }
-
-        .post-source.blog {
-            color: #8b6e7a;
-        }
-
-        /* Footer */
-        footer {
-            padding: 3rem 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        .footer-links a:hover {
-            color: #fff;
-        }
-
-        .copyright {
-            font-size: 0.8rem;
-            color: #444;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            html { font-size: 16px; }
-
-            .container { padding: 0 1.5rem; }
-
-            header { padding: 3rem 0 2rem; }
-            header h1 { font-size: 2.5rem; }
-
-            .year-label { font-size: 2rem; }
-
-            .post-list li {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.25rem;
-            }
-
-            .post-source {
-                margin-top: 0.25rem;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -217,7 +15,18 @@
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
             <p>All my writing, organized by date.</p>
+            <p class="post-count" id="post-count">17 posts</p>
         </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by Category</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="essays">Essays</button>
+                <button class="filter-btn" data-category="technical">Technical</button>
+                <button class="filter-btn" data-category="blog">Blog</button>
+            </div>
+        </div>
 
         <section class="year-section">
             <h2 class="year-label">2026</h2>
@@ -377,5 +186,69 @@
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+
+    <script>
+    (function() {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.post-list li');
+        const yearSections = document.querySelectorAll('.year-section');
+        const totalPosts = items.length;
+
+        // Add data-category to each item based on post-source class
+        items.forEach(item => {
+            const source = item.querySelector('.post-source');
+            if (source.classList.contains('essays')) item.dataset.category = 'essays';
+            else if (source.classList.contains('technical')) item.dataset.category = 'technical';
+            else if (source.classList.contains('blog')) item.dataset.category = 'blog';
+        });
+
+        // Update initial count
+        document.getElementById('post-count').textContent = totalPosts + ' posts';
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.dataset.category;
+                let visibleCount = 0;
+
+                items.forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                // Hide empty month groups and year sections
+                yearSections.forEach(section => {
+                    const monthGroups = section.querySelectorAll('.month-group');
+                    let sectionHasVisible = false;
+
+                    monthGroups.forEach(group => {
+                        const visibleItems = group.querySelectorAll('.post-list li:not(.hidden)');
+                        if (visibleItems.length === 0) {
+                            group.classList.add('hidden');
+                        } else {
+                            group.classList.remove('hidden');
+                            sectionHasVisible = true;
+                        }
+                    });
+
+                    if (sectionHasVisible) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+
+                // Update count
+                document.getElementById('post-count').textContent = visibleCount + ' posts' + (category === 'all' ? '' : ' in ' + btn.textContent);
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
