@@ -71,6 +71,10 @@
             color: #666;
             margin-top: 0.5rem;
         }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -79,11 +83,19 @@
             <a href="/" class="back-link">&larr; Home</a>
             <h1>Notes</h1>
             <p>Excerpts from texts I find meaningful — longer passages that inspire reflection.</p>
-            <p class="note-count">1 note</p>
+            <p class="note-count" id="note-count">1 note</p>
         </header>
 
+        <div class="filters">
+            <span class="filter-label">Filter by Author</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-author="all">All</button>
+                <button class="filter-btn" data-author="Nikos Kazantzakis">Nikos Kazantzakis (1)</button>
+            </div>
+        </div>
+
         <div class="notes-list">
-            <div class="note-item">
+            <div class="note-item" data-author="Nikos Kazantzakis">
                 <p class="note-text">
                     The further away one is from one's country, the more one thinks of it and loves it. When I am in Greece I see the pettiness, the intrigues, the idiocies, the inadequacies of the leaders and the misery of the people. But from afar one cannot distinguish the ugliness so clearly, and one has more freedom to create an image of the country worthy of true love. That's why I work better and love Greece more when I am abroad. Far away from her I am better able to grasp her essence and her mission in the world, and thus my own humble mission.
                 </p>
@@ -104,8 +116,41 @@
                 <a href="now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
             </div>
-            <p class="copyright">Made in Vancouver</p>
+            <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+
+    <script>
+        var buttons = document.querySelectorAll('.filter-btn');
+        var items = document.querySelectorAll('.note-item');
+        var noteCount = document.getElementById('note-count');
+        var totalNotes = items.length;
+
+        buttons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var author = this.getAttribute('data-author');
+
+                buttons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var visibleCount = 0;
+                items.forEach(function(item) {
+                    var itemAuthor = item.getAttribute('data-author');
+                    if (author === 'all' || itemAuthor === author) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                if (author === 'all') {
+                    noteCount.textContent = totalNotes + (totalNotes === 1 ? ' note' : ' notes');
+                } else {
+                    noteCount.textContent = visibleCount + (visibleCount === 1 ? ' note' : ' notes') + ' by ' + author;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
