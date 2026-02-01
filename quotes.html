@@ -23,211 +23,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        html { font-size: 18px; }
-
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #0a0a0a;
-            color: #e5e5e5;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        ::selection {
-            background: #fff;
-            color: #000;
-        }
-
-        a {
-            color: #fff;
-            text-decoration: underline;
-            text-decoration-thickness: 1px;
-            text-underline-offset: 3px;
-        }
-
-        a:hover {
-            text-decoration-thickness: 2px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Header */
-        header {
-            padding: 4rem 0 3rem;
-            border-bottom: 1px solid #333;
-        }
-
-        .back-link {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 2rem;
-            display: inline-block;
-        }
-
-        .back-link:hover {
-            color: #fff;
-        }
-
-        header h1 {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 3.5rem;
-            font-weight: 400;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            color: #fff;
-            margin-bottom: 1rem;
-        }
-
-        header p {
-            font-size: 1.1rem;
-            color: #888;
-            max-width: 500px;
-        }
-
-        .quote-count {
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 0.5rem;
-        }
-
-        /* Filters */
-        .filters {
-            padding: 2rem 0;
-            border-bottom: 1px solid #222;
-        }
-
-        .filter-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #666;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .filter-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .filter-btn {
-            background: transparent;
-            border: 1px solid #333;
-            color: #888;
-            padding: 0.4rem 0.8rem;
-            font-size: 0.85rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-radius: 2px;
-        }
-
-        .filter-btn:hover {
-            border-color: #666;
-            color: #fff;
-        }
-
-        .filter-btn.active {
-            background: #fff;
-            border-color: #fff;
-            color: #000;
-        }
-
-        /* Quotes list */
-        .quotes-list {
-            padding: 2rem 0;
-        }
-
-        .quote-item {
-            padding: 2rem 0;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .quote-item:last-child {
-            border-bottom: none;
-        }
-
-        .quote-item.hidden {
-            display: none;
-        }
-
-        .quote-text {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 1.4rem;
-            font-style: italic;
-            line-height: 1.5;
-            color: #ccc;
-            margin-bottom: 1rem;
-        }
-
-        .quote-text::before {
-            content: '"';
-            color: #c45c3e;
-        }
-
-        .quote-text::after {
-            content: '"';
-            color: #c45c3e;
-        }
-
-        .quote-author {
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .quote-author::before {
-            content: '— ';
-        }
-
-        /* Footer */
-        footer {
-            padding: 3rem 0;
-            border-top: 1px solid #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .footer-links a {
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        .footer-links a:hover {
-            color: #fff;
-        }
-
-        .copyright {
-            font-size: 0.8rem;
-            color: #444;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            html { font-size: 16px; }
-
-            .container { padding: 0 1.5rem; }
-
-            header { padding: 3rem 0 2rem; }
-            header h1 { font-size: 2.5rem; }
-
-            .quote-text { font-size: 1.2rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
@@ -248,7 +44,7 @@
         <div class="quotes-list" id="quotes-list">
         </div>
 
-        <footer>
+        <footer class="with-border">
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="now.html">Now</a>
@@ -326,7 +122,7 @@
                 });
             })
             .catch(err => {
-                document.getElementById('quotes-list').innerHTML = '<p style="color:#666">Could not load quotes.</p>';
+                document.getElementById('quotes-list').innerHTML = '<p style="color:#909090">Could not load quotes.</p>';
             });
     })();
     </script>
