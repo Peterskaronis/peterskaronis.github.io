@@ -630,15 +630,15 @@ ${monthsHTML}        </section>\n\n`;
         }
 
         .post-source.essays {
-            color: #7a8b6e;
+            color: #8bc66a;
         }
 
         .post-source.technical {
-            color: #6e7a8b;
+            color: #6aa8d6;
         }
 
         .post-source.blog {
-            color: #8b6e7a;
+            color: #d66a9a;
         }
 
         /* Filters */
