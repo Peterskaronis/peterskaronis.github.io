@@ -161,6 +161,61 @@
             color: #8b6e7a;
         }
 
+        /* Filters */
+        .filters {
+            padding: 2rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: 0.85rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #555;
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .post-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         /* Footer */
         footer {
             padding: 3rem 0;
@@ -217,7 +272,18 @@
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
             <p>All my writing, organized by date.</p>
+            <p class="post-count" id="post-count">19 posts</p>
         </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by Category</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="essays">Essays</button>
+                <button class="filter-btn" data-category="technical">Technical</button>
+                <button class="filter-btn" data-category="blog">Blog</button>
+            </div>
+        </div>
 
         <section class="year-section">
             <h2 class="year-label">2026</h2>
@@ -225,15 +291,15 @@
             <div class="month-group">
                 <p class="month-label">January</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="blog">
                         <a href="/blog/why-i-built-my-own-blog/" class="post-title">Why I Built My Own Blog</a>
                         <span class="post-source blog">Blog</span>
                     </li>
-                    <li>
+                    <li data-category="technical">
                         <a href="/blog/the-cybersecurity-career-playbook-broke-in-2025/" class="post-title">The Cybersecurity Career Playbook Broke in 2025</a>
                         <span class="post-source technical">Technical</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/you-are-not-a-tree/" class="post-title">You Are Not a Tree</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -248,7 +314,7 @@
             <div class="month-group">
                 <p class="month-label">December</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/cheating-is-the-new-innovation/" class="post-title">Cheating Is the New Innovation</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -258,7 +324,7 @@
             <div class="month-group">
                 <p class="month-label">January</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/building-my-own-tools/" class="post-title">Building My Own Tools</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -273,7 +339,7 @@
             <div class="month-group">
                 <p class="month-label">October</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/the-power-of-simplicity/" class="post-title">The Power of Simplicity</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -283,7 +349,7 @@
             <div class="month-group">
                 <p class="month-label">September</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="technical">
                         <a href="/blog/episode-1-iso-27001-2022-framework/" class="post-title">Episode 1: ISO 27001:2022 Framework</a>
                         <span class="post-source technical">Technical</span>
                     </li>
@@ -293,7 +359,7 @@
             <div class="month-group">
                 <p class="month-label">July</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="technical">
                         <a href="/blog/cybersecurity-talent-landscape-and-llms/" class="post-title">Cybersecurity Talent Landscape and LLMs</a>
                         <span class="post-source technical">Technical</span>
                     </li>
@@ -303,7 +369,7 @@
             <div class="month-group">
                 <p class="month-label">February</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/levels-of-lucidity-in-people-and-machines/" class="post-title">Levels of lucidity in people and machines</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -318,7 +384,7 @@
             <div class="month-group">
                 <p class="month-label">August</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/don-t-be-trapped-by-dogma-in-life-and-technology/" class="post-title">Don't be trapped by Dogma in life and technology</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -328,39 +394,39 @@
             <div class="month-group">
                 <p class="month-label">January</p>
                 <ul class="post-list">
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/002-neural-impulse-writing-visualization-perspective-and-the/" class="post-title">002: Neural Impulse: Writing, visualization, perspective and the rise of AI</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/cognitive-performance-methods/" class="post-title">Cognitive Performance Methods</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/the-art-of-photography/" class="post-title">The Art of Photography</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/10-life-lessons-i-learned-from-jim-carrey/" class="post-title">10 Life Lessons I Learned From Jim Carrey</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/nikos-kazantzakis-on-life-death-and-the-meaning-of-it-all/" class="post-title">Nikos Kazantzakis on Life, Death and the meaning of it all</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/8-life-lessons-i-learned-from-steve-jobs/" class="post-title">8 Life Lessons I Learned From Steve Jobs</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/001-neural-impulse-personal-sovereignty-veganism-fairness/" class="post-title">001: Neural Impulse: Personal sovereignty, Veganism, Fairness</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/why-are-you-vegan/" class="post-title">Why Are You Vegan?</a>
                         <span class="post-source essays">Essays</span>
                     </li>
-                    <li>
+                    <li data-category="essays">
                         <a href="/blog/starting-over-again/" class="post-title">Starting Over Again!</a>
                         <span class="post-source essays">Essays</span>
                     </li>
@@ -377,5 +443,39 @@
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+
+    <script>
+        var buttons = document.querySelectorAll('.filter-btn');
+        var items = document.querySelectorAll('.post-list li');
+        var postCount = document.getElementById('post-count');
+        var totalPosts = items.length;
+
+        buttons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var category = this.getAttribute('data-category');
+
+                buttons.forEach(function(b) { b.classList.remove('active'); });
+                this.classList.add('active');
+
+                var visibleCount = 0;
+                items.forEach(function(item) {
+                    var itemCategory = item.getAttribute('data-category');
+                    if (category === 'all' || itemCategory === category) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                if (category === 'all') {
+                    postCount.textContent = totalPosts + ' posts';
+                } else {
+                    var categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                    postCount.textContent = visibleCount + ' posts in ' + categoryName;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
