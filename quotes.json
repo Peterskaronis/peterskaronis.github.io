@@ -1,5 +1,9 @@
 [
   {
+    "quote": "Δεν ελπίζω τίποτα. Δεν φοβάμαι τίποτα. Είμαι λέφτερος.",
+    "author": "Nikos Kazantzakis"
+  },
+  {
     "quote": "No matter how isolated you are and how lonely you feel, if you do your work truly and conscientiously, unknown friends will come and seek you.",
     "author": "Carl Jung"
   },
@@ -98,5 +102,9 @@
   {
     "quote": "The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.",
     "author": "Bertrand Russell"
+  },
+  {
+    "quote": "A person's success in life can usually be measured by the number of uncomfortable conversations he or she is willing to have.",
+    "author": "Tim Ferriss"
   }
 ]
