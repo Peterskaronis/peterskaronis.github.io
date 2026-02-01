@@ -270,15 +270,15 @@ blockquote .author {
 }
 
 .post-source.essays {
-    color: #7a8b6e;
+    color: #9cb08e;
 }
 
 .post-source.technical {
-    color: #6e7a8b;
+    color: #8e9cb0;
 }
 
 .post-source.blog {
-    color: #8b6e7a;
+    color: #b08e9c;
 }
 
 /* Month/date labels */
