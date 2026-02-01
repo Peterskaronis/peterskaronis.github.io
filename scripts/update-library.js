@@ -418,22 +418,22 @@ function generateLibraryHTML(books) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Techimpossible Books - Free Books Resources</title>
-    <meta name="description" content="Free books resources — curated book recommendations.">
+    <title>Library — Peter Skaronis</title>
+    <meta name="description" content="Books I've read — my personal library.">
     <link rel="canonical" href="https://skaronis.com/library.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Techimpossible Books - Free Books Resources">
-    <meta property="og:description" content="Free books resources — curated book recommendations.">
+    <meta property="og:title" content="Library — Peter Skaronis">
+    <meta property="og:description" content="Books I've read — my personal library.">
     <meta property="og:url" content="https://skaronis.com/library.html">
     <meta property="og:site_name" content="Peter Skaronis">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@peter_skaronis">
-    <meta name="twitter:title" content="Techimpossible Books - Free Books Resources">
-    <meta name="twitter:description" content="Free books resources — curated book recommendations.">
+    <meta name="twitter:title" content="Library — Peter Skaronis">
+    <meta name="twitter:description" content="Books I've read — my personal library.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -647,8 +647,8 @@ function generateLibraryHTML(books) {
     <div class="container">
         <header>
             <a href="index.html" class="back-link">&larr; Back home</a>
-            <h1>Techimpossible Books - Free Books Resources</h1>
-            <p>Free books resources. Synced from <a href="https://www.goodreads.com/user/show/${GOODREADS_USER_ID}" target="_blank" rel="noopener">Goodreads</a>.</p>
+            <h1>Library</h1>
+            <p>Books I've read. Synced from <a href="https://www.goodreads.com/user/show/${GOODREADS_USER_ID}" target="_blank" rel="noopener">Goodreads</a>.</p>
             <p class="book-count">${books.length} books · <a href="/library/notes/">View annotated books</a></p>
         </header>
 
