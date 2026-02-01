@@ -389,7 +389,8 @@ blockquote .author {
 }
 
 /* Quotes page */
-.quote-count {
+.quote-count,
+.post-count {
     font-size: 0.9rem;
     color: #909090;
     margin-top: 0.5rem;
@@ -452,7 +453,7 @@ blockquote .author {
     border-bottom: none;
 }
 
-.quote-item.hidden {
+.hidden {
     display: none;
 }
 

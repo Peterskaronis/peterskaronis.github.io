@@ -15,7 +15,18 @@
             <a href="index.html" class="back-link">← Back home</a>
             <h1>Archive</h1>
             <p>All my writing, organized by date.</p>
+            <p class="post-count" id="post-count">17 posts</p>
         </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by Category</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-category="all">All</button>
+                <button class="filter-btn" data-category="essays">Essays</button>
+                <button class="filter-btn" data-category="technical">Technical</button>
+                <button class="filter-btn" data-category="blog">Blog</button>
+            </div>
+        </div>
 
         <section class="year-section">
             <h2 class="year-label">2026</h2>
@@ -175,5 +186,70 @@
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
     </div>
+
+    <script>
+    (function() {
+        const buttons = document.querySelectorAll('.filter-btn');
+        const items = document.querySelectorAll('.post-list li');
+        const yearSections = document.querySelectorAll('.year-section');
+        const totalPosts = items.length;
+
+        // Add data-category to each item based on post-source class
+        items.forEach(item => {
+            const source = item.querySelector('.post-source');
+            if (source.classList.contains('essays')) item.dataset.category = 'essays';
+            else if (source.classList.contains('technical')) item.dataset.category = 'technical';
+            else if (source.classList.contains('blog')) item.dataset.category = 'blog';
+        });
+
+        // Update initial count
+        document.getElementById('post-count').textContent = totalPosts + ' posts';
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const category = btn.dataset.category;
+                let visibleCount = 0;
+
+                items.forEach(item => {
+                    if (category === 'all' || item.dataset.category === category) {
+                        item.classList.remove('hidden');
+                        visibleCount++;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                // Hide empty month groups and year sections
+                yearSections.forEach(section => {
+                    const monthGroups = section.querySelectorAll('.month-group');
+                    let sectionHasVisible = false;
+
+                    monthGroups.forEach(group => {
+                        const visibleItems = group.querySelectorAll('.post-list li:not(.hidden)');
+                        if (visibleItems.length === 0) {
+                            group.classList.add('hidden');
+                        } else {
+                            group.classList.remove('hidden');
+                            sectionHasVisible = true;
+                        }
+                    });
+
+                    if (sectionHasVisible) {
+                        section.classList.remove('hidden');
+                    } else {
+                        section.classList.add('hidden');
+                    }
+                });
+
+                // Update count
+                const categoryName = category === 'all' ? '' : ' ' + btn.textContent;
+                document.getElementById('post-count').textContent = visibleCount + ' posts' + (category === 'all' ? '' : ' in ' + btn.textContent);
+            });
+        });
+    })();
+    </script>
 </body>
 </html>
