@@ -767,6 +767,8 @@ ${monthsHTML}        </section>\n\n`;
 
 ${sectionsHTML}        <footer>
             <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
