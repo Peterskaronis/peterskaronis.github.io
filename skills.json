@@ -22,5 +22,13 @@
     "category": "Security",
     "platform": "Claude Web",
     "file": "skills/google-workspace-hardening.md"
+  },
+  {
+    "id": "ti-security-posture-check",
+    "name": "Security Posture Check",
+    "description": "Scan your OpenClaw setup and host machine for exposed ports, misconfigurations, weak credentials, and Docker vulnerabilities. Plain English findings ranked by risk with step-by-step fix instructions.",
+    "category": "Security",
+    "platform": "Claude Code",
+    "file": "skills/ti-security-posture-check.md"
   }
 ]
