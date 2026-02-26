@@ -92,6 +92,52 @@
         .skill-category.writing { color: #99eeff; }
         .skill-category.workflow { color: #b89aff; }
 
+        .skill-tags {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-platform {
+            font-size: 0.65rem;
+            font-weight: 500;
+            padding: 0.2rem 0.5rem;
+            border-radius: 2px;
+            letter-spacing: 0.03em;
+        }
+
+        .skill-platform.claude-code {
+            background: rgba(139, 198, 106, 0.12);
+            color: #8bc66a;
+        }
+
+        .skill-platform.claude-web {
+            background: rgba(153, 238, 255, 0.12);
+            color: #99eeff;
+        }
+
+        .filter-row {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .filter-row-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #606060;
+            min-width: 70px;
+            flex-shrink: 0;
+        }
+
         .skill-name {
             font-family: 'Instrument Serif', Georgia, serif;
             font-size: 1.3rem;
@@ -111,7 +157,6 @@
 
         .skill-actions {
             display: flex;
-            gap: 0.5rem;
         }
 
         .skill-btn {
@@ -143,23 +188,6 @@
             color: #fff;
         }
 
-        .btn-copy {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
-
-        .btn-copy:hover {
-            background: #ddd;
-            border-color: #ddd;
-        }
-
-        .btn-copy.copied {
-            background: #8bc66a;
-            border-color: #8bc66a;
-            color: #000;
-        }
-
         .install-note {
             padding: 2rem 0 0;
             font-size: 0.85rem;
@@ -189,14 +217,22 @@
         <header>
             <a href="/" class="back-link">&larr; Back home</a>
             <h1>Claude Skills</h1>
-            <p>A curated library of skills for <a href="https://claude.ai/code" style="color: #c45c3e;">Claude Code</a> (the CLI). Each skill extends Claude with specialized knowledge, workflows, and tools. Claude web skills coming soon.</p>
+            <p>A curated library of skills for <a href="https://claude.ai/code" style="color: #c45c3e;">Claude Code</a> and Claude Web. Each skill extends Claude with specialized knowledge, workflows, and tools.</p>
             <p class="skill-count" id="skill-count"></p>
         </header>
 
         <div class="filters">
-            <span class="filter-label">Filter by category</span>
-            <div class="filter-buttons" id="filter-buttons">
-                <button class="filter-btn active" data-filter="all">All</button>
+            <div class="filter-row">
+                <span class="filter-row-label">Platform</span>
+                <div class="filter-buttons" id="platform-buttons">
+                    <button class="filter-btn active" data-platform="all">All</button>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-row-label">Category</span>
+                <div class="filter-buttons" id="category-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                </div>
             </div>
         </div>
 
@@ -228,21 +264,51 @@
             'Workflow': 'workflow'
         };
 
+        const platformClasses = {
+            'Claude Code': 'claude-code',
+            'Claude Web': 'claude-web'
+        };
+
+        let activeCategory = 'all';
+        let activePlatform = 'all';
+
+        function applyFilters(total) {
+            document.querySelectorAll('.skill-card').forEach(card => {
+                const matchCat = activeCategory === 'all' || card.dataset.category === activeCategory;
+                const matchPlat = activePlatform === 'all' || card.dataset.platform === activePlatform;
+                card.classList.toggle('hidden', !(matchCat && matchPlat));
+            });
+
+            const visible = document.querySelectorAll('.skill-card:not(.hidden)').length;
+            const label = visible === total ? total + ' skills available' : visible + ' of ' + total + ' skills';
+            document.getElementById('skill-count').textContent = label;
+        }
+
         fetch('skills.json')
             .then(r => r.json())
             .then(skills => {
-                // Update count
                 document.getElementById('skill-count').textContent = skills.length + ' skills available';
 
-                // Build filter buttons
+                // Build platform filter buttons
+                const platforms = [...new Set(skills.map(s => s.platform))];
+                const platformContainer = document.getElementById('platform-buttons');
+                platforms.forEach(plat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.dataset.platform = plat;
+                    btn.textContent = plat;
+                    platformContainer.appendChild(btn);
+                });
+
+                // Build category filter buttons
                 const categories = [...new Set(skills.map(s => s.category))];
-                const filterContainer = document.getElementById('filter-buttons');
+                const categoryContainer = document.getElementById('category-buttons');
                 categories.forEach(cat => {
                     const btn = document.createElement('button');
                     btn.className = 'filter-btn';
                     btn.dataset.filter = cat;
                     btn.textContent = cat;
-                    filterContainer.appendChild(btn);
+                    categoryContainer.appendChild(btn);
                 });
 
                 // Build skill cards
@@ -251,64 +317,40 @@
                     const card = document.createElement('div');
                     card.className = 'skill-card';
                     card.dataset.category = skill.category;
+                    card.dataset.platform = skill.platform;
 
                     const catClass = categoryClasses[skill.category] || 'tools';
+                    const platClass = platformClasses[skill.platform] || 'claude-code';
                     card.innerHTML =
-                        '<div class="skill-category ' + catClass + '">' + skill.category + '</div>' +
+                        '<div class="skill-tags">' +
+                            '<span class="skill-category ' + catClass + '">' + skill.category + '</span>' +
+                            '<span class="skill-platform ' + platClass + '">' + skill.platform + '</span>' +
+                        '</div>' +
                         '<div class="skill-name">' + skill.name + '</div>' +
                         '<div class="skill-description">' + skill.description + '</div>' +
                         '<div class="skill-actions">' +
-                            '<a href="' + skill.file + '" download="SKILL.md" class="skill-btn btn-download">Download</a>' +
-                            '<button class="skill-btn btn-copy" data-file="' + skill.file + '">Copy SKILL.md</button>' +
+                            '<a href="' + skill.file + '" download="SKILL.md" class="skill-btn btn-download">Download SKILL.md</a>' +
                         '</div>';
 
                     grid.appendChild(card);
                 });
 
-                // Filter logic
-                document.getElementById('filter-buttons').addEventListener('click', function(e) {
+                // Platform filter
+                platformContainer.addEventListener('click', function(e) {
                     if (!e.target.classList.contains('filter-btn')) return;
-
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    platformContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     e.target.classList.add('active');
-
-                    const filter = e.target.dataset.filter;
-                    document.querySelectorAll('.skill-card').forEach(card => {
-                        if (filter === 'all' || card.dataset.category === filter) {
-                            card.classList.remove('hidden');
-                        } else {
-                            card.classList.add('hidden');
-                        }
-                    });
-
-                    // Update visible count
-                    const visible = document.querySelectorAll('.skill-card:not(.hidden)').length;
-                    document.getElementById('skill-count').textContent =
-                        visible + ' of ' + skills.length + ' skills' + (filter !== 'all' ? ' in ' + filter : ' available');
+                    activePlatform = e.target.dataset.platform || 'all';
+                    applyFilters(skills.length);
                 });
 
-                // Copy to clipboard
-                document.getElementById('skill-grid').addEventListener('click', function(e) {
-                    const btn = e.target.closest('.btn-copy');
-                    if (!btn) return;
-
-                    const file = btn.dataset.file;
-                    fetch(file)
-                        .then(r => r.text())
-                        .then(text => {
-                            navigator.clipboard.writeText(text).then(() => {
-                                btn.textContent = 'Copied!';
-                                btn.classList.add('copied');
-                                setTimeout(() => {
-                                    btn.textContent = 'Copy SKILL.md';
-                                    btn.classList.remove('copied');
-                                }, 2000);
-                            });
-                        })
-                        .catch(() => {
-                            btn.textContent = 'Error';
-                            setTimeout(() => { btn.textContent = 'Copy SKILL.md'; }, 2000);
-                        });
+                // Category filter
+                categoryContainer.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('filter-btn')) return;
+                    categoryContainer.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    activeCategory = e.target.dataset.filter || 'all';
+                    applyFilters(skills.length);
                 });
             })
             .catch(() => {

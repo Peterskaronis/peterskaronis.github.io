@@ -4,6 +4,7 @@
     "name": "Agent Native Architecture",
     "description": "Build applications where agents are first-class citizens. Design autonomous agents, MCP tools, and self-modifying systems.",
     "category": "AI & Agents",
+    "platform": "Claude Code",
     "file": "skills/agent-native-architecture.md"
   },
   {
@@ -11,6 +12,7 @@
     "name": "Skill Creator",
     "description": "Guide for creating effective Claude Code skills that extend capabilities with specialized knowledge, workflows, and tool integrations.",
     "category": "AI & Agents",
+    "platform": "Claude Code",
     "file": "skills/skill-creator.md"
   },
   {
@@ -18,6 +20,7 @@
     "name": "Create Agent Skills",
     "description": "Expert guidance for authoring SKILL.md files, slash commands, and understanding skill structure and best practices.",
     "category": "AI & Agents",
+    "platform": "Claude Code",
     "file": "skills/create-agent-skills.md"
   },
   {
@@ -25,6 +28,7 @@
     "name": "Frontend Design",
     "description": "Create distinctive, production-grade frontend interfaces with high design quality that avoid generic AI aesthetics.",
     "category": "Development",
+    "platform": "Claude Code",
     "file": "skills/frontend-design.md"
   },
   {
@@ -32,6 +36,7 @@
     "name": "DHH Rails Style",
     "description": "Write Ruby and Rails code in DHH's 37signals style. REST purity, fat models, thin controllers, Hotwire patterns.",
     "category": "Development",
+    "platform": "Claude Code",
     "file": "skills/dhh-rails-style.md"
   },
   {
@@ -39,6 +44,7 @@
     "name": "Andrew Kane Gem Writer",
     "description": "Write Ruby gems following Andrew Kane's patterns from 100+ gems with 374M+ downloads. Minimal, production-ready.",
     "category": "Development",
+    "platform": "Claude Code",
     "file": "skills/andrew-kane-gem-writer.md"
   },
   {
@@ -46,6 +52,7 @@
     "name": "DSPy Ruby",
     "description": "Build type-safe LLM applications with DSPy.rb \u2014 Ruby's programmatic prompt framework with signatures, modules, and optimization.",
     "category": "Development",
+    "platform": "Claude Code",
     "file": "skills/dspy-ruby.md"
   },
   {
@@ -53,6 +60,7 @@
     "name": "Gemini Image Generation",
     "description": "Generate and edit images using Google's Gemini API. Text-to-image, style transfers, logos, stickers, and multi-turn refinement.",
     "category": "Tools",
+    "platform": "Claude Code",
     "file": "skills/gemini-imagegen.md"
   },
   {
@@ -60,6 +68,7 @@
     "name": "Git Worktree Manager",
     "description": "Manage Git worktrees for isolated parallel development. Create, list, switch, and clean up worktrees with ease.",
     "category": "Tools",
+    "platform": "Claude Code",
     "file": "skills/git-worktree.md"
   },
   {
@@ -67,6 +76,7 @@
     "name": "Rclone File Transfer",
     "description": "Upload, sync, and manage files across cloud storage providers. S3, Cloudflare R2, Backblaze B2, Google Drive, and more.",
     "category": "Tools",
+    "platform": "Claude Code",
     "file": "skills/rclone.md"
   },
   {
@@ -74,6 +84,7 @@
     "name": "Security Advisory (TISA)",
     "description": "Write security advisories in the Techimpossible format. Structured analysis for CTOs, CISOs, and engineering leads.",
     "category": "Security",
+    "platform": "Claude Code",
     "file": "skills/techimpossible-security-advisory.md"
   },
   {
@@ -81,6 +92,7 @@
     "name": "Every Style Editor",
     "description": "Review and edit copy to ensure adherence to Every's style guide. Systematic line-by-line review for grammar and style.",
     "category": "Writing",
+    "platform": "Claude Code",
     "file": "skills/every-style-editor.md"
   },
   {
@@ -88,6 +100,7 @@
     "name": "Compound Docs",
     "description": "Capture solved problems as categorized documentation with YAML frontmatter for fast institutional knowledge lookup.",
     "category": "Workflow",
+    "platform": "Claude Code",
     "file": "skills/compound-docs.md"
   },
   {
@@ -95,6 +108,7 @@
     "name": "File-Based Todos",
     "description": "Manage a file-based todo tracking system. Create, triage, and resolve work items from code reviews and findings.",
     "category": "Workflow",
+    "platform": "Claude Code",
     "file": "skills/file-todos.md"
   }
 ]
