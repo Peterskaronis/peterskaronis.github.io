@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Skills — Peter Skaronis</title>
+    <meta name="description" content="A curated library of Claude Code skills. Download or copy SKILL.md files to extend Claude's capabilities with specialized knowledge and workflows.">
+    <link rel="canonical" href="https://skaronis.com/claude-skills.html">
+
+    <meta property="og:title" content="Claude Skills Library — Peter Skaronis">
+    <meta property="og:description" content="A curated library of Claude Code skills. Download or copy SKILL.md files to extend Claude's capabilities.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://skaronis.com/claude-skills.html">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:creator" content="@peter_skaronis">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Claude Skills Library",
+        "description": "A curated library of Claude Code skills for extending AI agent capabilities.",
+        "url": "https://skaronis.com/claude-skills.html",
+        "author": {
+            "@type": "Person",
+            "name": "Peter Skaronis",
+            "url": "https://skaronis.com"
+        }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .skill-count {
+            font-size: 0.9rem;
+            color: #909090;
+            margin-top: 0.5rem;
+        }
+
+        .filters {
+            padding: 2rem 0;
+            border-bottom: 1px solid #222;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 3rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .skill-card {
+            border: 1px solid #222;
+            border-radius: 4px;
+            padding: 1.5rem;
+            transition: border-color 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .skill-card:hover {
+            border-color: #444;
+            transform: translateY(-2px);
+        }
+
+        .skill-card.hidden {
+            display: none;
+        }
+
+        .skill-category {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-category.ai-agents { color: #c45c3e; }
+        .skill-category.development { color: #8bc66a; }
+        .skill-category.tools { color: #6aa8d6; }
+        .skill-category.security { color: #d66a9a; }
+        .skill-category.writing { color: #99eeff; }
+        .skill-category.workflow { color: #b89aff; }
+
+        .skill-name {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-description {
+            font-size: 0.85rem;
+            color: #909090;
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 1.25rem;
+        }
+
+        .skill-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .skill-btn {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-weight: 500;
+            border: 1px solid #333;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .skill-btn:hover {
+            text-decoration: none;
+        }
+
+        .btn-download {
+            background: transparent;
+            color: #a0a0a0;
+        }
+
+        .btn-download:hover {
+            background: #1a1a1a;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .btn-copy {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .btn-copy:hover {
+            background: #ddd;
+            border-color: #ddd;
+        }
+
+        .btn-copy.copied {
+            background: #8bc66a;
+            border-color: #8bc66a;
+            color: #000;
+        }
+
+        .install-note {
+            padding: 2rem 0 0;
+            font-size: 0.85rem;
+            color: #707070;
+            line-height: 1.6;
+        }
+
+        .install-note code {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.8rem;
+            background: #1a1a1a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: #a0a0a0;
+        }
+
+        @media (max-width: 768px) {
+            .skill-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-wide">
+        <header>
+            <a href="/" class="back-link">&larr; Back home</a>
+            <h1>Claude Skills</h1>
+            <p>A curated library of skills for <a href="https://claude.ai/code" style="color: #c45c3e;">Claude Code</a>. Each skill extends Claude with specialized knowledge, workflows, and tools.</p>
+            <p class="skill-count" id="skill-count"></p>
+        </header>
+
+        <div class="filters">
+            <span class="filter-label">Filter by category</span>
+            <div class="filter-buttons" id="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+            </div>
+        </div>
+
+        <div class="skill-grid" id="skill-grid"></div>
+
+        <div class="install-note">
+            <strong style="color: #a0a0a0;">How to install:</strong> Download or copy a skill, then place it at <code>.claude/skills/skill-name/SKILL.md</code> in your project. Claude Code will automatically detect and use it.
+        </div>
+
+        <footer class="with-border">
+            <div class="footer-links">
+                <a href="/">Home</a>
+                <a href="now.html">Now</a>
+                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
+            </div>
+            <p class="copyright">Made in Vancouver</p>
+        </footer>
+    </div>
+
+    <script>
+    (function() {
+        const categoryClasses = {
+            'AI & Agents': 'ai-agents',
+            'Development': 'development',
+            'Tools': 'tools',
+            'Security': 'security',
+            'Writing': 'writing',
+            'Workflow': 'workflow'
+        };
+
+        fetch('skills.json')
+            .then(r => r.json())
+            .then(skills => {
+                // Update count
+                document.getElementById('skill-count').textContent = skills.length + ' skills available';
+
+                // Build filter buttons
+                const categories = [...new Set(skills.map(s => s.category))];
+                const filterContainer = document.getElementById('filter-buttons');
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.dataset.filter = cat;
+                    btn.textContent = cat;
+                    filterContainer.appendChild(btn);
+                });
+
+                // Build skill cards
+                const grid = document.getElementById('skill-grid');
+                skills.forEach(skill => {
+                    const card = document.createElement('div');
+                    card.className = 'skill-card';
+                    card.dataset.category = skill.category;
+
+                    const catClass = categoryClasses[skill.category] || 'tools';
+                    card.innerHTML =
+                        '<div class="skill-category ' + catClass + '">' + skill.category + '</div>' +
+                        '<div class="skill-name">' + skill.name + '</div>' +
+                        '<div class="skill-description">' + skill.description + '</div>' +
+                        '<div class="skill-actions">' +
+                            '<a href="' + skill.file + '" download="SKILL.md" class="skill-btn btn-download">Download</a>' +
+                            '<button class="skill-btn btn-copy" data-file="' + skill.file + '">Copy SKILL.md</button>' +
+                        '</div>';
+
+                    grid.appendChild(card);
+                });
+
+                // Filter logic
+                document.getElementById('filter-buttons').addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('filter-btn')) return;
+
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    const filter = e.target.dataset.filter;
+                    document.querySelectorAll('.skill-card').forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.classList.remove('hidden');
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+
+                    // Update visible count
+                    const visible = document.querySelectorAll('.skill-card:not(.hidden)').length;
+                    document.getElementById('skill-count').textContent =
+                        visible + ' of ' + skills.length + ' skills' + (filter !== 'all' ? ' in ' + filter : ' available');
+                });
+
+                // Copy to clipboard
+                document.getElementById('skill-grid').addEventListener('click', function(e) {
+                    const btn = e.target.closest('.btn-copy');
+                    if (!btn) return;
+
+                    const file = btn.dataset.file;
+                    fetch(file)
+                        .then(r => r.text())
+                        .then(text => {
+                            navigator.clipboard.writeText(text).then(() => {
+                                btn.textContent = 'Copied!';
+                                btn.classList.add('copied');
+                                setTimeout(() => {
+                                    btn.textContent = 'Copy SKILL.md';
+                                    btn.classList.remove('copied');
+                                }, 2000);
+                            });
+                        })
+                        .catch(() => {
+                            btn.textContent = 'Error';
+                            setTimeout(() => { btn.textContent = 'Copy SKILL.md'; }, 2000);
+                        });
+                });
+            })
+            .catch(() => {
+                document.getElementById('skill-grid').innerHTML =
+                    '<p style="color: #909090;">Failed to load skills.</p>';
+            });
+    })();
+    </script>
+    <script src="scripts/share-selection.js"></script>
+</body>
+</html>

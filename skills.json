@@ -1,0 +1,100 @@
+[
+  {
+    "id": "agent-native-architecture",
+    "name": "Agent Native Architecture",
+    "description": "Build applications where agents are first-class citizens. Design autonomous agents, MCP tools, and self-modifying systems.",
+    "category": "AI & Agents",
+    "file": "skills/agent-native-architecture.md"
+  },
+  {
+    "id": "skill-creator",
+    "name": "Skill Creator",
+    "description": "Guide for creating effective Claude Code skills that extend capabilities with specialized knowledge, workflows, and tool integrations.",
+    "category": "AI & Agents",
+    "file": "skills/skill-creator.md"
+  },
+  {
+    "id": "create-agent-skills",
+    "name": "Create Agent Skills",
+    "description": "Expert guidance for authoring SKILL.md files, slash commands, and understanding skill structure and best practices.",
+    "category": "AI & Agents",
+    "file": "skills/create-agent-skills.md"
+  },
+  {
+    "id": "frontend-design",
+    "name": "Frontend Design",
+    "description": "Create distinctive, production-grade frontend interfaces with high design quality that avoid generic AI aesthetics.",
+    "category": "Development",
+    "file": "skills/frontend-design.md"
+  },
+  {
+    "id": "dhh-rails-style",
+    "name": "DHH Rails Style",
+    "description": "Write Ruby and Rails code in DHH's 37signals style. REST purity, fat models, thin controllers, Hotwire patterns.",
+    "category": "Development",
+    "file": "skills/dhh-rails-style.md"
+  },
+  {
+    "id": "andrew-kane-gem-writer",
+    "name": "Andrew Kane Gem Writer",
+    "description": "Write Ruby gems following Andrew Kane's patterns from 100+ gems with 374M+ downloads. Minimal, production-ready.",
+    "category": "Development",
+    "file": "skills/andrew-kane-gem-writer.md"
+  },
+  {
+    "id": "dspy-ruby",
+    "name": "DSPy Ruby",
+    "description": "Build type-safe LLM applications with DSPy.rb \u2014 Ruby's programmatic prompt framework with signatures, modules, and optimization.",
+    "category": "Development",
+    "file": "skills/dspy-ruby.md"
+  },
+  {
+    "id": "gemini-imagegen",
+    "name": "Gemini Image Generation",
+    "description": "Generate and edit images using Google's Gemini API. Text-to-image, style transfers, logos, stickers, and multi-turn refinement.",
+    "category": "Tools",
+    "file": "skills/gemini-imagegen.md"
+  },
+  {
+    "id": "git-worktree",
+    "name": "Git Worktree Manager",
+    "description": "Manage Git worktrees for isolated parallel development. Create, list, switch, and clean up worktrees with ease.",
+    "category": "Tools",
+    "file": "skills/git-worktree.md"
+  },
+  {
+    "id": "rclone",
+    "name": "Rclone File Transfer",
+    "description": "Upload, sync, and manage files across cloud storage providers. S3, Cloudflare R2, Backblaze B2, Google Drive, and more.",
+    "category": "Tools",
+    "file": "skills/rclone.md"
+  },
+  {
+    "id": "techimpossible-security-advisory",
+    "name": "Security Advisory (TISA)",
+    "description": "Write security advisories in the Techimpossible format. Structured analysis for CTOs, CISOs, and engineering leads.",
+    "category": "Security",
+    "file": "skills/techimpossible-security-advisory.md"
+  },
+  {
+    "id": "every-style-editor",
+    "name": "Every Style Editor",
+    "description": "Review and edit copy to ensure adherence to Every's style guide. Systematic line-by-line review for grammar and style.",
+    "category": "Writing",
+    "file": "skills/every-style-editor.md"
+  },
+  {
+    "id": "compound-docs",
+    "name": "Compound Docs",
+    "description": "Capture solved problems as categorized documentation with YAML frontmatter for fast institutional knowledge lookup.",
+    "category": "Workflow",
+    "file": "skills/compound-docs.md"
+  },
+  {
+    "id": "file-todos",
+    "name": "File-Based Todos",
+    "description": "Manage a file-based todo tracking system. Create, triage, and resolve work items from code reviews and findings.",
+    "category": "Workflow",
+    "file": "skills/file-todos.md"
+  }
+]
