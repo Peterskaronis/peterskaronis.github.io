@@ -532,7 +532,9 @@ check_network() {
     # Count total exposed ports
     local total_exposed
     total_exposed=$(echo "$exposed_services" | grep -c "LISTEN" || echo "0")
-    if [ "$total_exposed" -gt 10 ]; then
+    total_exposed=$(echo "$total_exposed" | tr -d '[:space:]')
+    total_exposed="${total_exposed:-0}"
+    if [ "$total_exposed" -gt 10 ] 2>/dev/null; then
       add_finding "MEDIUM" "network" \
         "${total_exposed} services exposed to all interfaces" \
         "There are ${total_exposed} services listening on 0.0.0.0 (all network interfaces)." \
@@ -731,8 +733,10 @@ WARNING: Enabling the firewall without allowing SSH will lock you out." \
       ipt_rules=$(try_sudo iptables -L -n || iptables -L -n 2>/dev/null || echo "")
       local rule_count
       rule_count=$(echo "$ipt_rules" | grep -c -v "^Chain\|^target\|^$" || echo "0")
+      rule_count=$(echo "$rule_count" | tr -d '[:space:]')
+      rule_count="${rule_count:-0}"
 
-      if [ "$rule_count" -lt 3 ]; then
+      if [ "$rule_count" -lt 3 ] 2>/dev/null; then
         add_finding "HIGH" "firewall" \
           "No firewall rules configured" \
           "No UFW and iptables has ${rule_count} rules (effectively no firewall)." \
@@ -972,15 +976,19 @@ check_updates() {
     elif echo "$sw_updates" | grep -qi "\*"; then
       local pending
       pending=$(echo "$sw_updates" | grep -c "\*" || echo "0")
+      pending=$(echo "$pending" | tr -d '[:space:]')
+      pending="${pending:-0}"
       local update_list
       update_list=$(echo "$sw_updates" | grep "\*" | sed 's/^[[:space:]]*//' | head -10)
 
       # Check if any are security updates (Rapid Security Response or Security Update)
       local security_count
       security_count=$(echo "$sw_updates" | grep -ciE "security|XProtect|Rapid Security Response" || echo "0")
+      security_count=$(echo "$security_count" | tr -d '[:space:]')
+      security_count="${security_count:-0}"
 
       local severity="MEDIUM"
-      [ "$security_count" -gt 0 ] && severity="HIGH"
+      [ "$security_count" -gt 0 ] 2>/dev/null && severity="HIGH"
 
       add_finding "$severity" "system" \
         "${pending} pending macOS update(s)" \
