@@ -14,7 +14,7 @@
 
 set -uo pipefail
 
-VERSION="1.1.0"
+VERSION="1.2.0"
 SCAN_ID="ti-$(date +%s)-$$"
 SCAN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 OUTPUT_JSON=false
@@ -107,6 +107,27 @@ detect_os() {
 }
 
 OS_TYPE="$(detect_os)"
+
+# Check if sudo is available and usable (non-interactive)
+CAN_SUDO=false
+if command -v sudo &>/dev/null; then
+  # Test if sudo works without a password prompt (NOPASSWD or cached credentials)
+  if sudo -n true 2>/dev/null; then
+    CAN_SUDO=true
+  fi
+fi
+
+# Run a command with sudo if available, otherwise without
+# Usage: try_sudo command arg1 arg2 ...
+try_sudo() {
+  if [ "$CAN_SUDO" = true ]; then
+    sudo "$@" 2>/dev/null
+  else
+    "$@" 2>/dev/null
+  fi
+}
+
+SKIPPED_CHECKS=0
 
 # Portable stat: returns octal permissions (e.g., "644")
 portable_stat_perms() {
@@ -397,7 +418,7 @@ check_network() {
   local listening=""
   if [ "$OS_TYPE" = "macos" ]; then
     if command_exists lsof; then
-      listening=$(sudo lsof -iTCP -sTCP:LISTEN -nP 2>/dev/null || lsof -iTCP -sTCP:LISTEN -nP 2>/dev/null || echo "")
+      listening=$(try_sudo lsof -iTCP -sTCP:LISTEN -nP || lsof -iTCP -sTCP:LISTEN -nP 2>/dev/null || echo "")
     elif command_exists netstat; then
       listening=$(netstat -an -p tcp 2>/dev/null | grep LISTEN || echo "")
     fi
@@ -675,7 +696,7 @@ Or: System Settings > Network > Firewall > Options > Enable stealth mode" \
     # macOS: Check pf (packet filter) for advanced setups
     if command_exists pfctl; then
       local pf_status
-      pf_status=$(sudo pfctl -s info 2>/dev/null | head -1 || echo "unknown")
+      pf_status=$(try_sudo pfctl -s info 2>/dev/null | head -1 || echo "unknown")
       if echo "$pf_status" | grep -qi "Enabled"; then
         fw_active=true
       fi
@@ -685,7 +706,7 @@ Or: System Settings > Network > Firewall > Options > Enable stealth mode" \
     # Linux: Check UFW
     if command_exists ufw; then
       local ufw_status
-      ufw_status=$(sudo ufw status 2>/dev/null || ufw status 2>/dev/null || echo "unknown")
+      ufw_status=$(try_sudo ufw status || ufw status 2>/dev/null || echo "unknown")
       if echo "$ufw_status" | grep -qi "inactive\|disabled"; then
         add_finding "HIGH" "firewall" \
           "UFW firewall is installed but inactive" \
@@ -707,7 +728,7 @@ WARNING: Enabling the firewall without allowing SSH will lock you out." \
     # Check iptables if no UFW
     if [ "$fw_active" = false ] && command_exists iptables; then
       local ipt_rules
-      ipt_rules=$(sudo iptables -L -n 2>/dev/null || iptables -L -n 2>/dev/null || echo "")
+      ipt_rules=$(try_sudo iptables -L -n || iptables -L -n 2>/dev/null || echo "")
       local rule_count
       rule_count=$(echo "$ipt_rules" | grep -c -v "^Chain\|^target\|^$" || echo "0")
 
@@ -1197,6 +1218,8 @@ generate_output() {
   },
   "findings": ${FINDINGS},
   "scanner": "Techimpossible Security Posture Check v${VERSION}",
+  "elevated": ${CAN_SUDO},
+  "os": "${OS_TYPE}",
   "more_info": "https://techimpossible.com"
 }
 ENDJSON
@@ -1330,16 +1353,24 @@ for f in findings:
   # Fix: Install fail2ban if missing (Linux only — macOS uses Homebrew, don't auto-install)
   if [ "$OS_TYPE" = "linux" ] && ! command_exists fail2ban-client && command_exists apt; then
     echo "    Installing fail2ban..."
-    sudo apt install -y fail2ban >/dev/null 2>&1 && \
-      sudo systemctl enable --now fail2ban >/dev/null 2>&1 && \
-      echo "    Fixed: fail2ban installed and enabled"
+    if [ "$CAN_SUDO" = true ]; then
+      sudo apt install -y fail2ban >/dev/null 2>&1 && \
+        sudo systemctl enable --now fail2ban >/dev/null 2>&1 && \
+        echo "    Fixed: fail2ban installed and enabled"
+    else
+      echo "    Skipped: fail2ban install requires sudo"
+    fi
   fi
 
   # Fix: Install unattended-upgrades if missing (Linux/apt only)
   if [ "$OS_TYPE" = "linux" ] && command_exists apt && ! dpkg -l unattended-upgrades 2>/dev/null | grep -q "^ii"; then
     echo "    Installing unattended-upgrades..."
-    sudo apt install -y unattended-upgrades >/dev/null 2>&1 && \
-      echo "    Fixed: unattended-upgrades installed"
+    if [ "$CAN_SUDO" = true ]; then
+      sudo apt install -y unattended-upgrades >/dev/null 2>&1 && \
+        echo "    Fixed: unattended-upgrades installed"
+    else
+      echo "    Skipped: unattended-upgrades install requires sudo"
+    fi
   fi
 
   # Fix: Enable macOS automatic critical updates
@@ -1348,10 +1379,14 @@ for f in findings:
     crit_update=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 2>/dev/null || echo "unknown")
     if [ "$crit_update" = "0" ] || [ "$crit_update" = "unknown" ]; then
       echo "    Enabling automatic critical/security updates..."
-      sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool true 2>/dev/null && \
-        echo "    Fixed: Automatic critical updates enabled"
-      sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true 2>/dev/null && \
-        echo "    Fixed: Automatic update checking enabled"
+      if [ "$CAN_SUDO" = true ]; then
+        sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool true 2>/dev/null && \
+          echo "    Fixed: Automatic critical updates enabled"
+        sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true 2>/dev/null && \
+          echo "    Fixed: Automatic update checking enabled"
+      else
+        echo "    Skipped: macOS system preferences require sudo"
+      fi
     fi
   fi
 
