@@ -14,7 +14,7 @@
 
 set -uo pipefail
 
-VERSION="1.0.0"
+VERSION="1.1.0"
 SCAN_ID="ti-$(date +%s)-$$"
 SCAN_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 OUTPUT_JSON=false
@@ -96,6 +96,25 @@ command_exists() {
 
 file_readable() {
   [ -f "$1" ] && [ -r "$1" ]
+}
+
+# Detect OS: "linux" or "macos"
+detect_os() {
+  case "$(uname -s)" in
+    Darwin*) echo "macos" ;;
+    *)       echo "linux" ;;
+  esac
+}
+
+OS_TYPE="$(detect_os)"
+
+# Portable stat: returns octal permissions (e.g., "644")
+portable_stat_perms() {
+  if [ "$OS_TYPE" = "macos" ]; then
+    stat -f "%Lp" "$1" 2>/dev/null || echo "unknown"
+  else
+    stat -c "%a" "$1" 2>/dev/null || echo "unknown"
+  fi
 }
 
 print_banner() {
@@ -374,27 +393,42 @@ except: print('parse_error')
 check_network() {
   print_section "Network Exposure"
 
-  # Get listening ports
+  # Get listening ports (OS-aware)
   local listening=""
-  if command_exists ss; then
-    listening=$(ss -tlnp 2>/dev/null || echo "")
-  elif command_exists netstat; then
-    listening=$(netstat -tlnp 2>/dev/null || echo "")
+  if [ "$OS_TYPE" = "macos" ]; then
+    if command_exists lsof; then
+      listening=$(sudo lsof -iTCP -sTCP:LISTEN -nP 2>/dev/null || lsof -iTCP -sTCP:LISTEN -nP 2>/dev/null || echo "")
+    elif command_exists netstat; then
+      listening=$(netstat -an -p tcp 2>/dev/null | grep LISTEN || echo "")
+    fi
+  else
+    if command_exists ss; then
+      listening=$(ss -tlnp 2>/dev/null || echo "")
+    elif command_exists netstat; then
+      listening=$(netstat -tlnp 2>/dev/null || echo "")
+    fi
   fi
 
   if [ -z "$listening" ]; then
+    local install_hint="Install iproute2 (provides ss): sudo apt install iproute2"
+    [ "$OS_TYPE" = "macos" ] && install_hint="Try running with sudo: sudo bash ti-security-check.sh"
     add_finding "INFO" "network" \
       "Could not enumerate listening ports" \
-      "Neither ss nor netstat available, or insufficient permissions." \
+      "Could not list listening services, or insufficient permissions." \
       "Cannot verify which services are exposed to the network." \
-      "Install iproute2 (provides ss): sudo apt install iproute2" \
+      "$install_hint" \
       "false"
     return
   fi
 
   # Check for services bound to 0.0.0.0 (all interfaces)
+  # macOS lsof uses *:port, Linux ss/netstat uses 0.0.0.0:port or :::port
   local exposed_services
-  exposed_services=$(echo "$listening" | grep -E "0\.0\.0\.0:|:::" | grep -v "127\." || echo "")
+  if [ "$OS_TYPE" = "macos" ]; then
+    exposed_services=$(echo "$listening" | grep -E "\*:" | grep -v "127\." || echo "")
+  else
+    exposed_services=$(echo "$listening" | grep -E "0\.0\.0\.0:|:::" | grep -v "127\." || echo "")
+  fi
 
   if [ -n "$exposed_services" ]; then
     # Check specific dangerous services
@@ -561,16 +595,27 @@ WARNING: Do NOT do this if SSH keys are not set up — you will lock yourself ou
       "ssh_port=${ssh_port}"
   fi
 
-  # Check: Fail2ban
+  # Check: Fail2ban (Linux) or brute-force protection note (macOS)
   if ! command_exists fail2ban-client; then
-    add_finding "MEDIUM" "ssh" \
-      "Fail2ban is not installed" \
-      "fail2ban is not present on this system." \
-      "Without fail2ban, there is nothing stopping automated bots from trying thousands of passwords against your SSH. Even with key-only auth, the constant attempts waste resources and fill your logs." \
-      "Install: sudo apt install fail2ban -y
+    if [ "$OS_TYPE" = "macos" ]; then
+      add_finding "LOW" "ssh" \
+        "No SSH brute-force protection detected" \
+        "fail2ban is not installed. macOS does not include built-in SSH brute-force protection." \
+        "Without brute-force protection, automated bots can try thousands of passwords. macOS is less commonly targeted over SSH than Linux servers, but Mac Minis with Remote Login enabled are still at risk." \
+        "Option 1 (recommended): Disable Remote Login if not needed — System Settings > General > Sharing > Remote Login off
+Option 2: Install via Homebrew: brew install fail2ban
+Option 3: Use macOS pf rules to rate-limit SSH connections" \
+        "false"
+    else
+      add_finding "MEDIUM" "ssh" \
+        "Fail2ban is not installed" \
+        "fail2ban is not present on this system." \
+        "Without fail2ban, there is nothing stopping automated bots from trying thousands of passwords against your SSH. Even with key-only auth, the constant attempts waste resources and fill your logs." \
+        "Install: sudo apt install fail2ban -y
 Configure: sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 Enable: sudo systemctl enable --now fail2ban" \
-      "true"
+        "true"
+    fi
   else
     local f2b_status
     f2b_status=$(fail2ban-client status sshd 2>/dev/null || echo "not_running")
@@ -595,60 +640,103 @@ check_firewall() {
 
   local fw_active=false
 
-  # Check UFW
-  if command_exists ufw; then
-    local ufw_status
-    ufw_status=$(sudo ufw status 2>/dev/null || ufw status 2>/dev/null || echo "unknown")
-    if echo "$ufw_status" | grep -qi "inactive\|disabled"; then
+  if [ "$OS_TYPE" = "macos" ]; then
+    # macOS: Check Application Firewall (socketfilterfw)
+    local alf_status=""
+    alf_status=$(/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate 2>/dev/null || echo "unknown")
+
+    if echo "$alf_status" | grep -qi "disabled"; then
       add_finding "HIGH" "firewall" \
-        "UFW firewall is installed but inactive" \
-        "UFW (Uncomplicated Firewall) is installed but not enabled." \
-        "With no firewall, every service on every port is accessible from the internet. This is like leaving every door and window open." \
-        "Enable UFW (MAKE SURE SSH IS ALLOWED FIRST):
+        "macOS Application Firewall is disabled" \
+        "$alf_status" \
+        "The built-in macOS firewall blocks unwanted incoming connections. Without it, any service listening on a port is accessible to other devices on the network." \
+        "Enable: System Settings > Network > Firewall > turn on
+Or: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on" \
+        "false" \
+        "$alf_status"
+    elif echo "$alf_status" | grep -qi "enabled"; then
+      fw_active=true
+    fi
+
+    # macOS: Check stealth mode
+    local stealth=""
+    stealth=$(/usr/libexec/ApplicationFirewall/socketfilterfw --getstealthmode 2>/dev/null || echo "unknown")
+    if echo "$stealth" | grep -qi "disabled"; then
+      add_finding "LOW" "firewall" \
+        "Firewall stealth mode is disabled" \
+        "$stealth" \
+        "Stealth mode prevents your Mac from responding to probing requests (ping, port scans). This makes your machine harder to discover on untrusted networks." \
+        "Enable: sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+Or: System Settings > Network > Firewall > Options > Enable stealth mode" \
+        "false" \
+        "$stealth"
+    fi
+
+    # macOS: Check pf (packet filter) for advanced setups
+    if command_exists pfctl; then
+      local pf_status
+      pf_status=$(sudo pfctl -s info 2>/dev/null | head -1 || echo "unknown")
+      if echo "$pf_status" | grep -qi "Enabled"; then
+        fw_active=true
+      fi
+    fi
+
+  else
+    # Linux: Check UFW
+    if command_exists ufw; then
+      local ufw_status
+      ufw_status=$(sudo ufw status 2>/dev/null || ufw status 2>/dev/null || echo "unknown")
+      if echo "$ufw_status" | grep -qi "inactive\|disabled"; then
+        add_finding "HIGH" "firewall" \
+          "UFW firewall is installed but inactive" \
+          "UFW (Uncomplicated Firewall) is installed but not enabled." \
+          "With no firewall, every service on every port is accessible from the internet. This is like leaving every door and window open." \
+          "Enable UFW (MAKE SURE SSH IS ALLOWED FIRST):
 1. sudo ufw allow ssh (or your custom SSH port)
 2. sudo ufw allow http (if running a web server)
 3. sudo ufw allow https (if running HTTPS)
 4. sudo ufw enable
 WARNING: Enabling the firewall without allowing SSH will lock you out." \
-        "false" \
-        "$(echo "$ufw_status" | head -5)"
-    elif echo "$ufw_status" | grep -qi "active"; then
-      fw_active=true
+          "false" \
+          "$(echo "$ufw_status" | head -5)"
+      elif echo "$ufw_status" | grep -qi "active"; then
+        fw_active=true
+      fi
     fi
-  fi
 
-  # Check iptables if no UFW
-  if [ "$fw_active" = false ] && command_exists iptables; then
-    local ipt_rules
-    ipt_rules=$(sudo iptables -L -n 2>/dev/null || iptables -L -n 2>/dev/null || echo "")
-    local rule_count
-    rule_count=$(echo "$ipt_rules" | grep -c -v "^Chain\|^target\|^$" || echo "0")
+    # Check iptables if no UFW
+    if [ "$fw_active" = false ] && command_exists iptables; then
+      local ipt_rules
+      ipt_rules=$(sudo iptables -L -n 2>/dev/null || iptables -L -n 2>/dev/null || echo "")
+      local rule_count
+      rule_count=$(echo "$ipt_rules" | grep -c -v "^Chain\|^target\|^$" || echo "0")
 
-    if [ "$rule_count" -lt 3 ]; then
-      add_finding "HIGH" "firewall" \
-        "No firewall rules configured" \
-        "No UFW and iptables has ${rule_count} rules (effectively no firewall)." \
-        "Your server has no firewall protection. Every listening service is directly accessible from the internet." \
-        "Install and enable UFW:
+      if [ "$rule_count" -lt 3 ]; then
+        add_finding "HIGH" "firewall" \
+          "No firewall rules configured" \
+          "No UFW and iptables has ${rule_count} rules (effectively no firewall)." \
+          "Your server has no firewall protection. Every listening service is directly accessible from the internet." \
+          "Install and enable UFW:
 sudo apt install ufw -y
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw enable" \
-        "false" \
-        "iptables_rules=${rule_count}"
-    else
-      fw_active=true
+          "false" \
+          "iptables_rules=${rule_count}"
+      else
+        fw_active=true
+      fi
     fi
-  fi
 
-  if [ "$fw_active" = false ] && ! command_exists ufw && ! command_exists iptables; then
-    add_finding "HIGH" "firewall" \
-      "No firewall detected" \
-      "Neither UFW nor iptables found on this system." \
-      "Your server has no firewall at all. Every port is open to the internet." \
-      "Install UFW: sudo apt install ufw -y  Then configure as described above." \
-      "false"
+    if [ "$fw_active" = false ] && ! command_exists ufw && ! command_exists iptables; then
+      add_finding "HIGH" "firewall" \
+        "No firewall detected" \
+        "Neither UFW nor iptables found on this system." \
+        "Your server has no firewall at all. Every port is open to the internet." \
+        "Install UFW: sudo apt install ufw -y  Then configure as described above." \
+        "false"
+    fi
   fi
 }
 
@@ -741,9 +829,12 @@ check_secrets() {
 
   # Check: .env files with loose permissions
   local loose_env_files=""
-  for env_file in $(find /home /root /opt /srv -name ".env" -type f 2>/dev/null | head -20); do
+  local search_dirs="/home /opt /srv"
+  [ "$OS_TYPE" = "macos" ] && search_dirs="/Users /opt /srv"
+  [ -d /root ] && search_dirs="$search_dirs /root"
+  for env_file in $(find $search_dirs -name ".env" -type f -maxdepth 5 2>/dev/null | head -20); do
     local perms
-    perms=$(stat -c "%a" "$env_file" 2>/dev/null || echo "unknown")
+    perms=$(portable_stat_perms "$env_file")
     if [ "$perms" != "unknown" ] && [ "$perms" != "600" ] && [ "$perms" != "400" ] && [ "$perms" != "640" ]; then
       loose_env_files="${loose_env_files}${env_file} (${perms})\n"
     fi
@@ -761,12 +852,15 @@ check_secrets() {
 
   # Check: SSH key permissions
   local bad_keys=""
-  for key_dir in /home/*/.ssh /root/.ssh; do
+  local ssh_search_dirs="/home/*/.ssh"
+  [ "$OS_TYPE" = "macos" ] && ssh_search_dirs="/Users/*/.ssh"
+  [ -d /root/.ssh ] && ssh_search_dirs="$ssh_search_dirs /root/.ssh"
+  for key_dir in $ssh_search_dirs; do
     if [ -d "$key_dir" ]; then
       for key in "$key_dir"/id_* "$key_dir"/*.pem; do
         if [ -f "$key" ] && [[ ! "$key" == *.pub ]]; then
           local kperms
-          kperms=$(stat -c "%a" "$key" 2>/dev/null || echo "unknown")
+          kperms=$(portable_stat_perms "$key")
           if [ "$kperms" != "unknown" ] && [ "$kperms" != "600" ] && [ "$kperms" != "400" ]; then
             bad_keys="${bad_keys}${key} (${kperms})\n"
           fi
@@ -810,7 +904,10 @@ check_secrets() {
 
   # Check: Authorized keys (informational)
   local total_authorized=0
-  for ak in /home/*/.ssh/authorized_keys /root/.ssh/authorized_keys; do
+  local ak_dirs="/home/*/.ssh/authorized_keys"
+  [ "$OS_TYPE" = "macos" ] && ak_dirs="/Users/*/.ssh/authorized_keys"
+  [ -f /root/.ssh/authorized_keys ] && ak_dirs="$ak_dirs /root/.ssh/authorized_keys"
+  for ak in $ak_dirs; do
     if file_readable "$ak"; then
       local count
       count=$(grep -c "^ssh-" "$ak" 2>/dev/null || echo "0")
@@ -836,31 +933,176 @@ check_secrets() {
 check_updates() {
   print_section "System Updates"
 
-  # Check: Unattended upgrades
-  if command_exists apt; then
-    if ! dpkg -l unattended-upgrades 2>/dev/null | grep -q "^ii"; then
-      add_finding "MEDIUM" "system" \
-        "Automatic security updates not configured" \
-        "unattended-upgrades package is not installed." \
-        "Without automatic security updates, known vulnerabilities remain unfixed until you manually update. Most breaches exploit vulnerabilities that already have patches available." \
-        "Install: sudo apt install unattended-upgrades -y
-Configure: sudo dpkg-reconfigure -plow unattended-upgrades" \
-        "true"
-    fi
-  fi
+  if [ "$OS_TYPE" = "macos" ]; then
+    # macOS: Check for pending software updates (with timeout to avoid hanging)
+    local sw_updates=""
+    # Use perl timeout since macOS lacks GNU timeout; avoids gtimeout dependency
+    sw_updates=$(perl -e 'alarm 30; exec @ARGV' softwareupdate -l 2>&1 || echo "TIMEOUT")
 
-  # Check: Pending security updates
-  if command_exists apt; then
-    local pending
-    pending=$(apt list --upgradable 2>/dev/null | grep -i "security" | wc -l || echo "0")
-    if [ "$pending" -gt 0 ]; then
+    if echo "$sw_updates" | grep -q "TIMEOUT"; then
+      add_finding "INFO" "system" \
+        "Could not check for macOS updates" \
+        "softwareupdate timed out after 30 seconds (Apple servers may be slow)." \
+        "Cannot verify if your system is fully patched." \
+        "Check manually: System Settings > General > Software Update, or run: softwareupdate -l" \
+        "false"
+    elif echo "$sw_updates" | grep -qi "No new software available"; then
+      : # All good, no finding needed
+    elif echo "$sw_updates" | grep -qi "\*"; then
+      local pending
+      pending=$(echo "$sw_updates" | grep -c "\*" || echo "0")
+      local update_list
+      update_list=$(echo "$sw_updates" | grep "\*" | sed 's/^[[:space:]]*//' | head -10)
+
+      # Check if any are security updates (Rapid Security Response or Security Update)
+      local security_count
+      security_count=$(echo "$sw_updates" | grep -ciE "security|XProtect|Rapid Security Response" || echo "0")
+
+      local severity="MEDIUM"
+      [ "$security_count" -gt 0 ] && severity="HIGH"
+
+      add_finding "$severity" "system" \
+        "${pending} pending macOS update(s)" \
+        "Available updates: ${update_list}" \
+        "Pending updates may include security patches for known vulnerabilities. macOS updates also include XProtect malware definitions and Rapid Security Responses." \
+        "Update now: sudo softwareupdate -ia  Or via System Settings > General > Software Update.
+For servers (Mac Mini): enable automatic updates in System Settings > General > Software Update > Automatic Updates." \
+        "false" \
+        "pending_updates=${pending}, security_updates=${security_count}"
+    fi
+
+    # macOS: Check if automatic updates are enabled
+    local auto_update=""
+    auto_update=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled 2>/dev/null || echo "unknown")
+    local auto_download=""
+    auto_download=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload 2>/dev/null || echo "unknown")
+    local auto_install=""
+    auto_install=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate AutomaticallyInstallMacOSUpdates 2>/dev/null || echo "unknown")
+    local auto_critical=""
+    auto_critical=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 2>/dev/null || echo "unknown")
+
+    if [ "$auto_update" = "0" ] || [ "$auto_update" = "unknown" ]; then
+      add_finding "MEDIUM" "system" \
+        "Automatic update checking is disabled" \
+        "AutomaticCheckEnabled=${auto_update}" \
+        "Without automatic checking, your Mac won't know about new security patches until you manually check. Rapid Security Responses fix actively exploited vulnerabilities." \
+        "Enable: sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
+Or: System Settings > General > Software Update > Automatic Updates > Check for updates" \
+        "false" \
+        "AutomaticCheckEnabled=${auto_update}"
+    fi
+
+    if [ "$auto_critical" = "0" ] || [ "$auto_critical" = "unknown" ]; then
       add_finding "HIGH" "system" \
-        "${pending} pending security update(s)" \
-        "There are ${pending} security updates waiting to be installed." \
-        "Each pending security update is a known vulnerability with a published fix that you haven't applied yet. Attackers actively monitor these disclosures." \
-        "Update now: sudo apt update && sudo apt upgrade -y  For security-only: sudo unattended-upgrades --dry-run" \
-        "true" \
-        "pending_security_updates=${pending}"
+        "Automatic critical/security updates are disabled" \
+        "CriticalUpdateInstall=${auto_critical}, AutomaticallyInstallMacOSUpdates=${auto_install}" \
+        "Apple's Rapid Security Responses patch actively exploited zero-days and are designed to install immediately. With this off, your Mac stays vulnerable until you manually update." \
+        "Enable: sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool true
+Or: System Settings > General > Software Update > Automatic Updates > Install Security Responses and system files" \
+        "false" \
+        "CriticalUpdateInstall=${auto_critical}, AutoInstallMacOS=${auto_install}"
+    fi
+
+    # macOS: Check SIP status
+    if command_exists csrutil; then
+      local sip_status
+      sip_status=$(csrutil status 2>/dev/null || echo "unknown")
+      if echo "$sip_status" | grep -qi "disabled"; then
+        add_finding "CRITICAL" "system" \
+          "System Integrity Protection (SIP) is disabled" \
+          "$sip_status" \
+          "SIP prevents even root from modifying protected system files, frameworks, and kernel extensions. With SIP off, malware or a compromised process can tamper with core macOS components." \
+          "Re-enable SIP: Boot into Recovery Mode (hold Cmd+R on Intel, or hold power button on Apple Silicon), open Terminal, run: csrutil enable, then reboot." \
+          "false" \
+          "$sip_status"
+      fi
+    fi
+
+    # macOS: Check FileVault
+    if command_exists fdesetup; then
+      local fv_status
+      fv_status=$(fdesetup status 2>/dev/null || echo "unknown")
+      if echo "$fv_status" | grep -qi "Off\|not encrypted"; then
+        add_finding "HIGH" "system" \
+          "FileVault disk encryption is disabled" \
+          "$fv_status" \
+          "Without FileVault, anyone with physical access to this Mac (theft, break-in, decommissioned hardware) can read all data on the disk by booting into recovery or removing the drive." \
+          "Enable: System Settings > Privacy & Security > FileVault > Turn On
+Or: sudo fdesetup enable" \
+          "false" \
+          "$fv_status"
+      fi
+    fi
+
+    # macOS: Check Gatekeeper
+    if command_exists spctl; then
+      local gk_status
+      gk_status=$(spctl --status 2>/dev/null || echo "unknown")
+      if echo "$gk_status" | grep -qi "disabled"; then
+        add_finding "HIGH" "system" \
+          "Gatekeeper is disabled" \
+          "$gk_status" \
+          "Gatekeeper blocks unsigned and unnotarized apps. With it off, any downloaded application can run — including malware disguised as legitimate software." \
+          "Enable: sudo spctl --master-enable
+Or: System Settings > Privacy & Security > Allow applications downloaded from: App Store and identified developers" \
+          "false" \
+          "$gk_status"
+      fi
+    fi
+
+  else
+    # Linux: Check unattended upgrades (Debian/Ubuntu)
+    if command_exists apt; then
+      if ! dpkg -l unattended-upgrades 2>/dev/null | grep -q "^ii"; then
+        add_finding "MEDIUM" "system" \
+          "Automatic security updates not configured" \
+          "unattended-upgrades package is not installed." \
+          "Without automatic security updates, known vulnerabilities remain unfixed until you manually update. Most breaches exploit vulnerabilities that already have patches available." \
+          "Install: sudo apt install unattended-upgrades -y
+Configure: sudo dpkg-reconfigure -plow unattended-upgrades" \
+          "true"
+      fi
+    fi
+
+    # Linux: Check pending security updates
+    if command_exists apt; then
+      local pending
+      pending=$(apt list --upgradable 2>/dev/null | grep -ci "security" || true)
+      pending="${pending:-0}"
+      pending=$(echo "$pending" | tr -d '[:space:]')
+      if [ "$pending" -gt 0 ] 2>/dev/null; then
+        add_finding "HIGH" "system" \
+          "${pending} pending security update(s)" \
+          "There are ${pending} security updates waiting to be installed." \
+          "Each pending security update is a known vulnerability with a published fix that you haven't applied yet. Attackers actively monitor these disclosures." \
+          "Update now: sudo apt update && sudo apt upgrade -y  For security-only: sudo unattended-upgrades --dry-run" \
+          "true" \
+          "pending_security_updates=${pending}"
+      fi
+    elif command_exists dnf; then
+      local pending
+      pending=$(dnf check-update --security 2>/dev/null | grep -c "\.x86_64\|\.noarch\|\.aarch64" || echo "0")
+      if [ "$pending" -gt 0 ]; then
+        add_finding "HIGH" "system" \
+          "${pending} pending security update(s)" \
+          "There are ${pending} security updates waiting to be installed." \
+          "Each pending security update is a known vulnerability with a published fix that you haven't applied yet." \
+          "Update now: sudo dnf update --security -y" \
+          "true" \
+          "pending_security_updates=${pending}"
+      fi
+    elif command_exists yum; then
+      local pending
+      pending=$(yum check-update --security 2>/dev/null | grep -c "\.x86_64\|\.noarch\|\.aarch64" || echo "0")
+      if [ "$pending" -gt 0 ]; then
+        add_finding "HIGH" "system" \
+          "${pending} pending security update(s)" \
+          "There are ${pending} security updates waiting to be installed." \
+          "Each pending security update is a known vulnerability with a published fix that you haven't applied yet." \
+          "Update now: sudo yum update --security -y" \
+          "true" \
+          "pending_security_updates=${pending}"
+      fi
     fi
   fi
 }
@@ -1062,16 +1304,20 @@ for f in findings:
   done
 
   # Fix: .env file permissions
-  find /home /opt /srv -name ".env" -type f 2>/dev/null | while read -r env_file; do
+  local fix_search_dirs="/home /opt /srv"
+  [ "$OS_TYPE" = "macos" ] && fix_search_dirs="/Users /opt /srv"
+  find $fix_search_dirs -name ".env" -type f -maxdepth 5 2>/dev/null | while read -r env_file; do
     local current
-    current=$(stat -c "%a" "$env_file" 2>/dev/null || echo "")
-    if [ -n "$current" ] && [ "$current" != "600" ] && [ "$current" != "400" ]; then
+    current=$(portable_stat_perms "$env_file")
+    if [ -n "$current" ] && [ "$current" != "unknown" ] && [ "$current" != "600" ] && [ "$current" != "400" ]; then
       chmod 600 "$env_file" 2>/dev/null && echo "    Fixed: ${env_file} permissions -> 600"
     fi
   done
 
   # Fix: SSH key permissions
-  for key_dir in /home/*/.ssh "$HOME/.ssh"; do
+  local fix_key_dirs="/home/*/.ssh"
+  [ "$OS_TYPE" = "macos" ] && fix_key_dirs="/Users/*/.ssh"
+  for key_dir in $fix_key_dirs "$HOME/.ssh"; do
     if [ -d "$key_dir" ]; then
       for key in "$key_dir"/id_* "$key_dir"/*.pem; do
         if [ -f "$key" ] && [[ ! "$key" == *.pub ]]; then
@@ -1081,19 +1327,32 @@ for f in findings:
     fi
   done
 
-  # Fix: Install fail2ban if missing
-  if ! command_exists fail2ban-client && command_exists apt; then
+  # Fix: Install fail2ban if missing (Linux only — macOS uses Homebrew, don't auto-install)
+  if [ "$OS_TYPE" = "linux" ] && ! command_exists fail2ban-client && command_exists apt; then
     echo "    Installing fail2ban..."
     sudo apt install -y fail2ban >/dev/null 2>&1 && \
       sudo systemctl enable --now fail2ban >/dev/null 2>&1 && \
       echo "    Fixed: fail2ban installed and enabled"
   fi
 
-  # Fix: Install unattended-upgrades if missing
-  if command_exists apt && ! dpkg -l unattended-upgrades 2>/dev/null | grep -q "^ii"; then
+  # Fix: Install unattended-upgrades if missing (Linux/apt only)
+  if [ "$OS_TYPE" = "linux" ] && command_exists apt && ! dpkg -l unattended-upgrades 2>/dev/null | grep -q "^ii"; then
     echo "    Installing unattended-upgrades..."
     sudo apt install -y unattended-upgrades >/dev/null 2>&1 && \
       echo "    Fixed: unattended-upgrades installed"
+  fi
+
+  # Fix: Enable macOS automatic critical updates
+  if [ "$OS_TYPE" = "macos" ]; then
+    local crit_update
+    crit_update=$(defaults read /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall 2>/dev/null || echo "unknown")
+    if [ "$crit_update" = "0" ] || [ "$crit_update" = "unknown" ]; then
+      echo "    Enabling automatic critical/security updates..."
+      sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate CriticalUpdateInstall -bool true 2>/dev/null && \
+        echo "    Fixed: Automatic critical updates enabled"
+      sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true 2>/dev/null && \
+        echo "    Fixed: Automatic update checking enabled"
+    fi
   fi
 
   echo ""
