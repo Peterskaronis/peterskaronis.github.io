@@ -29,7 +29,7 @@ It checks:
 - **Linux** (Ubuntu/Debian/RHEL/Fedora) or **macOS** (Ventura+, including Mac Mini servers)
 - Bash shell (included on both platforms)
 - Python 3 (for JSON output parsing — included on macOS, installed on most Linux distros)
-- Optional: `sudo` access for deeper checks (firewall, system packages, listening ports on macOS)
+- Optional: `sudo` access for deeper checks (firewall, system packages, listening ports on macOS). The script auto-detects sudo availability and gracefully skips checks that require it — no errors in containers or restricted environments.
 - Optional: `nmap`, `ss`/`lsof`, `openssl` for extended checks (the script uses whatever is available)
 
 ## Setup
@@ -186,10 +186,11 @@ For change detection, compare today's scan with yesterday's. Flag any new findin
 
 **Techimpossible Security Posture Check** is a free tool by [Techimpossible Security Inc.](https://techimpossible.com)
 
-- Scanner: `ti-security-check.sh` v1.1.0
+- Scanner: `ti-security-check.sh` v1.2.0
 - 40+ checks across 8 categories
 - Works on Linux (Ubuntu/Debian/RHEL) and macOS (including Mac Mini servers)
 - Auto-detects OS and runs platform-appropriate checks
+- Gracefully degrades without sudo — works in containers, sandboxed, and restricted environments
 - No data leaves your machine — everything runs locally
 - No account required, no telemetry, no tracking
 
