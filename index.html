@@ -139,6 +139,31 @@
             color: #fff;
         }
 
+        .name-toggle {
+            cursor: default;
+            position: relative;
+        }
+
+        .name-toggle .name-en,
+        .name-toggle .name-gr {
+            transition: opacity 0.4s ease;
+        }
+
+        .name-toggle .name-gr {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .name-toggle:hover .name-en {
+            opacity: 0;
+        }
+
+        .name-toggle:hover .name-gr {
+            opacity: 1;
+        }
+
         .hero-subtitle {
             font-size: 1.5rem;
             font-weight: 400;
@@ -430,7 +455,7 @@
 
     <div class="container">
         <section class="hero">
-            <h1>Peter Skaronis</h1>
+            <h1 class="name-toggle"><span class="name-en">Peter Skaronis</span><span class="name-gr">Πέτρος Σκαρώνης</span></h1>
             <p class="hero-subtitle">Cybersecurity consultant. vCISO. I write, build things, and help startups with security that works.</p>
             <div class="daily-quote" id="daily-quote"></div>
             <div class="weeks-lived" id="weeks-lived"></div>
