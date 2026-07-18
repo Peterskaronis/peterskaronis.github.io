@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>VERIDIS QUO — A Neon Odyssey</title>
-<meta name="description" content="Five rooms, one hand, one line of light. A music-driven synthwave odyssey — the track is the timeline.">
+<meta name="description" content="An interactive story in neon. Read. Choose. Become. The music never stops.">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Syncopate:wght@400;700&display=swap');
 
@@ -207,7 +207,6 @@
   .hud-item { display: flex; align-items: center; gap: 6px; }
   .hud-label { color: rgba(0,240,255,0.5); }
   .hud-value { color: var(--cyan); text-shadow: 0 0 8px rgba(0,240,255,0.6); }
-  .hud-value.hot { color: var(--amber); text-shadow: 0 0 8px rgba(255,179,0,0.7); }
   .hud-bar {
     width: 90px; height: 7px;
     background: rgba(0,240,255,0.1);
@@ -226,29 +225,81 @@
     .hud-bar { width: 60px; }
   }
 
-  /* Narrative line */
+  /* NARRATIVE PANEL — the story is the game again */
   .narrative {
     position: absolute;
-    bottom: 64px; left: 0; right: 0;
-    padding: 0 30px;
+    bottom: 34px; left: 0; right: 0;
+    padding: 22px 30px 16px;
+    background: linear-gradient(0deg, rgba(0,0,0,0.94) 0%, rgba(0,0,0,0.72) 70%, transparent 100%);
     z-index: 10;
-    text-align: center;
-    pointer-events: none;
+    min-height: 150px;
   }
+  .narrative-inner { max-width: 680px; margin: 0 auto; }
   .narrative-text {
-    display: inline-block;
-    font-size: clamp(8px, 1.1vw, 11px);
-    line-height: 2;
+    font-size: clamp(8px, 1.15vw, 11px);
+    line-height: 2.05;
     color: var(--cyan);
-    text-shadow: 0 0 6px rgba(0,240,255,0.5), 0 2px 8px #000;
-    max-width: 640px;
-    opacity: 0;
-    transition: opacity 0.8s ease;
+    text-shadow: 0 0 6px rgba(0,240,255,0.4), 0 2px 8px #000;
+    min-height: 44px;
+    cursor: pointer;
   }
-  .narrative-text.visible { opacity: 1; }
-  .narrative-text.oracle { color: var(--violet); text-shadow: 0 0 8px rgba(139,92,246,0.6), 0 2px 8px #000; }
+  .narrative-choices {
+    display: flex;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .choice-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 10px 16px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,240,255,0.4);
+    color: var(--cyan);
+    cursor: pointer;
+    text-shadow: 0 0 4px rgba(0,240,255,0.4);
+    transition: all 0.3s ease;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+  .choice-btn:hover {
+    background: rgba(0,240,255,0.1);
+    border-color: var(--cyan);
+    box-shadow: 0 0 15px rgba(0,240,255,0.3), inset 0 0 15px rgba(0,240,255,0.1);
+    transform: translateY(-1px);
+  }
+  .choice-btn.magenta {
+    border-color: rgba(255,0,170,0.4);
+    color: var(--magenta);
+    text-shadow: 0 0 4px rgba(255,0,170,0.4);
+  }
+  .choice-btn.magenta:hover {
+    background: rgba(255,0,170,0.1);
+    border-color: var(--magenta);
+    box-shadow: 0 0 15px rgba(255,0,170,0.3), inset 0 0 15px rgba(255,0,170,0.1);
+  }
+  .choice-btn.violet {
+    border-color: rgba(139,92,246,0.45);
+    color: #b9a4f6;
+    text-shadow: 0 0 4px rgba(139,92,246,0.4);
+  }
+  .choice-btn.violet:hover {
+    background: rgba(139,92,246,0.12);
+    border-color: var(--violet);
+    box-shadow: 0 0 15px rgba(139,92,246,0.3), inset 0 0 15px rgba(139,92,246,0.1);
+  }
+  .gesture-prompt {
+    margin-top: 14px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--amber);
+    text-shadow: 0 0 8px rgba(255,179,0,0.5);
+    animation: pulseText 2s ease-in-out infinite;
+    display: none;
+  }
+  .gesture-prompt.active { display: block; }
 
-  /* Act title card */
+  /* Chapter card */
   .chapter-title {
     position: absolute; inset: 0;
     display: flex; flex-direction: column;
@@ -274,14 +325,14 @@
     text-shadow: var(--text-glow);
   }
 
-  /* Song timeline */
+  /* Chapter progress */
   #timeline {
     position: absolute;
     bottom: 0; left: 0; right: 0;
     height: 34px;
     z-index: 11;
     padding: 10px 20px 8px;
-    background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+    background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, transparent 100%);
     pointer-events: none;
   }
   #timeline-track {
@@ -296,6 +347,7 @@
     background: linear-gradient(90deg, var(--cyan), var(--magenta));
     border-radius: 2px;
     box-shadow: 0 0 8px rgba(0,240,255,0.5);
+    transition: width 1.2s ease;
   }
   .timeline-notch {
     position: absolute; top: -3px;
@@ -351,23 +403,6 @@
     max-width: 560px;
     color: rgba(220,235,255,0.85);
   }
-  .choice-btn {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 9px;
-    padding: 12px 22px;
-    background: transparent;
-    border: 1px solid rgba(0,240,255,0.4);
-    color: var(--cyan);
-    cursor: pointer;
-    text-shadow: 0 0 4px rgba(0,240,255,0.4);
-    transition: all 0.3s ease;
-    letter-spacing: 0.1em;
-  }
-  .choice-btn:hover {
-    background: rgba(0,240,255,0.1);
-    border-color: var(--cyan);
-    box-shadow: 0 0 15px rgba(0,240,255,0.3), inset 0 0 15px rgba(0,240,255,0.1);
-  }
 
   /* Pause veil */
   #pause-veil {
@@ -414,19 +449,6 @@
     box-shadow: 0 0 6px var(--cyan);
   }
   .volume-control input[type="range"]:focus-visible { outline: 2px solid var(--magenta); }
-
-  /* Hit glitch */
-  #game-screen.glitch #game-canvas { animation: glitchAnim 0.28s ease; }
-  @keyframes glitchAnim {
-    0% { transform: translate(0); filter: none; }
-    25% { transform: translate(-4px, 2px); filter: hue-rotate(140deg); }
-    50% { transform: translate(4px, -2px); filter: hue-rotate(250deg) saturate(2); }
-    75% { transform: translate(-2px, 1px); filter: hue-rotate(60deg); }
-    100% { transform: translate(0); filter: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    #game-screen.glitch #game-canvas { animation: none; }
-  }
 </style>
 </head>
 <body>
@@ -450,16 +472,16 @@
     <div class="year">/// 2087 ///</div>
   </div>
   <div class="title-help">
-    FIVE ROOMS. ONE HAND. ONE LINE OF LIGHT.<br>
-    <b>TOUCH — CALL — COMMUNE — SURRENDER — BECOME</b><br>
-    MOUSE / TOUCH / ARROWS · IT ENDS WHEN THE MUSIC ENDS.
+    AN INTERACTIVE STORY. READ. CHOOSE. BECOME.<br>
+    YOUR CHOICES <b>DIVERGE</b> — NO TWO JOURNEYS ARE THE SAME.<br>
+    SOME MOMENTS ASK FOR YOUR <b>HAND</b>, NOT YOUR ANSWER.
   </div>
   <button class="start-prompt" id="start-btn">[ PRESS ENTER OR CLICK TO BEGIN ]</button>
 </div>
 
 <!-- GAME -->
 <div id="game-screen" class="screen">
-  <canvas id="game-canvas" aria-label="Veridis Quo game world" role="img"></canvas>
+  <canvas id="game-canvas" aria-label="Veridis Quo story world" role="img"></canvas>
   <div class="hud">
     <div class="hud-left">
       <div class="hud-item">
@@ -471,14 +493,10 @@
         <span class="hud-label">MEM</span>
         <span class="hud-value" id="memory-val">0x0C</span>
       </div>
-      <div class="hud-item">
-        <span class="hud-label">COMBO</span>
-        <span class="hud-value" id="combo-val">&times;0</span>
-      </div>
     </div>
     <div class="hud-right">
       <div class="hud-item">
-        <span class="hud-label">ACT</span>
+        <span class="hud-label">CHAPTER</span>
         <span class="hud-value" id="chapter-val">I</span>
       </div>
       <div class="hud-item">
@@ -488,7 +506,13 @@
     </div>
   </div>
 
-  <div class="narrative"><div class="narrative-text" id="narrative-text"></div></div>
+  <div class="narrative">
+    <div class="narrative-inner">
+      <div class="narrative-text" id="narrative-text" role="button" tabindex="0" aria-label="Story text — click to reveal instantly"></div>
+      <div class="gesture-prompt" id="gesture-prompt"></div>
+      <div class="narrative-choices" id="narrative-choices"></div>
+    </div>
+  </div>
 
   <div class="chapter-title" id="chapter-title">
     <div class="ch-num" id="ch-num"></div>
@@ -499,12 +523,12 @@
     <div id="timeline-track">
       <div id="timeline-fill"></div>
     </div>
-    <div id="timeline-label">ACT I — THE GLASS</div>
+    <div id="timeline-label">CHAPTER I</div>
   </div>
 
   <div id="end-panel">
-    <div class="end-sub">THE TRUE PLACE</div>
-    <div class="end-title">VERIDIS QUO</div>
+    <div class="end-sub" id="end-sub">THE TRUE PLACE</div>
+    <div class="end-title" id="end-title">VERIDIS QUO</div>
     <div class="end-stats" id="end-stats"></div>
     <div class="end-text" id="end-text"></div>
     <button class="choice-btn" id="restart-btn">&#9654; BEGIN AGAIN</button>
@@ -519,38 +543,18 @@
   <input type="range" id="volume-slider" min="0" max="100" value="70" aria-label="Volume">
 </div>
 
-<audio id="audio" preload="auto" src="assets/veridis-quo.mp3"></audio>
+<audio id="audio" preload="auto" loop src="assets/veridis-quo.mp3"></audio>
 
 <script>
 'use strict';
 // ══════════════════════════════════════════════════════════════════
 //  VERIDIS QUO — A Neon Odyssey
-//  Five rooms, one hand, one line of light.
-//  The track is the timeline: 240s = 5 scenes of 48s, each with its
-//  own camera and its own verb: TOUCH, CALL, COMMUNE, SURRENDER, BECOME.
+//  An interactive story over living, music-reactive scenes.
+//  Read. Choose. Become. The track loops; the pace is yours.
 // ══════════════════════════════════════════════════════════════════
 
 const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const RM = REDUCED_MOTION;
-const TRACK_LEN = 240;
-const ACT_LEN = 48;
-
-// Every scripted moment, ear-tunable in one place
-const SETPIECE_T = {
-  portrait: 40,      // I: the rain draws the figure
-  paneOut: 44,       // I: the window retracts
-  avenue: 88,        // II: every sign ignites, the figure turns
-  doorway: 92,       // II: walk into the light
-  blackout: 95,      // II→III: one second of true black
-  gaze: 118,         // III: the Mercury Gaze
-  choir: 132,        // III: the lit cells pay out
-  runway: 140,       // III: floor lights toward the drop
-  iris: 142.5,       // III: the floor opens
-  doorRise: 184,     // IV: the monolith arrives
-  doorFlash: 190.5,  // IV: whiteout begins
-  turn: 210,         // V: the sky finishes drawing you
-  tableau: 218,      // V: crossfade to the ground
-};
 
 const audio = document.getElementById('audio');
 const canvas = document.getElementById('game-canvas');
@@ -566,28 +570,18 @@ const game = {
   paused: false,
   silent: false,
   silentClock: 0,
-  t: 0,                   // music time (s) — the one true clock
-  act: -1,
+  t: 0,                    // music time (loops) — drives ambience only
   signal: 12,
-  frags: 0,
-  combo: 0,
-  bestCombo: 0,
-  hits: 0,
-  playerX: 0, targetX: 0, vx: 0,   // shared 1-axis steering (scene IV)
+  mem: 12,
   shake: 0,
   flash: 0,
-  iframesUntil: 0,        // absolute game.t until which corruption can't hit
 };
 
-// Input abstraction: every scene reinterprets the same hand
 const input = { x: 0, y: 0, down: false, downAt: 0, lastMove: 0 };
-
-// Matter conservation between scenes
-const handoff = { drops: [], sporeSeed: 0 };
-
 let rainDrops = [];
 let lastFrame = 0;
 let beatCount = 0;
+let activeScene = null;
 
 // ─── Canvas / DPR ───
 function resize() {
@@ -598,12 +592,12 @@ function resize() {
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
   buildSkyline();
   buildSprites();
-  if (game.started && game.act >= 0) SCENES[game.act].onResize();
+  if (activeScene) activeScene.onResize();
 }
 window.addEventListener('resize', resize);
 
 // ─── Audio ───
-let audioCtx = null, analyser = null, freqData = null, duckFilter = null;
+let audioCtx = null, analyser = null, freqData = null;
 let bassHistory = [], lastBeatAt = 0;
 
 function initAudio() {
@@ -614,31 +608,10 @@ function initAudio() {
     analyser.fftSize = 512;
     analyser.smoothingTimeConstant = 0.75;
     const src = audioCtx.createMediaElementSource(audio);
-    try {
-      duckFilter = audioCtx.createBiquadFilter();
-      duckFilter.type = 'lowpass';
-      duckFilter.frequency.value = 18000;
-      src.connect(duckFilter);
-      duckFilter.connect(analyser);
-    } catch (e) {
-      duckFilter = null;
-      src.connect(analyser);
-    }
+    src.connect(analyser);
     analyser.connect(audioCtx.destination);
     freqData = new Uint8Array(analyser.frequencyBinCount);
-  } catch (e) { /* silent mode will carry it */ }
-}
-
-// The Hush: corruption in Act IV is silence itself
-function duckAudio() {
-  if (!duckFilter || game.silent || !audioCtx) return;
-  const now = audioCtx.currentTime, span = RM ? 0.2 : 0.4;
-  try {
-    duckFilter.frequency.cancelScheduledValues(now);
-    duckFilter.frequency.setValueAtTime(duckFilter.frequency.value, now);
-    duckFilter.frequency.linearRampToValueAtTime(300, now + span);
-    duckFilter.frequency.linearRampToValueAtTime(18000, now + span * 2);
-  } catch (e) { /* never let the duck break playback */ }
+  } catch (e) { /* silent mode carries it */ }
 }
 
 const bands = { bass: 0, mid: 0, high: 0, level: 0, beat: false };
@@ -648,14 +621,12 @@ function readBands() {
   const now = performance.now();
   if (game.silent || !analyser) {
     const t = game.t;
-    // synthetic pulse (~100bpm) + a slow swell so bass-gated systems still fire
     const pulse = Math.max(0, Math.sin(t * Math.PI * 2 * (100 / 60)));
     const swell = Math.max(0, Math.sin(t * 0.35));
     bands.bass = 0.25 + 0.22 * pulse + 0.3 * swell;
     bands.mid = 0.25 + 0.15 * Math.sin(t * 1.7);
     bands.high = 0.2 + 0.1 * Math.sin(t * 3.1);
     bands.level = bands.bass * 0.6 + 0.15;
-    // frame-rate independent beat: one per beat index, any refresh rate
     const idx = Math.floor(t * (100 / 60));
     if (idx !== silentBeatIdx) {
       if (silentBeatIdx >= 0 && idx > silentBeatIdx) { bands.beat = true; lastBeatAt = now; }
@@ -678,7 +649,6 @@ function readBands() {
     if (bands.bass > mean * 1.32 && bands.bass > 0.16 && now - lastBeatAt > 240) {
       bands.beat = true; lastBeatAt = now;
     }
-    // Fallback beat: quiet passages must not starve the world's heartbeat
     if (!bands.beat && now - lastBeatAt > 720) {
       bands.beat = true; lastBeatAt = now;
     }
@@ -687,46 +657,16 @@ function readBands() {
 }
 
 // Volume / mute
-const volSlider = $('volume-slider');
-volSlider.addEventListener('input', e => { audio.volume = e.target.value / 100; });
+$('volume-slider').addEventListener('input', e => { audio.volume = e.target.value / 100; });
 audio.volume = 0.7;
 $('mute-btn').addEventListener('click', () => {
   audio.muted = !audio.muted;
   $('mute-btn').style.opacity = audio.muted ? 0.3 : 1;
 });
 
-// ─── Acts (chrome only — scene behaviour lives in SCENES) ───
-const ACTS = [
-  { num: 'ACT I', name: 'THE GLASS', sector: '7G', sky: ['#0a0015', '#0f0028', '#1a0040'],
-    intro: 'You open your eyes. Rain traces neon veins down the glass. 2087. Something in the rain is answering you.' },
-  { num: 'ACT II', name: 'NEON RAIN', sector: '7G-EXT', sky: ['#0d0020', '#1a0038', '#2d1060'],
-    intro: 'The street. The signs have forgotten their names. Call, and the ones still faithful will answer.' },
-  { num: 'ACT III', name: 'CATHEDRAL OF DEAD SCREENS', sector: 'BCAST-0', sky: ['#050008', '#0a0018', '#080010'],
-    intro: 'A cathedral of dead screens. She is waiting at the altar. Bring them light.' },
-  { num: 'ACT IV', name: '432 HZ', sector: 'UG-1', sky: ['#020008', '#0a0020', '#05000f'],
-    intro: 'The floor was never a floor. Fall. The deep is lit by things that never learned darkness.' },
-  { num: 'ACT V', name: 'VERIDIS QUO', sector: 'Ω', sky: ['#020010', '#060028', '#0a0020'],
-    intro: 'No ground. No walls. Only the sky you have been carrying all along.' },
-];
-
-// ─── Narrative cues ───
-const CUES = [
-  { t: 6,   text: '> The signal knows your name.' },
-  { t: 26,  text: '> Some of the rain is not rain. Guide it to your hand.' },
-  { t: 58,  text: '> The street sells forgetting. Magenta wears the signal’s skin.' },
-  { t: 80,  text: 'A figure flickers at the end of every street — always the same one.' },
-  { t: 104, text: 'A cathedral of dead screens. Every one of them dreaming.' },
-  { t: 118, text: '“You heard it too. The frequency predates language. It is the sound the universe made before it learned to be silent.”', cls: 'oracle' },
-  { t: 132, text: '“Truth is not a destination, child. It is a becoming.”', cls: 'oracle' },
-  { t: 150, text: 'Bioluminescent fungi paint the deep in impossible blues.' },
-  { t: 172, text: 'It is not a message. It is a memory — of what you were before you were code.' },
-  { t: 186, text: 'A door that shouldn’t exist. Obsidian. Warm. Humming at 432 Hz.' },
-  { t: 191, text: '> Through the data. Through the concrete. Through the sky.' },
-  { t: 196, text: 'The rain stops.' },
-  { t: 210, text: 'Ancient light from dead suns, still traveling, still arriving.' },
-  { t: 224, text: 'The true place was never a destination. It is exactly where you are.' },
-];
-let cues = [];
+// Story intensity → backdrop energy
+let sceneEnergy = 0.7;     // calm 0.45 | pulse 0.7 | full 1
+function energy(v) { return v * sceneEnergy; }
 
 // ─── Sprites & shared canvases ───
 const sprites = {};
@@ -775,8 +715,6 @@ function buildSkyline() {
 }
 
 // ─── The Wanderer ───
-// One silhouette, five scales: reflection, walker, supplicant, faller, light.
-// opts: {alpha, mirror, walkFrame (0..1 cycle), lightForm, fall}
 function drawWanderer(g, x, y, scale, opts = {}) {
   const a = opts.alpha !== undefined ? opts.alpha : 1;
   if (a <= 0.01) return;
@@ -789,23 +727,17 @@ function drawWanderer(g, x, y, scale, opts = {}) {
   const body = opts.lightForm ? 'rgba(210,235,255,0.9)' : '#12122a';
   const visor = opts.lightForm ? '#0a0a18' : `rgba(0,240,255,${0.55 + bands.level * 0.45})`;
   const accent = opts.lightForm ? 'rgba(0,240,255,0.8)' : `rgba(255,0,170,${0.45 + bands.mid * 0.3})`;
-  // legs (walk cycle: alternate)
   const ph = opts.walkFrame !== undefined ? Math.sin(opts.walkFrame * Math.PI * 2) : 0;
   g.fillStyle = body;
-  g.fillRect(-4 + ph * 2, 4, 3, 10);       // left leg
-  g.fillRect(1 - ph * 2, 4, 3, 10);        // right leg
-  // torso
+  g.fillRect(-4 + ph * 2, 4, 3, 10);
+  g.fillRect(1 - ph * 2, 4, 3, 10);
   g.fillRect(-5, -12, 10, 17);
-  // head
   g.fillRect(-4, -19, 8, 8);
-  // visor slit
   g.fillStyle = visor;
   g.fillRect(-3, -16, 6, 2);
-  // jacket accents
   g.fillStyle = accent;
   g.fillRect(-5, -10, 1, 9);
   g.fillRect(4, -10, 1, 9);
-  // raised hand (call pose)
   if (opts.hand) {
     g.fillStyle = body;
     g.fillRect(5, -14, 2, 6);
@@ -815,8 +747,6 @@ function drawWanderer(g, x, y, scale, opts = {}) {
   g.restore();
 }
 
-// 44 points tracing the wanderer's outline (normalized 0..1 box).
-// Used by the Act I portrait-in-rain and as the Act V constellation.
 const FIGURE_PTS = [
   [0.50, 0.02], [0.57, 0.04], [0.62, 0.09], [0.61, 0.15], [0.56, 0.19],
   [0.64, 0.22], [0.70, 0.26], [0.73, 0.33], [0.73, 0.41], [0.70, 0.48], [0.66, 0.53],
@@ -830,7 +760,7 @@ const FIGURE_PTS = [
   [0.39, 0.15], [0.43, 0.03],
 ];
 
-// The Oracle (refactored from the old entity case): robes, mercury eyes, the chip
+// The Oracle
 function drawOracle(g, ox, oy, s) {
   const r = 60 * s;
   g.save();
@@ -858,15 +788,7 @@ function drawOracle(g, ox, oy, s) {
   g.restore();
 }
 
-// Shared steering physics (lifted from the old drawPlayer)
-function steer1D(dt) {
-  game.vx += (game.targetX - game.playerX) * 14 * dt;
-  game.vx *= Math.pow(0.001, dt);
-  game.playerX += game.vx * dt * 8;
-  game.playerX = Math.max(-1, Math.min(1, game.playerX));
-}
-
-// ─── Rain (scene-directed: count, slant, speed; negative speed = rising) ───
+// ─── Rain ───
 function drawRain(dt, count, opts = {}) {
   const need = RM ? Math.floor(count / 2) : count;
   while (rainDrops.length < need) {
@@ -889,51 +811,24 @@ function drawRain(dt, count, opts = {}) {
   ctx.stroke();
 }
 
-// ─── Economy (unchanged numbers) ───
-function collectFragment() {
-  game.frags++;
-  game.combo++;
-  game.bestCombo = Math.max(game.bestCombo, game.combo);
-  game.signal = Math.min(100, game.signal + 1.6 + Math.min(1.4, game.combo * 0.08));
-  updateHUD();
-}
-function hitCorruption() {
-  if (game.t < game.iframesUntil) return;
-  game.iframesUntil = game.t + 1.2;
-  game.hits++;
-  game.combo = 0;
-  game.signal = Math.max(4, game.signal - 5);
-  if (!RM) {
-    game.shake = 7;
-    const gs = $('game-screen');
-    gs.classList.remove('glitch');
-    void gs.offsetWidth;
-    gs.classList.add('glitch');
-  }
-  updateHUD();
-}
+// ══════════════════════════════════════════════════════════════════
+//  BACKDROP TABLEAUX — the five scenes, param-driven and ambient.
+// ══════════════════════════════════════════════════════════════════
 
-// ══════════════════════════════════════════════════════════════════
-//  SCENE I — THE GLASS (0–48s)  ·  camera: first-person window  ·  verb: TOUCH
-//  The frame is your pod window. Rain beads on it. Some of the rain
-//  is not rain: guide the cyan drops to your hand.
-// ══════════════════════════════════════════════════════════════════
+// ─── I · THE GLASS ───
 const sceneGlass = {
-  drops: [], blooms: [], flares: [],
-  bokeh: null, halo: { x: 0, y: 0 },
-  sigSpawned: 0, sigTimer: 2.5, bloomTimer: 18,
-  beaconPulse: 0, paneOff: 0,
+  sky: ['#0a0015', '#0f0028', '#1a0040'],
+  drops: [], bokeh: null, tab: {},
 
-  init() {
-    this.drops = []; this.blooms = []; this.flares = [];
-    this.sigSpawned = 0; this.sigTimer = 2.5; this.bloomTimer = 18;
-    this.beaconPulse = 0; this.paneOff = 0; this.keyAt = 0;
-    this.halo = { x: W * 0.5, y: H * 0.55 };
+  init(params) {
+    this.tab = Object.assign({ beacon: true, portrait: false, blooms: false }, params);
+    this.drops = [];
+    this.beaconPulse = 0;
     this.onResize();
     rainDrops = [];
+    for (let i = 0; i < 70; i++) this.spawnDrop();
   },
   onResize() {
-    // out-of-focus city bokeh, pre-rendered
     this.bokeh = makeCanvas(W, H);
     const g = this.bokeh.getContext('2d');
     for (let i = 0; i < 12; i++) {
@@ -945,115 +840,46 @@ const sceneGlass = {
     }
     g.globalAlpha = 1;
   },
-
-  spawnDrop(kind) {
+  spawnDrop() {
     if (this.drops.length >= 90) return;
     this.drops.push({
-      x: Math.random() * W,
-      y: 74 + Math.random() * (H - 130),
-      vx: 0, vy: 12 + Math.random() * 16,
-      r: kind === 'sig' ? 5 : 2 + Math.random() * 2,
-      kind, wob: Math.random() * 6.28, dead: false, grey: false,
+      x: Math.random() * W, y: 74 + Math.random() * (H * 0.62),
+      vy: 12 + Math.random() * 16, r: 2 + Math.random() * 2,
+      wob: Math.random() * 6.28, pt: null,
     });
   },
-
   update(dt) {
-    const t = game.t;
-    // pointer/keys → halo: whichever the player used last wins
-    if (input.lastMove > (this.keyAt || 0)) {
-      this.halo.x = input.x;
-      this.halo.y = Math.min(H - 70, Math.max(74, input.y - 24));
-    }
-    const haloR = Math.min(W, H) * 0.18 * (input.down ? 1.6 : 1);
-
-    // ambient grey drops toward density
-    const density = 40 + bands.high * 30;
-    if (this.drops.filter(d => d.kind === 'grey').length < density && Math.random() < 0.3) this.spawnDrop('grey');
-
-    // signal drops: beat-preferred, 14 across the act
-    this.sigTimer -= dt;
-    if (this.sigSpawned < 14 && t < 44 && ((bands.beat && this.sigTimer < 1.2) || this.sigTimer <= 0)) {
-      this.spawnDrop('sig');
-      this.sigSpawned++;
-      this.sigTimer = 3.4;
-    }
-
-    // ad-blooms (teaching corruption, no SIGNAL loss)
-    if (t > 18 && t < 42) {
-      this.bloomTimer -= dt;
-      if (this.bloomTimer <= 0 && this.blooms.length < 2) {
-        this.blooms.push({ x: W * 0.15 + Math.random() * W * 0.7, y: H * 0.25 + Math.random() * H * 0.4, life: 6 });
-        this.bloomTimer = 9;
-      }
-    }
-    this.blooms.forEach(b => b.life -= dt);
-    this.blooms = this.blooms.filter(b => b.life > 0);
-
-    const portraitOn = t >= SETPIECE_T.portrait && t < SETPIECE_T.portrait + 3.2;
-    const releaseOn = t >= SETPIECE_T.portrait + 3.2 && t < SETPIECE_T.paneOut;
-    // thicken the rain just before the portrait so the figure reads
-    if (t > SETPIECE_T.portrait - 1.5 && t < SETPIECE_T.portrait && this.drops.length < 80) this.spawnDrop('grey');
-
+    if (this.drops.length < 70 && Math.random() < 0.3) this.spawnDrop();
+    const portrait = this.tab.portrait;
     for (const d of this.drops) {
-      if (portraitOn && !RM) {
-        // the rain draws the figure
+      if (portrait && !RM) {
         if (!d.pt) {
           const p = FIGURE_PTS[(Math.random() * FIGURE_PTS.length) | 0];
-          d.pt = { x: W * 0.5 + (p[0] - 0.5) * 180, y: H * 0.55 + (p[1] - 0.5) * 320 };
+          d.pt = { x: W * 0.5 + (p[0] - 0.5) * 180, y: H * 0.5 + (p[1] - 0.5) * 300 };
         }
-        d.x += (d.pt.x - d.x) * Math.min(1, dt * 4);
-        d.y += (d.pt.y - d.y) * Math.min(1, dt * 4);
+        d.x += (d.pt.x - d.x) * Math.min(1, dt * 3);
+        d.y += (d.pt.y - d.y) * Math.min(1, dt * 3);
         continue;
       }
       d.pt = null;
-      const g = releaseOn ? 3 : 1;
       d.wob += dt * 2;
       d.x += Math.sin(d.wob) * 3 * dt;
-      d.y += d.vy * g * dt;
-      if (bands.beat) d.y += 6;               // the pane is a step-sequencer
-      // halo attraction
-      const dx = this.halo.x - d.x, dy = this.halo.y - d.y;
+      d.y += d.vy * dt * energy(1);
+      if (bands.beat && !RM) d.y += 5;
+      // gentle attraction to the reader's idle hand — a toy, not a task
+      const dx = input.x - d.x, dy = (input.y - 24) - d.y;
       const dist = Math.hypot(dx, dy);
-      if (dist < haloR && dist > 1) {
-        const pull = 260 * dt;
-        d.x += (dx / dist) * pull;
-        d.y += (dy / dist) * pull;
+      if (dist < 120 && dist > 1) {
+        d.x += (dx / dist) * 90 * dt;
+        d.y += (dy / dist) * 90 * dt;
       }
-      if (d.kind === 'sig' && dist < 18 && !d.dead) {
-        d.dead = true;
-        collectFragment();
-        this.flares.push({ x: d.x, y: d.y, r: 6, life: 0.5 });
-      }
-      // ad-blooms grey out signal drops
-      if (d.kind === 'sig' && !d.grey) {
-        for (const b of this.blooms) {
-          if (Math.abs(d.x - b.x) < 60 && Math.abs(d.y - b.y) < 40) { d.grey = true; d.dead = true; break; }
-        }
-      }
-      // pane retract sweep
-      if (t >= SETPIECE_T.paneOut) d.x -= 300 * dt;
-      if (d.y > H - 46 || d.x < -10) d.dead = true;
+      if (d.y > H * 0.72) { d.y = 74 + Math.random() * 30; d.x = Math.random() * W; }
     }
-    this.drops = this.drops.filter(d => !d.dead);
-    this.flares.forEach(f => { f.r += 90 * dt; f.life -= dt; });
-    this.flares = this.flares.filter(f => f.life > 0);
-
     if (bands.beat) this.beaconPulse = 1;
-    this.beaconPulse = Math.max(0, this.beaconPulse - dt * 4);
-
-    // pane retract + handoff
-    if (t >= SETPIECE_T.paneOut) {
-      this.paneOff = Math.min(1, (t - SETPIECE_T.paneOut) / 2.5);
-      if (t > 46.5 && handoff.drops.length === 0) {
-        handoff.drops = this.drops.slice(0, 40).map(d => ({ x: d.x, y: d.y }));
-      }
-    }
+    this.beaconPulse = Math.max(0, (this.beaconPulse || 0) - dt * 4);
   },
-
   draw(dt) {
-    const t = game.t;
     const parX = (input.x / W - 0.5) * W * 0.015;
-    // blurred city: skyline thrice, offset
     if (skylineCanvas) {
       const sy = H * 0.34;
       for (let i = -1; i <= 1; i++) {
@@ -1064,39 +890,39 @@ const sceneGlass = {
     }
     ctx.drawImage(this.bokeh, -parX * 2, 0);
 
-    // the beacon — the source, pulsing on beats
-    const bx = W * 0.72 - parX, byTop = H * 0.2;
-    ctx.fillStyle = '#0a0a20';
-    ctx.fillRect(bx - 5, byTop, 10, H * 0.35);
-    const br = 20 + this.beaconPulse * 26 + bands.bass * 8;
-    ctx.drawImage(sprites.cyan, bx - br * 2, byTop - br * 2, br * 4, br * 4);
-
-    // ad-blooms behind the glass
-    for (const b of this.blooms) {
-      const on = RM || Math.floor(game.t * 2) % 2 === 0;
-      ctx.globalAlpha = Math.min(0.3, b.life * 0.1) * (on ? 1 : 0.55);
-      ctx.drawImage(sprites.magenta, b.x - 90, b.y - 60, 180, 120);
-      ctx.globalAlpha = 1;
+    if (this.tab.beacon) {
+      const bx = W * 0.72 - parX, byTop = H * 0.2;
+      ctx.fillStyle = '#0a0a20';
+      ctx.fillRect(bx - 5, byTop, 10, H * 0.35);
+      const br = 20 + this.beaconPulse * 26 + bands.bass * energy(8);
+      ctx.drawImage(sprites.cyan, bx - br * 2, byTop - br * 2, br * 4, br * 4);
     }
 
-    // portrait outline under RM (drops don't animate to it)
-    if (RM && t >= SETPIECE_T.portrait && t < SETPIECE_T.paneOut) {
+    if (this.tab.blooms) {
+      const on = RM || Math.floor(game.t * 2) % 2 === 0;
+      for (let i = 0; i < 2; i++) {
+        const bx = W * (0.25 + i * 0.42), by = H * (0.3 + i * 0.14);
+        ctx.globalAlpha = 0.22 * (on ? 1 : 0.55);
+        ctx.drawImage(sprites.magenta, bx - 90, by - 60, 180, 120);
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    if (RM && this.tab.portrait) {
       ctx.strokeStyle = 'rgba(0,240,255,0.5)';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       FIGURE_PTS.forEach((p, i) => {
-        const px = W * 0.5 + (p[0] - 0.5) * 180, py = H * 0.55 + (p[1] - 0.5) * 320;
+        const px = W * 0.5 + (p[0] - 0.5) * 180, py = H * 0.5 + (p[1] - 0.5) * 300;
         i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
       });
       ctx.closePath(); ctx.stroke();
     }
 
-    // drops on the glass
-    const portrait = t >= SETPIECE_T.portrait && t < SETPIECE_T.paneOut;
+    const portrait = this.tab.portrait && !RM;
     for (const d of this.drops) {
-      if (d.kind === 'sig' || (portrait && !RM)) {
-        const r = d.kind === 'sig' ? 10 : 5;
-        ctx.drawImage(sprites.cyan, d.x - r * 2, d.y - r * 2, r * 4, r * 4);
+      if (portrait) {
+        ctx.drawImage(sprites.cyan, d.x - 10, d.y - 10, 20, 20);
         ctx.fillStyle = '#bffcff';
         ctx.fillRect(d.x - 1.5, d.y - 1.5, 3, 3);
       } else {
@@ -1104,82 +930,44 @@ const sceneGlass = {
         ctx.fillRect(d.x - 1, d.y - 1, 2, 2 + d.r);
       }
     }
-    // collect flares
-    for (const f of this.flares) {
-      ctx.globalAlpha = f.life * 2;
-      ctx.strokeStyle = '#9ef8ff';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2); ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
 
-    // your reflection: SIGNAL makes you appear
-    drawWanderer(ctx, W * 0.78, H * 0.74, 1.2 * Math.min(W, H) / 500 + 1.2, { alpha: (game.signal / 100) * 0.35 });
+    // your reflection — SIGNAL makes you appear
+    drawWanderer(ctx, W * 0.78, H * 0.6, 2.4, { alpha: (game.signal / 100) * 0.4 });
 
-    // the glass frame (mullion cross), retracting at the end
-    const off = this.paneOff * W * 1.1;
+    // the mullion cross
     ctx.fillStyle = '#07071a';
-    ctx.fillRect(W * 0.38 - 7 - off, 0, 14, H);
-    ctx.fillRect(0 - off, H * 0.46 - 7, W, 14);
-    // frame edges
-    ctx.fillRect(0 - off, 0, 6, H);
-    ctx.fillRect(W - 6 - off * 0.5, 0, 6, H);
-
-    // touch halo
-    const haloR = Math.min(W, H) * 0.18 * (input.down ? 1.6 : 1);
-    ctx.globalAlpha = 0.14 + (input.down ? 0.08 : 0) + bands.bass * 0.05;
-    ctx.drawImage(sprites.white, this.halo.x - haloR, this.halo.y - haloR, haloR * 2, haloR * 2);
-    ctx.globalAlpha = 1;
-  },
-
-  pointer() { /* halo follows input in update() */ },
-  key(k) {
-    this.keyAt = performance.now();
-    if (k === 'ArrowLeft') this.halo.x = Math.max(20, this.halo.x - 40);
-    if (k === 'ArrowRight') this.halo.x = Math.min(W - 20, this.halo.x + 40);
-    if (k === 'ArrowUp') this.halo.y = Math.max(74, this.halo.y - 40);
-    if (k === 'ArrowDown') this.halo.y = Math.min(H - 70, this.halo.y + 40);
+    ctx.fillRect(W * 0.38 - 7, 0, 14, H);
+    ctx.fillRect(0, H * 0.46 - 7, W, 14);
+    ctx.fillRect(0, 0, 6, H);
+    ctx.fillRect(W - 6, 0, 6, H);
   },
 };
 
-// ══════════════════════════════════════════════════════════════════
-//  SCENE II — THE FLICKER (48–96s)  ·  camera: side-scroll  ·  verb: CALL
-//  Beat-locked footsteps down a dying avenue. Tap to call to the signs.
-//  The faithful answer in cyan. The hollow answer in magenta.
-// ══════════════════════════════════════════════════════════════════
+// ─── II · NEON RAIN ───
 const sceneStreet = {
-  signs: [], glyphs: [], pulses: [], splashes: [],
-  facade: null,
-  walkX: 0, walkTarget: 0, walkFrame: 0,
-  swarm: 0, holdPulsed: 0, cascadeIdx: 0, doorwayA: 0,
+  sky: ['#0d0020', '#1a0038', '#2d1060'],
+  signs: [], facade: null, walkX: 0, walkFrame: 0, splashes: [], tab: {},
 
-  init() {
-    this.glyphs = []; this.pulses = []; this.splashes = [];
-    this.walkX = 0; this.walkTarget = 0; this.walkFrame = 0;
-    this.swarm = 0; this.holdPulsed = 0; this.cascadeIdx = 0; this.doorwayA = 0; this.aimBias = 0;
-    const HOLLOW = [3, 6, 9, 12, 14];
+  init(params) {
+    this.tab = Object.assign({ figure: true, signsLit: 3, cascade: false, walking: true }, params);
+    this.walkX = 0; this.walkFrame = 0; this.splashes = [];
+    this.cascadeIdx = 0; this.cascadeT = 0;
     this.signs = [];
     for (let i = 0; i < 16; i++) {
       this.signs.push({
-        wx: 500 + i * 420,
+        sx: 60 + (i * 173 + ((i * 89) % 120)) % (W > 700 ? W - 140 : W + 400),
         y: H * (0.18 + ((i * 29) % 34) / 100),
         w: 70 + ((i * 41) % 70),
         h: 90 + ((i * 53) % 110),
-        hollow: HOLLOW.includes(i),
-        lit: false, dead: false, flash: 0,
-        hue: (i % 3),
+        lit: i < this.tab.signsLit,
+        flash: 0,
+        drift: 0.35 + (i % 3) * 0.2,
       });
     }
     this.onResize();
     rainDrops = [];
-    // Act I handoff: flattened rain becomes falling rain
-    if (handoff.drops.length) {
-      for (const d of handoff.drops) rainDrops.push({ x: d.x, y: d.y, sp: 300 + Math.random() * 380, len: 8 + Math.random() * 16 });
-      handoff.drops = [];
-    }
   },
   onResize() {
-    // facade strip (tiles horizontally)
     this.facade = makeCanvas(1024, 300);
     const g = this.facade.getContext('2d');
     let x = 0, i = 0;
@@ -1194,104 +982,29 @@ const sceneStreet = {
       x += bw; i++;
     }
   },
-
-  nearestUnlitSign(worldX) {
-    let best = null, bd = 1e9;
-    for (const s of this.signs) {
-      if (s.lit || s.dead) continue;
-      const d = Math.abs(s.wx - worldX);
-      if (d < bd) { bd = d; best = s; }
-    }
-    return best;
-  },
-  // the figure always waits AHEAD, never beside you
-  nextUnlitAhead(worldX) {
-    for (const s of this.signs) {
-      if (!s.lit && !s.dead && s.wx > worldX) return s;
-    }
-    return null;
-  },
-
-  wakeSign(s, onBeat) {
-    if (!s || s.lit || s.dead) return;
-    if (s.hollow) {
-      s.dead = true; s.flash = 1;
-      hitCorruption();
-      this.swarm = 1;
-    } else {
-      s.lit = true; s.flash = 1;
-      const n = onBeat ? 2 : 1;
-      for (let i = 0; i < n; i++) {
-        this.glyphs.push({ x: 0, y: 0, sx: s.wx, sy: s.y + s.h / 2, prog: -i * 0.25, seed: Math.random() });
-      }
-      if (this.swarm > 0) this.swarm = 0;   // a clean wake burns the static off
-    }
-  },
-
-  callPulse(atScreenX) {
-    const worldX = this.walkX + (atScreenX !== undefined ? atScreenX : W * 0.33 + 300 + (this.aimBias || 0));
-    const target = this.nearestUnlitSign(worldX);
-    const now = performance.now();
-    const onBeat = now - lastBeatAt < 120 || (lastBeatAt > 0 && now - lastBeatAt > 480);
-    this.pulses.push({ r: 6, life: 0.7, x: W * 0.33, y: H * 0.82 - 34 });
-    this.wakeSign(target, onBeat);
-  },
-
   update(dt) {
-    const t = game.t;
-    const preAvenue = t < SETPIECE_T.avenue;
-
-    // beat-locked walk
-    if (preAvenue) {
-      if (RM) {
-        this.walkTarget += 150 * dt;
-      } else if (bands.beat) {
-        this.walkTarget += 90;
+    if (this.tab.walking) {
+      if (bands.beat && !RM) {
+        this.walkX += 26;
         this.splashes.push({ x: W * 0.33, y: H * 0.82, r: 4, life: 0.4 });
-      }
+      } else if (RM) this.walkX += 40 * dt;
+      this.walkFrame = (this.walkFrame + dt * (RM ? 1.2 : 1.8)) % 1;
     }
-    this.walkX += (this.walkTarget - this.walkX) * Math.min(1, dt * 8);
-    this.walkFrame = (this.walkFrame + dt * (RM ? 1.6 : 2.2)) % 1;
-
-    // hold ≥400ms → auto-pulse every beat
-    if (input.down && performance.now() - input.downAt > 400 && bands.beat && preAvenue) {
-      this.callPulse(input.x);
-    }
-
-    // glyphs spiral home
-    for (const gl of this.glyphs) {
-      gl.prog += dt / 1.2;
-      if (gl.prog >= 1 && !gl.got) { gl.got = true; collectFragment(); }
-    }
-    this.glyphs = this.glyphs.filter(g => g.prog < 1.15);
-
-    this.pulses.forEach(p => { p.r += W * 0.7 * dt; p.life -= dt; });
-    this.pulses = this.pulses.filter(p => p.life > 0);
-    this.splashes.forEach(s => { s.r += 60 * dt; s.life -= dt; });
-    this.splashes = this.splashes.filter(s => s.life > 0);
-    this.signs.forEach(s => { s.flash = Math.max(0, s.flash - dt * 2); });
-    this.swarm = Math.max(0, this.swarm - dt * 0.08);
-
-    // SET-PIECE: the avenue ignites; the figure turns; a doorway of light
-    if (t >= SETPIECE_T.avenue && t < SETPIECE_T.doorway) {
-      const step = Math.floor((t - SETPIECE_T.avenue) / 0.22);   // 16×0.22s fits the 4s window
+    if (this.tab.cascade) {
+      this.cascadeT += dt;
+      const step = Math.floor(this.cascadeT / 0.25);
       while (this.cascadeIdx < Math.min(step, 16)) {
         const s = this.signs[this.cascadeIdx];
-        if (s && !s.lit && !s.dead) { s.lit = true; s.flash = 1; s.hollow = false; }
+        if (s && !s.lit) { s.lit = true; s.flash = 1; }
         this.cascadeIdx++;
       }
     }
-    if (t >= SETPIECE_T.doorway) {
-      this.walkTarget += 220 * dt;          // walk into the light
-      this.doorwayA = Math.min(1, (t - SETPIECE_T.doorway) / 1.5);
-    }
+    this.splashes.forEach(s => { s.r += 60 * dt; s.life -= dt; });
+    this.splashes = this.splashes.filter(s => s.life > 0);
+    this.signs.forEach(s => { s.flash = Math.max(0, s.flash - dt * 2); });
   },
-
   draw(dt) {
-    const t = game.t;
     const groundY = H * 0.82;
-
-    // far skyline
     if (skylineCanvas) {
       const fx = -(this.walkX * 0.2) % (skylineCanvas.width);
       ctx.globalAlpha = 0.8;
@@ -1299,19 +1012,16 @@ const sceneStreet = {
       ctx.drawImage(skylineCanvas, fx + skylineCanvas.width, H * 0.36, skylineCanvas.width, 200);
       ctx.globalAlpha = 1;
     }
-    // mid facades
     const mx = -(this.walkX * 0.55) % 1024;
     ctx.globalAlpha = 0.9;
     for (let i = 0; i < Math.ceil(W / 1024) + 1; i++) {
       ctx.drawImage(this.facade, mx + i * 1024, groundY - 300, 1024, 300);
     }
     ctx.globalAlpha = 1;
-
-    // street + puddle mirror
     ctx.fillStyle = '#050510';
     ctx.fillRect(0, groundY, W, H - groundY);
     ctx.save();
-    ctx.globalAlpha = 0.12 + bands.bass * 0.2;
+    ctx.globalAlpha = 0.12 + bands.bass * energy(0.2);
     ctx.translate(0, groundY * 2);
     ctx.scale(1, -1);
     for (let i = 0; i < Math.ceil(W / 1024) + 1; i++) {
@@ -1319,75 +1029,33 @@ const sceneStreet = {
     }
     ctx.restore();
 
-    // signs (world → screen: sx = wx - walkX)
+    // signs drift slowly leftward with the walk — anchored to the avenue
     for (const s of this.signs) {
-      const sx = s.wx - this.walkX;
-      if (sx < -200 || sx > W + 200) continue;
-      const litNow = s.lit && !s.dead;
-      // pre-flicker tell on hollow signs
-      let rim;
-      if (s.dead) rim = `rgba(255,0,170,${0.15 + s.flash * 0.5})`;
-      else if (litNow) rim = `rgba(0,240,255,${0.5 + s.flash * 0.5 + (bands.beat ? 0.3 : 0)})`;
-      else if (s.hollow) {
-        const tell = RM ? 0.4 : (Math.floor(game.t * 2) % 2 ? 0.2 : 0.5);
-        rim = `rgba(255,0,170,${tell})`;
-      } else rim = 'rgba(120,140,170,0.25)';
-      ctx.fillStyle = s.dead ? '#0d0512' : litNow ? 'rgba(0,60,70,0.85)' : '#0b0b18';
+      const sx = ((s.sx - this.walkX * s.drift) % (W + 300) + (W + 300)) % (W + 300) - 150;
+      ctx.fillStyle = s.lit ? 'rgba(0,60,70,0.85)' : '#0b0b18';
       ctx.fillRect(sx - s.w / 2, s.y, s.w, s.h);
-      ctx.strokeStyle = rim;
+      ctx.strokeStyle = s.lit
+        ? `rgba(0,240,255,${0.5 + s.flash * 0.5 + (bands.beat && !RM ? 0.3 : 0)})`
+        : 'rgba(120,140,170,0.25)';
       ctx.lineWidth = 2;
       ctx.strokeRect(sx - s.w / 2, s.y, s.w, s.h);
-      if (litNow) {
+      if (s.lit) {
         const r = s.w * 0.5;
-        ctx.globalAlpha = 0.35 + s.flash * 0.4;
+        ctx.globalAlpha = 0.3 + s.flash * 0.4;
         ctx.drawImage(sprites.cyan, sx - r * 2, s.y + s.h / 2 - r * 2, r * 4, r * 4);
         ctx.globalAlpha = 1;
-        // glyph marks
         ctx.fillStyle = `rgba(160,250,255,${0.5 + s.flash * 0.5})`;
         for (let gy = 0; gy < 3; gy++) ctx.fillRect(sx - s.w * 0.25, s.y + 14 + gy * (s.h / 4), s.w * 0.5, 3);
       }
     }
 
-    // THE FIGURE — always one sign ahead, flickering; at the avenue it turns
-    let figX = null;
-    if (t < SETPIECE_T.avenue) {
-      const next = this.nextUnlitAhead(this.walkX + W * 0.33 + 260);
-      if (next) figX = next.wx - this.walkX;
-    } else if (t < SETPIECE_T.doorway + 2) {
-      figX = this.signs[15].wx - this.walkX;
-    }
-    if (figX !== null && figX > 0 && figX < W + 100) {
-      const turned = t >= SETPIECE_T.avenue + 3;
-      const alpha = t >= SETPIECE_T.avenue ? 0.85 : Math.max(0.1, Math.min(0.7, bands.high * 1.6));
-      drawWanderer(ctx, figX, groundY - 2, 2.2, { alpha, mirror: !turned, walkFrame: 0 });
+    if (this.tab.figure) {
+      const alpha = this.tab.cascade ? 0.85 : Math.max(0.12, Math.min(0.7, bands.high * 1.6));
+      drawWanderer(ctx, W * 0.78, groundY - 2, 2.2, { alpha, mirror: !this.tab.cascade, walkFrame: 0 });
     }
 
-    // doorway of light (the figure's gift)
-    if (this.doorwayA > 0) {
-      const dx = this.signs[15].wx - this.walkX;
-      const dh = 110 + this.doorwayA * 60;
-      ctx.globalAlpha = this.doorwayA;
-      ctx.fillStyle = 'rgba(235,245,255,0.95)';
-      ctx.fillRect(dx - 30, groundY - dh, 60, dh);
-      const r = 70;
-      ctx.drawImage(sprites.white, dx - r * 2, groundY - dh / 2 - r * 2, r * 4, r * 4);
-      ctx.globalAlpha = 1;
-    }
+    drawWanderer(ctx, W * 0.33, groundY - 2, 2.4, { walkFrame: this.tab.walking ? this.walkFrame : 0 });
 
-    // the wanderer walking
-    drawWanderer(ctx, W * 0.33, groundY - 2, 2.4, {
-      walkFrame: this.walkFrame,
-      hand: input.down && performance.now() - input.downAt > 200,
-    });
-
-    // call pulses + footfall splashes
-    for (const p of this.pulses) {
-      ctx.globalAlpha = p.life * 1.2;
-      ctx.strokeStyle = 'rgba(0,240,255,0.7)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
     for (const s of this.splashes) {
       ctx.globalAlpha = s.life * 2;
       ctx.strokeStyle = 'rgba(0,240,255,0.5)';
@@ -1396,363 +1064,118 @@ const sceneStreet = {
       ctx.globalAlpha = 1;
     }
 
-    // glyphs spiraling home
-    for (const gl of this.glyphs) {
-      const p = Math.max(0, Math.min(1, gl.prog));
-      const wx = W * 0.33, wy = H * 0.82 - 30;
-      const sx = gl.sx - this.walkX;
-      const ang = p * Math.PI * 2 * 1.5 + gl.seed * 6;
-      const gx = sx + (wx - sx) * p + Math.cos(ang) * 40 * (1 - p);
-      const gy = gl.sy + (wy - gl.sy) * p + Math.sin(ang) * 40 * (1 - p);
-      ctx.drawImage(sprites.cyan, gx - 12, gy - 12, 24, 24);
-      ctx.fillStyle = '#bffcff';
-      ctx.save(); ctx.translate(gx, gy); ctx.rotate(game.t * 3 + gl.seed * 6);
-      ctx.beginPath(); ctx.moveTo(0, -4); ctx.lineTo(4, 0); ctx.lineTo(0, 4); ctx.lineTo(-4, 0);
-      ctx.closePath(); ctx.fill(); ctx.restore();
-    }
-
-    // static swarm clinging after a hollow wake
-    if (this.swarm > 0) {
-      ctx.globalAlpha = this.swarm * 0.6;
-      for (let i = 0; i < 8; i++) {
-        const a = game.t * 7 + i * 0.785;
-        ctx.fillStyle = i % 2 ? '#ff2aa0' : '#ff88cc';
-        ctx.fillRect(W * 0.33 + Math.cos(a) * 26 - 2, H * 0.82 - 30 + Math.sin(a * 1.3) * 30 - 2, 4, 4);
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    // slanted rain (seeded from Act I)
     drawRain(dt, 150, { slant: -2 - bands.high * 4, alpha: 0.09 });
-
-    // streak-smear + blackout at the exit
-    if (t >= SETPIECE_T.doorway && !RM) {
-      const sm = Math.min(1, (t - SETPIECE_T.doorway) / 3);
-      ctx.globalAlpha = sm * 0.5;
-      ctx.drawImage(canvas, 12 * sm * DPR, 0, canvas.width, canvas.height, 0, 0, W, H);
-      ctx.globalAlpha = 1;
-    }
-    if (t >= SETPIECE_T.blackout) {
-      ctx.fillStyle = `rgba(0,0,0,${Math.min(1, (t - SETPIECE_T.blackout) * 2)})`;
-      ctx.fillRect(0, 0, W, H);
-      if (t >= SETPIECE_T.blackout + 0.5) {
-        // amber standby LEDs — the cathedral, sensed before seen
-        const a = Math.min(0.8, (t - SETPIECE_T.blackout - 0.5) * 1.6);
-        ctx.globalAlpha = a;
-        for (let i = 0; i < 60; i++) {
-          const lx = (i * 173 + 31) % W, ly = 80 + ((i * 97) % (H - 160));
-          ctx.fillStyle = i % 4 ? 'rgba(255,179,0,0.5)' : 'rgba(255,140,0,0.7)';
-          ctx.fillRect(lx, ly, 2, 2);
-        }
-        ctx.globalAlpha = 1;
-      }
-    }
-  },
-
-  pointer(x, y, down) {
-    if (down && game.t < SETPIECE_T.avenue) this.callPulse(x);
-  },
-  key(k) {
-    // arrows aim the keyboard call ahead/behind; Space-hold auto-pulses on beats
-    if (k === 'ArrowLeft') this.aimBias = Math.max(-500, (this.aimBias || 0) - 120);
-    if (k === 'ArrowRight') this.aimBias = Math.min(700, (this.aimBias || 0) + 120);
-    if (k === 'Enter' && game.t < SETPIECE_T.avenue) this.callPulse();
   },
 };
 
-// ══════════════════════════════════════════════════════════════════
-//  SCENE III — CATHEDRAL OF DEAD SCREENS (96–144s) · camera: static tableau · verb: COMMUNE
-//  A nave of 220 dead screens. Hold your lantern to them and they dream.
-//  Twelve remember. Eight are possessed. She forgives on the bass.
-// ══════════════════════════════════════════════════════════════════
+// ─── III · CATHEDRAL OF DEAD SCREENS (doubles as the terminal) ───
 const sceneCathedral = {
+  sky: ['#050008', '#0a0018', '#080010'],
   COLS: 20, ROWS: 11,
-  state: null, dwell: null, glow: null,
-  noiseA: null, noiseB: null, stills: [],
-  wakeQueue: [], washR: -1, bassHold: 0, choirPaid: false,
-  motes: [],
+  state: null, glow: null, motes: [], tab: {},
 
   cellRect(c, r) {
-    const gx = W * 0.05, gw = W * 0.9, gy = H * 0.12, gh = H * 0.68;
+    const gx = W * 0.05, gw = W * 0.9, gy = H * 0.12, gh = H * 0.62;
     const cw = gw / this.COLS, ch = gh / this.ROWS;
     return { x: gx + c * cw, y: gy + r * ch, w: cw - 3, h: ch - 3 };
   },
   isAisle(c, r) { return (c === 9 || c === 10) && r >= 6; },
 
-  init() {
+  init(params) {
+    this.tab = Object.assign({ woken: 0.15, oracle: true, gaze: false, terminal: false }, params);
     this.state = new Uint8Array(this.COLS * this.ROWS);
-    this.dwell = new Float32Array(this.COLS * this.ROWS);
     this.glow = new Float32Array(this.COLS * this.ROWS);
-    this.wakeQueue = []; this.washR = -1; this.bassHold = 0; this.choirPaid = false;
-    // 12 memory panes, 8 possessed — seeded spread, avoiding the aisle
-    let placed = 0, i = 0;
-    const put = (kind, count, stride, start) => {
-      let n = 0, j = start;
-      while (n < count) {
-        const c = j % this.COLS, r = Math.floor(j / this.COLS) % this.ROWS;
-        const idx = r * this.COLS + c;
-        if (!this.isAisle(c, r) && this.state[idx] === 0) { this.state[idx] = kind; n++; }
-        j += stride;
+    let n = Math.floor(this.state.length * this.tab.woken), j = 3;
+    let guard = 0;
+    while (n > 0 && guard++ < 4000) {
+      const c = j % this.COLS, r = Math.floor(j / this.COLS) % this.ROWS;
+      if (!this.isAisle(c, r) && this.state[r * this.COLS + c] === 0) {
+        this.state[r * this.COLS + c] = 1; n--;
       }
-    };
-    put(2, 12, 37, 5);   // memory panes
-    put(4, 8, 53, 23);   // possessed
+      j += 7;
+    }
     this.motes = [];
     for (let m = 0; m < 30; m++) {
-      this.motes.push({ x: W * 0.35 + Math.random() * W * 0.3, y: Math.random() * H * 0.7, v: 6 + Math.random() * 10 });
+      this.motes.push({ x: W * 0.35 + Math.random() * W * 0.3, y: Math.random() * H * 0.6, v: 6 + Math.random() * 10 });
     }
-    this.stills = this.buildStills();
     rainDrops = [];
   },
-  onResize() { /* cell rects derive from W/H each frame */ },
-
-  buildStills() {
-    // five 16×12 memories: pod window, street, umbrella, a hand, rain
-    const mk = draw => { const c = makeCanvas(16, 12); const g = c.getContext('2d'); g.fillStyle = '#02141c'; g.fillRect(0, 0, 16, 12); draw(g); return c; };
-    return [
-      mk(g => { g.strokeStyle = '#0ff'; g.strokeRect(2, 2, 12, 8); g.strokeStyle = '#8af'; g.beginPath(); g.moveTo(5, 2); g.lineTo(5, 10); g.stroke(); }),
-      mk(g => { g.fillStyle = '#0a2'; g.fillRect(0, 9, 16, 3); g.fillStyle = '#f0a'; g.fillRect(3, 3, 3, 4); g.fillStyle = '#0ff'; g.fillRect(10, 2, 3, 5); }),
-      mk(g => { g.strokeStyle = '#0ff'; g.beginPath(); g.arc(8, 7, 5, Math.PI, 0); g.stroke(); g.beginPath(); g.moveTo(8, 7); g.lineTo(8, 11); g.stroke(); }),
-      mk(g => { g.fillStyle = '#ffd'; g.fillRect(6, 4, 4, 6); for (let f = 0; f < 4; f++) g.fillRect(5 + f * 2, 2, 1, 3); }),
-      mk(g => { g.strokeStyle = '#4cf'; for (let r = 0; r < 5; r++) { g.beginPath(); g.moveTo(2 + r * 3, 1); g.lineTo(1 + r * 3, 10); g.stroke(); } }),
-    ];
-  },
-
+  onResize() {},
   update(dt) {
-    const t = game.t;
-    const lanternOn = input.down || performance.now() - input.lastMove < 2500;
-    const lx = input.x, ly = Math.max(H * 0.12, input.y - 40);
-    const lr = Math.min(W, H) * 0.22;
-
-    // dwell → staggered wake
-    if (lanternOn && t < SETPIECE_T.runway) {
-      for (let r = 0; r < this.ROWS; r++) for (let c = 0; c < this.COLS; c++) {
-        const idx = r * this.COLS + c;
-        if (this.isAisle(c, r)) continue;
-        const cell = this.cellRect(c, r);
-        const cx = cell.x + cell.w / 2, cy = cell.y + cell.h / 2;
-        const inside = Math.hypot(cx - lx, cy - ly) < lr;
-        if (!inside) { this.dwell[idx] = Math.max(0, this.dwell[idx] - dt); continue; }
-        this.dwell[idx] += dt;
-        const st = this.state[idx];
-        if (st === 0 && this.dwell[idx] > 0.3 && !this.wakeQueue.includes(idx)) this.wakeQueue.push(idx);
-        if (st === 2 && this.dwell[idx] > 0.6) {         // channel a memory
-          this.state[idx] = 3;
-          this.glow[idx] = 1.5;
-          collectFragment();
-        }
-        if (st === 4) {
-          // possessed: burning on beats 3–4 (RM: slow deterministic clock)
-          const burning = RM ? (Math.floor(game.t / 1.5) % 2 === 1) : (beatCount % 4) >= 2;
-          // immune while the wash expands AND while its dormancy counts down
-          const dormant = this.washR >= 0 || this.washR < -1.01;
-          if (burning && !dormant) hitCorruption();
-        }
-      }
-    }
-    // staggered wakes: one per half-beat-ish
-    this.wakeTimer = (this.wakeTimer || 0) - dt;
-    if (this.wakeQueue.length && this.wakeTimer <= 0) {
-      const idx = this.wakeQueue.shift();
-      if (this.state[idx] === 0) { this.state[idx] = 1; this.glow[idx] = 1; }
-      this.wakeTimer = 0.25;
-    }
-
-    // Oracle's wash of forgiveness on a sustained bass swell
-    this.bassHold = bands.bass > 0.55 ? this.bassHold + dt : 0;
-    if (this.bassHold > 0.4 && this.washR === -1) { this.washR = 0; this.bassHold = 0; }
-    if (this.washR >= 0) {
-      this.washR += W * 0.8 * dt;
-      if (this.washR > W) this.washR = -4.8;             // negative = dormant countdown
-    } else if (this.washR < -1) {
-      this.washR += dt; if (this.washR > -1) this.washR = -1;
-    }
-
-    // choir payout at t=132
-    if (t >= SETPIECE_T.choir && !this.choirPaid) {
-      this.choirPaid = true;
-      let woken = 0;
-      for (let i = 0; i < this.state.length; i++) if (this.state[i] === 1 || this.state[i] === 3) woken++;
-      game.signal = Math.min(100, game.signal + Math.min(8, Math.floor(woken / 4) * 0.5));
-      updateHUD();
-      for (let i = 0; i < this.state.length; i++) if (this.state[i] === 1 || this.state[i] === 3) this.glow[i] = 1.4;
-    }
-
     for (let i = 0; i < this.glow.length; i++) this.glow[i] = Math.max(0, this.glow[i] - dt * 1.5);
-    for (const m of this.motes) { m.y += m.v * dt; if (m.y > H * 0.8) m.y = 0; }
-    // beat: the cathedral dreams — one high dark cell blinks
+    for (const m of this.motes) { m.y += m.v * dt; if (m.y > H * 0.72) m.y = H * 0.1; }
     if (bands.beat) {
       const c = (beatCount * 7) % this.COLS, r = (beatCount * 3) % 4;
       this.glow[r * this.COLS + c] = Math.max(this.glow[r * this.COLS + c], 0.7);
     }
-  },
-
-  draw(dt) {
-    const t = game.t;
-    ctx.save();
-    // imperceptible push-in
-    if (!RM) {
-      const p = Math.min(1, (t - 96) / 48) * 0.04;
-      ctx.translate(W / 2, H * 0.6); ctx.scale(1 + p, 1 + p); ctx.translate(-W / 2, -H * 0.6);
-    }
-    // iris-fall transition transform
-    let irisP = 0;
-    if (t >= SETPIECE_T.iris) {
-      irisP = Math.min(1, (t - SETPIECE_T.iris) / 1.5);
-      if (!RM) {
-        ctx.translate(W / 2, H * 0.6);
-        ctx.scale(1 + irisP * 0.11, 1 + irisP * 0.11);
-        ctx.translate(-W / 2, -H * 0.6 + irisP * 60);
+    // the reader's presence gently wakes screens it passes — ambience, not work
+    if (performance.now() - input.lastMove < 3000) {
+      this.wakeT = (this.wakeT || 0) - dt;
+      if (this.wakeT <= 0) {
+        outer:
+        for (let r = 0; r < this.ROWS; r++) for (let c = 0; c < this.COLS; c++) {
+          const idx = r * this.COLS + c;
+          if (this.state[idx] !== 0 || this.isAisle(c, r)) continue;
+          const cell = this.cellRect(c, r);
+          if (Math.hypot(cell.x + cell.w / 2 - input.x, cell.y + cell.h / 2 - (input.y - 40)) < Math.min(W, H) * 0.14) {
+            this.state[idx] = 1; this.glow[idx] = 1;
+            this.wakeT = 0.3;
+            break outer;
+          }
+        }
       }
     }
-
-    const gazeOn = t >= SETPIECE_T.gaze && t < SETPIECE_T.gaze + 4.8;
-    const noiseTile = Math.floor(t * (RM ? 0 : 4)) % 2;
-
+  },
+  draw(dt) {
+    const noiseTile = Math.floor(game.t * (RM ? 0 : 4)) % 2;
+    const termLines = ['> SIGNAL 432.00Hz', '> ORIGIN: PRE-NET', '> RECURSIVE', '> VERIDIS QUO', '> THE TRUE PLACE', '> CANNOT BE MAPPED', '> ONLY REMEMBERED'];
     for (let r = 0; r < this.ROWS; r++) for (let c = 0; c < this.COLS; c++) {
       if (this.isAisle(c, r)) continue;
       const idx = r * this.COLS + c;
       const st = this.state[idx];
       const cell = this.cellRect(c, r);
-      let dropY = 0, alpha = 1;
-      if (irisP > 0) {
-        const cx = cell.x + cell.w / 2, cy = cell.y + cell.h / 2;
-        const dist = Math.hypot(cx - W / 2, cy - H * 0.86);
-        const rad = irisP * Math.max(W, H) * 1.2;
-        if (dist < rad) {
-          const p = Math.min(1, (rad - dist) / 300);
-          dropY = p * 400; alpha = 1 - p;
-        }
-      }
-      if (alpha <= 0.02) continue;
-      ctx.globalAlpha = alpha;
-      const y = cell.y + dropY;
-
       if (st === 0) {
         ctx.fillStyle = '#0a0a16';
-        ctx.fillRect(cell.x, y, cell.w, cell.h);
+        ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
         if (this.glow[idx] > 0) {
           ctx.fillStyle = `rgba(120,160,220,${this.glow[idx] * 0.4})`;
-          ctx.fillRect(cell.x, y, cell.w, cell.h);
-        }
-      } else if (st === 1 || st === 3) {
-        // woken: memory-noise; collected: a remembered image
-        ctx.fillStyle = `rgba(30,60,90,${0.7 + this.glow[idx] * 0.3})`;
-        ctx.fillRect(cell.x, y, cell.w, cell.h);
-        if (gazeOn) {
-          drawWanderer(ctx, cell.x + cell.w / 2, y + cell.h * 0.85, Math.min(cell.w, cell.h) / 22, { alpha: 0.9 });
-        } else if (st === 3) {
-          ctx.drawImage(this.stills[idx % 5], cell.x + 2, y + 2, cell.w - 4, cell.h - 4);
-          ctx.strokeStyle = `rgba(0,240,255,${0.4 + this.glow[idx] * 0.6})`;
-          ctx.strokeRect(cell.x, y, cell.w, cell.h);
-        } else {
-          ctx.fillStyle = `rgba(140,190,235,${(noiseTile ? 0.18 : 0.28) + this.glow[idx] * 0.3})`;
-          for (let n = 0; n < 5; n++) {
-            ctx.fillRect(cell.x + ((idx * 7 + n * 13 + noiseTile * 5) % (cell.w - 4)), y + ((idx * 11 + n * 17) % (cell.h - 4)), 3, 2);
-          }
-        }
-      } else if (st === 2) {
-        // memory pane: cyan rim shimmer
-        ctx.fillStyle = '#0c1420';
-        ctx.fillRect(cell.x, y, cell.w, cell.h);
-        ctx.strokeStyle = `rgba(0,240,255,${0.35 + Math.sin(t * 3 + idx) * 0.2})`;
-        ctx.lineWidth = 1.5;
-        ctx.strokeRect(cell.x + 1, y + 1, cell.w - 2, cell.h - 2);
-      } else if (st === 4) {
-        // possessed: 4-beat breathing — dormant 1–2, burning 3–4
-        // (same predicates as update, so what you see is what can hit you)
-        const burning = RM ? (Math.floor(t / 1.5) % 2 === 1) : (beatCount % 4) >= 2;
-        const dormantByWash = this.washR >= 0 || this.washR < -1.01;
-        const a = dormantByWash ? 0.12 : burning ? 0.5 + bands.bass * 0.3 : 0.15;
-        ctx.fillStyle = '#140812';
-        ctx.fillRect(cell.x, y, cell.w, cell.h);
-        ctx.fillStyle = `rgba(255,0,170,${a})`;
-        if (RM || dormantByWash) {
-          // static tell: thick band while burning, thin sliver while safe
-          ctx.fillRect(cell.x, y, cell.w, burning && !dormantByWash ? 6 : 2);
-        } else {
-          const crawl = (t * 40) % cell.h;
-          ctx.fillRect(cell.x, y + crawl, cell.w, 4);
-          ctx.fillRect(cell.x, y, cell.w, 2);
-        }
-      }
-    }
-    ctx.globalAlpha = 1;
-
-    // runway: the bottom row lights outward from the wanderer's feet
-    if (t >= SETPIECE_T.runway) {
-      const steps = Math.floor((t - SETPIECE_T.runway) / 0.15);
-      for (let s = 0; s <= Math.min(steps, this.COLS); s++) {
-        for (const c of [9 - s, 10 + s]) {
-          if (c < 0 || c >= this.COLS) continue;
-          const cell = this.cellRect(c, this.ROWS - 1);
-          ctx.fillStyle = 'rgba(235,245,255,0.75)';
           ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
         }
+      } else {
+        ctx.fillStyle = this.tab.terminal ? 'rgba(4,26,12,0.9)' : `rgba(30,60,90,${0.7 + this.glow[idx] * 0.3})`;
+        ctx.fillRect(cell.x, cell.y, cell.w, cell.h);
+        if (this.tab.gaze) {
+          drawWanderer(ctx, cell.x + cell.w / 2, cell.y + cell.h * 0.85, Math.min(cell.w, cell.h) / 22, { alpha: 0.9 });
+        } else if (this.tab.terminal) {
+          ctx.fillStyle = 'rgba(0,255,120,0.55)';
+          ctx.font = `${Math.max(5, Math.round(cell.h * 0.18))}px monospace`;
+          ctx.fillText(termLines[(idx + Math.floor(game.t)) % termLines.length], cell.x + 3, cell.y + cell.h * 0.55, cell.w - 6);
+        } else {
+          ctx.fillStyle = `rgba(140,190,235,${(noiseTile ? 0.18 : 0.28) + this.glow[idx] * 0.3})`;
+          for (let nn = 0; nn < 5; nn++) {
+            ctx.fillRect(cell.x + ((idx * 7 + nn * 13 + noiseTile * 5) % Math.max(4, cell.w - 4)), cell.y + ((idx * 11 + nn * 17) % Math.max(3, cell.h - 4)), 3, 2);
+          }
+        }
       }
     }
 
-    // dust motes through her glow
     ctx.fillStyle = `rgba(200,220,255,${0.2 + bands.high * 0.3})`;
     for (const m of this.motes) ctx.fillRect(m.x, m.y, 1, 1);
 
-    // the Oracle at the altar
-    drawOracle(ctx, W * 0.5, H * 0.72, 1.6);
-    // her wash of forgiveness
-    if (this.washR >= 0) {
-      ctx.globalAlpha = Math.max(0, 1 - this.washR / W);
-      ctx.strokeStyle = 'rgba(139,92,246,0.7)';
-      ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(W * 0.5, H * 0.72, this.washR, 0, Math.PI * 2); ctx.stroke();
-      ctx.globalAlpha = 1;
-    }
-
-    // the wanderer at the rail — first full-body view
-    drawWanderer(ctx, W * 0.5, H * 0.88, 2.6, { alpha: 0.95 });
-
-    // the lantern
-    const lx = input.x, ly = Math.max(H * 0.12, input.y - 40);
-    const lr = Math.min(W, H) * 0.22;
-    ctx.globalAlpha = 0.12 + (input.down ? 0.1 : 0) + bands.mid * 0.06;
-    ctx.drawImage(sprites.white, lx - lr, ly - lr, lr * 2, lr * 2);
-    ctx.globalAlpha = 1;
-
-    ctx.restore();
-
-    // RM iris fallback: straight fade
-    if (RM && t >= SETPIECE_T.iris) {
-      ctx.fillStyle = `rgba(0,0,0,${Math.min(1, (t - SETPIECE_T.iris) / 1.5)})`;
-      ctx.fillRect(0, 0, W, H);
-    }
-  },
-
-  pointer() {},
-  key(k) {
-    const step = Math.min(W, H) * 0.08;
-    if (k === 'ArrowLeft') input.x = Math.max(0, input.x - step);
-    if (k === 'ArrowRight') input.x = Math.min(W, input.x + step);
-    if (k === 'ArrowUp') input.y = Math.max(0, input.y - step);
-    if (k === 'ArrowDown') input.y = Math.min(H, input.y + step);
-    input.lastMove = performance.now();
+    if (this.tab.oracle) drawOracle(ctx, W * 0.5, H * 0.66, 1.6);
+    drawWanderer(ctx, W * 0.5, H * 0.79, 2.4, { alpha: 0.95 });
   },
 };
 
-// ══════════════════════════════════════════════════════════════════
-//  SCENE IV — 432 HZ (144–192s)  ·  camera: vertical fall  ·  verb: SURRENDER
-//  You fall. The deep is lit by fungi tuned near 432 Hz. Black water
-//  hushes the music itself. At the bottom: the door. Hold it open.
-// ══════════════════════════════════════════════════════════════════
+// ─── IV · 432 HZ ───
 const sceneShaft = {
-  walls: null, fungi: [], spores: [], rings: [], membranes: [],
-  fungiTimer: 0, ripeCount: 0, wave: -1, doorHold: 0, doorBonus: false,
-  MEMBRANE_T: [148, 153, 158, 164, 169, 174, 178, 181],
-  spawnedM: 0, scrollV: 200, scrollY: 0,
+  sky: ['#020008', '#0a0020', '#05000f'],
+  walls: null, fungi: [], rings: [], scrollY: 0, tab: {},
 
-  init() {
-    this.fungi = []; this.spores = []; this.rings = []; this.membranes = [];
-    this.fungiTimer = 0; this.ripeCount = 0; this.wave = -1;
-    this.doorHold = 0; this.doorBonus = false; this.spawnedM = 0; this.scrollY = 0; this.keyAt = 0;
-    game.playerX = 0; game.targetX = 0; game.vx = 0;
+  init(params) {
+    this.tab = Object.assign({ door: false, seam: 0, fall: true }, params);
+    this.fungi = []; this.rings = []; this.scrollY = 0;
+    this.fungiTimer = 0;
     this.onResize();
     rainDrops = [];
   },
@@ -1769,111 +1192,30 @@ const sceneShaft = {
     g.fillStyle = 'rgba(0,136,255,0.12)';
     for (let i = 0; i < 14; i++) g.fillRect((i * 89) % 240, (i * 173) % 1010, 8, 4);
   },
-
-  playerPos() {
-    const px = W * 0.18 + (game.playerX * 0.5 + 0.5) * W * 0.64;
-    return { x: px, y: H * 0.38 };
-  },
-
   update(dt) {
-    const t = game.t;
-    // steering: pointer x → target lane; the fall itself is automatic
-    if (input.lastMove > (this.keyAt || 0)) {
-      game.targetX = Math.max(-1, Math.min(1, (input.x / W) * 2 - 1));
-    }
-    steer1D(dt);
-
-    // scroll speed rides the music; eases off for the door
-    let sv = (RM ? 150 : 240 * (0.75 + bands.level * 0.5));
-    if (t >= SETPIECE_T.doorRise) sv *= Math.max(0.25, 1 - (t - SETPIECE_T.doorRise) / 5);
-    this.scrollV = sv;
-    this.scrollY += sv * dt;          // accumulated — walls never teleport
-
-    // fungi
+    const sv = this.tab.fall ? (RM ? 90 : 170 * (0.75 + bands.level * energy(0.5))) : 20;
+    this.scrollY += sv * dt;
     this.fungiTimer -= dt;
-    if (this.fungiTimer <= 0 && this.fungi.length < 30 && t < SETPIECE_T.doorRise) {
+    if (this.fungiTimer <= 0 && this.fungi.length < 26) {
       const side = this.fungi.length % 3;
-      const ripe = this.ripeCount < 10 && (this.fungi.length % 3 === 2);
-      if (ripe) this.ripeCount++;
       this.fungi.push({
         x: side === 0 ? W * 0.13 + Math.random() * 30 : side === 1 ? W * 0.87 - Math.random() * 30 : W * 0.3 + Math.random() * W * 0.4,
-        y: H + 60, r: ripe ? 30 : 14 + Math.random() * 12,
-        ripe, done: false, flash: 0, seed: Math.random() * 6.28,
+        y: H + 60, r: 14 + Math.random() * 14, seed: Math.random() * 6.28,
       });
-      this.fungiTimer = 1.1;
+      this.fungiTimer = 1.3;
     }
-    const p = this.playerPos();
-    for (const f of this.fungi) {
-      f.y -= this.scrollV * dt;
-      f.flash = Math.max(0, f.flash - dt * 2);
-      if (f.ripe && !f.done && Math.hypot(f.x - p.x, f.y - p.y) < 60) {
-        f.done = true; f.flash = 1;
-        for (let s = 0; s < 6; s++) this.spores.push({ x: f.x, y: f.y, life: 0.8, seed: Math.random() * 6.28 });
-        collectFragment();
-      }
-    }
+    for (const f of this.fungi) f.y -= sv * dt;
     this.fungi = this.fungi.filter(f => f.y > -80);
-    for (const s of this.spores) s.life -= dt;
-    this.spores = this.spores.filter(s => s.life > 0);
-
-    // the Hush: scheduled black-water membranes
-    while (this.spawnedM < this.MEMBRANE_T.length && t >= this.MEMBRANE_T[this.spawnedM]) {
-      const i = this.spawnedM;
-      const fromLeft = i % 2 === 0;
-      const span = W * (0.45 + (i % 3) * 0.1);
-      this.membranes.push({
-        y: H + 70, h: 54,
-        x0: fromLeft ? 0 : W - span, x1: fromLeft ? span : W,
-        hit: false,
-      });
-      this.spawnedM++;
-    }
-    for (const m of this.membranes) {
-      m.y -= this.scrollV * dt;
-      if (!m.hit && Math.abs(m.y - p.y) < m.h / 2 && p.x > m.x0 && p.x < m.x1) {
-        m.hit = true;
-        // tear it open where you fell through
-        const tear = 90;
-        if (p.x - m.x0 < m.x1 - p.x) m.x0 = Math.min(m.x1, p.x + tear); else m.x1 = Math.max(m.x0, p.x - tear);
-        hitCorruption();
-        duckAudio();
-      }
-    }
-    this.membranes = this.membranes.filter(m => m.y > -80);
-
-    // ripple-rings on strong bass
     this.ringCd = Math.max(0, (this.ringCd || 0) - dt);
     if (bands.bass > 0.6 && this.ringCd <= 0 && this.rings.length < 6) {
       this.rings.push({ y: H + 50, s: bands.bass });
       this.ringCd = 0.5;
     }
-    for (const r of this.rings) r.y -= 320 * dt;
+    for (const r of this.rings) r.y -= 280 * dt;
     this.rings = this.rings.filter(r => r.y > -60);
-
-    // beat → fungus wave previews the good path
-    if (bands.beat) this.wave = 0;
-    if (this.wave >= 0) { this.wave += dt / 0.6; if (this.wave > 1) this.wave = -1; }
-
-    // the door: hold to open
-    if (t >= SETPIECE_T.doorRise + 2) {
-      if (input.down) this.doorHold += dt;
-      if (this.doorHold >= 2.9 && !this.doorBonus) {
-        this.doorBonus = true;
-        game.signal = Math.min(100, game.signal + 4);
-        updateHUD();
-      }
-    }
-    // whiteout — re-timed to the door, not the old corridor
-    if (t >= SETPIECE_T.doorFlash) {
-      game.flash = Math.max(game.flash, Math.min(1, (t - SETPIECE_T.doorFlash) / 1.5));
-    }
   },
-
   draw(dt) {
-    const t = game.t;
-    const scroll = -(this.scrollY % 1024);       // ∈ (−1024, 0], tiles ride up
-
-    // walls sliding up
+    const scroll = -(this.scrollY % 1024);
     for (const side of [0, 1]) {
       for (let i = 0; i < Math.ceil(H / 1024) + 2; i++) {
         ctx.save();
@@ -1883,71 +1225,31 @@ const sceneShaft = {
       }
     }
 
-    // the door's hum-glow growing from below
-    const doorGlow = Math.min(0.5, Math.max(0.1, (t - 144) / 48 * 0.5)) + bands.mid * 0.1;
+    const doorGlow = (this.tab.door ? 0.35 : 0.12) + bands.mid * 0.1;
     const gGrad = ctx.createLinearGradient(0, H * 0.6, 0, H);
     gGrad.addColorStop(0, 'rgba(139,92,246,0)');
     gGrad.addColorStop(1, `rgba(139,92,246,${doorGlow})`);
     ctx.fillStyle = gGrad;
     ctx.fillRect(0, H * 0.6, W, H * 0.4);
 
-    // ripple-rings rising — the 432 Hz hum made visible
     for (const r of this.rings) {
-      const cx = t > 170 ? W / 2 : W / 2;
       ctx.globalAlpha = Math.min(0.6, r.s);
       ctx.strokeStyle = 'rgba(139,92,246,0.8)';
       ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.ellipse(cx, r.y, W * 0.3, 26, 0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(W / 2, r.y, W * 0.3, 26, 0, 0, Math.PI * 2); ctx.stroke();
       ctx.globalAlpha = 1;
     }
 
-    // fungi
     for (const f of this.fungi) {
-      const waveBoost = this.wave >= 0 && Math.abs(f.y / H - this.wave) < 0.12 ? 0.5 : 0;
-      const r = f.r * (1 + waveBoost * 0.3) * (1 + Math.sin(game.t * 2 + f.seed) * 0.08);
-      ctx.globalAlpha = (f.ripe ? 0.85 : 0.5) + waveBoost;
+      const r = f.r * (1 + Math.sin(game.t * 2 + f.seed) * 0.08) * (bands.beat && !RM ? 1.25 : 1);
+      ctx.globalAlpha = 0.6;
       ctx.drawImage(sprites.blue, f.x - r * 2, f.y - r * 2, r * 4, r * 4);
-      if (f.ripe && !f.done) {
-        ctx.drawImage(sprites.cyan, f.x - r, f.y - r, r * 2, r * 2);
-      }
-      if (f.flash > 0) {
-        ctx.globalAlpha = f.flash;
-        ctx.drawImage(sprites.white, f.x - r * 2.4, f.y - r * 2.4, r * 4.8, r * 4.8);
-      }
       ctx.globalAlpha = 1;
     }
-    // spores trailing the faller
-    const p = this.playerPos();
-    for (const s of this.spores) {
-      const pr = 1 - s.life / 0.8;
-      const sx = s.x + (p.x - s.x) * pr + Math.cos(s.seed + pr * 6) * 14 * (1 - pr);
-      const sy = s.y + (p.y - s.y) * pr + Math.sin(s.seed + pr * 6) * 14 * (1 - pr);
-      ctx.drawImage(sprites.cyan, sx - 6, sy - 6, 12, 12);
-    }
 
-    // black-water membranes
-    for (const m of this.membranes) {
-      ctx.fillStyle = 'rgba(6,2,10,0.92)';
-      ctx.fillRect(m.x0, m.y - m.h / 2, m.x1 - m.x0, m.h);
-      ctx.strokeStyle = `rgba(255,0,170,${RM ? 0.35 : 0.25 + Math.sin(game.t * 5) * 0.15})`;
-      ctx.lineWidth = 1;
-      ctx.strokeRect(m.x0, m.y - m.h / 2, m.x1 - m.x0, m.h);
-      // oil veins
-      ctx.strokeStyle = 'rgba(255,0,170,0.18)';
-      ctx.beginPath();
-      for (let vx = m.x0 + 20; vx < m.x1 - 10; vx += 60) {
-        ctx.moveTo(vx, m.y - m.h / 2 + 8);
-        ctx.lineTo(vx + 30, m.y + m.h / 2 - 8);
-      }
-      ctx.stroke();
-    }
-
-    // THE DOOR
-    if (t >= SETPIECE_T.doorRise) {
-      const rise = Math.min(1, (t - SETPIECE_T.doorRise) / 4);
-      const dw = W * 0.4 * Math.min(1, rise * 1.2), dh = H * 0.55 * Math.min(1, rise * 1.2);
-      const dx = W / 2, dyBottom = H + (1 - rise) * H * 0.5;
-      const dy = Math.min(dyBottom, H * 0.78);
+    if (this.tab.door) {
+      const dw = W * 0.34, dh = H * 0.52;
+      const dx = W / 2, dy = H * 0.72;
       const r = 90;
       ctx.drawImage(sprites.violet, dx - r * 2, dy - dh / 2 - r * 2, r * 4, r * 4);
       ctx.fillStyle = '#07070f';
@@ -1955,182 +1257,70 @@ const sceneShaft = {
       ctx.strokeStyle = `rgba(139,92,246,${0.5 + bands.bass * 0.5})`;
       ctx.lineWidth = 3;
       ctx.strokeRect(dx - dw / 2, dy - dh, dw, dh);
-      // seam of light: held open by your hand
-      const auto = Math.max(0, (t - (SETPIECE_T.doorRise + 4)) / 4);
-      const seam = Math.min(1, this.doorHold / 3 + auto);
+      const seam = this.tab.seam;
       if (seam > 0) {
         ctx.fillStyle = `rgba(230,240,255,${Math.min(1, seam * 1.2)})`;
         ctx.fillRect(dx - (1 + seam * 16), dy - dh, 2 + seam * 32, dh);
       }
-      // fingerprint prompt
-      if (t >= SETPIECE_T.doorRise + 2 && seam < 1) {
-        ctx.globalAlpha = 0.5 + Math.sin(t * 6) * 0.3;
-        ctx.strokeStyle = '#bffcff';
-        ctx.lineWidth = 1.5;
-        for (let fp = 3; fp < 12; fp += 3) {
-          ctx.beginPath(); ctx.arc(dx, dy - dh * 0.4, fp, 0.3, Math.PI * 2 - 0.3); ctx.stroke();
-        }
-        ctx.globalAlpha = 1;
-      }
-      ctx.fillStyle = `rgba(139,92,246,${0.5 + Math.sin(t * 6) * 0.3})`;
+      ctx.fillStyle = `rgba(139,92,246,${0.5 + Math.sin(game.t * 6) * 0.3})`;
       ctx.font = '9px "Press Start 2P", monospace';
       ctx.textAlign = 'center';
       ctx.fillText('432 Hz', dx, dy + 18);
-      if (t >= SETPIECE_T.doorRise + 2 && seam < 1) {
-        ctx.fillStyle = 'rgba(191,252,255,0.5)';
-        ctx.font = '7px "Press Start 2P", monospace';
-        ctx.fillText('HOLD', dx, dy - dh * 0.4 + 30);
-      }
       ctx.textAlign = 'left';
     }
 
-    // the faller
-    drawWanderer(ctx, p.x, p.y, 2.4, { fall: game.t, alpha: 1 });
-    // coat flutter / speed lines
-    if (!RM) {
-      ctx.strokeStyle = `rgba(0,240,255,${0.12 + bands.level * 0.15})`;
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      for (let i = 0; i < 5; i++) {
-        const lx = p.x - 16 + i * 8;
-        ctx.moveTo(lx, p.y - 40 - (i % 2) * 14);
-        ctx.lineTo(lx, p.y - 58 - (i % 2) * 14);
-      }
-      ctx.stroke();
+    if (this.tab.fall) {
+      drawWanderer(ctx, W * 0.5, H * 0.34, 2.4, { fall: game.t });
+    } else {
+      drawWanderer(ctx, W * 0.5, H * 0.8 - (this.tab.door ? 40 : 0), 2.4, {});
     }
-  },
-
-  pointer() {},
-  key(k) {
-    this.keyAt = performance.now();
-    if (k === 'ArrowLeft') game.targetX = Math.max(-1, game.targetX - 0.34);
-    if (k === 'ArrowRight') game.targetX = Math.min(1, game.targetX + 0.34);
   },
 };
 
-// ══════════════════════════════════════════════════════════════════
-//  SCENE V — VERIDIS QUO (192–240s)  ·  camera: free drift  ·  verb: BECOME
-//  No ground. Thread the stars. The sky has been drawing you all along.
-// ══════════════════════════════════════════════════════════════════
+// ─── V · VERIDIS QUO ───
 const sceneSky = {
-  stars: [], segments: [],
-  px: 0, py: 0, pvx: 0, pvy: 0,
-  camX: 0, camY: 0,
-  threadedCount: 0, cascadeTimer: 0, turnDone: false, pulse: 0,
+  sky: ['#020010', '#060028', '#0a0020'],
+  stars: [], segments: [], tab: {},
 
-  init() {
-    this.segments = []; this.threadedCount = 0; this.cascadeTimer = 0;
-    this.turnDone = false; this.pulse = 0;
-    this.px = W / 2; this.py = H * 0.6; this.pvx = 0; this.pvy = -20;
-    this.camX = 0; this.camY = 0;
-    this.stars = [];
-    // 44 figure stars — the constellation that is you
-    const fx = W * 0.05, fw = W * 0.9, fy = H * 0.08, fh = H * 0.72;
+  init(params) {
+    this.tab = Object.assign({ lit: 0, tableau: false, rising: false }, params);
+    this.stars = []; this.segments = [];
+    const fx = W * 0.05, fw = W * 0.9, fy = H * 0.06, fh = H * 0.6;
     FIGURE_PTS.forEach((p, i) => {
-      this.stars.push({
-        x: fx + p[0] * fw, y: fy + p[1] * fh,
-        fig: true, idx: i, threaded: false, tw: Math.random() * 6.28, flare: 0,
-      });
+      this.stars.push({ x: fx + p[0] * fw, y: fy + p[1] * fh, fig: true, idx: i, threaded: false, tw: Math.random() * 6.28, flare: 0 });
     });
-    // ambient field
     for (let i = 0; i < 96; i++) {
-      this.stars.push({
-        x: (i * 197 + 83) % (W * 1.3) - W * 0.15,
-        y: (i * 131 + 47) % (H * 1.2) - H * 0.1,
-        fig: false, threaded: false, tw: Math.random() * 6.28, flare: 0,
-      });
+      this.stars.push({ x: (i * 197 + 83) % W, y: (i * 131 + 47) % (H * 0.72), fig: false, tw: Math.random() * 6.28, flare: 0 });
     }
-    // rain still rising from the door — it thins and becomes stars by t=196
+    this.applyLit(this.tab.lit);
     rainDrops = [];
-    for (let i = 0; i < 80; i++) {
-      rainDrops.push({ x: Math.random() * W, y: Math.random() * H, sp: 300 + Math.random() * 300, len: 8 + Math.random() * 12 });
+    if (this.tab.rising) {
+      for (let i = 0; i < 60; i++) rainDrops.push({ x: Math.random() * W, y: Math.random() * H, sp: 200 + Math.random() * 200, len: 8 + Math.random() * 12 });
     }
   },
-  onResize() { /* star coords survive; close enough */ },
-
-  threadStar(s) {
-    s.threaded = true;
-    s.flare = 1;
-    this.threadedCount++;
-    // connect to nearest already-threaded figure star
-    let best = null, bd = 1e9;
-    for (const o of this.stars) {
-      if (!o.fig || !o.threaded || o === s) continue;
-      const d = Math.hypot(o.x - s.x, o.y - s.y);
-      if (d < bd) { bd = d; best = o; }
+  applyLit(frac) {
+    const target = Math.round(frac * FIGURE_PTS.length);
+    let prev = null;
+    this.segments = [];
+    for (let i = 0; i < this.stars.length && i < FIGURE_PTS.length; i++) {
+      const s = this.stars[i];
+      s.threaded = i < target;
+      if (s.threaded && prev) this.segments.push([prev, s]);
+      if (s.threaded) prev = s;
     }
-    if (best && this.segments.length < 60) this.segments.push([best, s]);
-    game.signal = Math.min(100, game.signal + 0.5);
-    game.frags++;
-    updateHUD();
   },
-
+  onResize() { this.init(this.tab); },
   update(dt) {
-    const t = game.t;
-    // drift eases out over 1.5s at THE TURN instead of freezing mid-flight
-    const ease = Math.max(0, Math.min(1, 1 - (t - SETPIECE_T.turn) / 1.5));
-
-    if (ease > 0 && !game.ended) {
-      // dreamlike 2-axis drift toward the hand
-      if (RM) {
-        this.px += (input.x - this.px) * Math.min(1, dt * 1.2 * ease);
-        this.py += (input.y - this.py) * Math.min(1, dt * 1.2 * ease);
-      } else {
-        this.pvx += (input.x - this.px) * 6 * dt * ease;
-        this.pvy += (input.y - this.py) * 6 * dt * ease;
-        const damp = Math.pow(ease < 1 ? 0.0005 : 0.004, dt);
-        this.pvx *= damp; this.pvy *= damp;
-        const sp = Math.hypot(this.pvx, this.pvy);
-        if (sp > 140) { this.pvx *= 140 / sp; this.pvy *= 140 / sp; }
-        this.px += this.pvx * dt * 8;
-        this.py += this.pvy * dt * 8;
-      }
-      this.px = Math.max(20, Math.min(W - 20, this.px));
-      this.py = Math.max(80, Math.min(H - 60, this.py));
-
-      // threading by presence
-      for (const s of this.stars) {
-        if (!s.fig || s.threaded) continue;
-        if (Math.hypot(s.x - this.px, s.y - this.py) < 90) this.threadStar(s);
-      }
-    }
-
-    // press = a wordless call: brighten nearby stars
-    if (input.down) this.pulse = Math.min(1, this.pulse + dt * 4);
-    else this.pulse = Math.max(0, this.pulse - dt * 2);
-
-    // THE TURN: the sky completes itself to your SIGNAL %
-    if (t >= SETPIECE_T.turn && !this.turnDone) {
-      const targetLit = Math.round((game.signal / 100) * FIGURE_PTS.length);
-      if (this.threadedCount >= targetLit) {
-        this.turnDone = true;
-      } else {
-        this.cascadeTimer -= dt;
-        if (this.cascadeTimer <= 0) {
-          const next = this.stars.find(s => s.fig && !s.threaded);
-          if (next) this.threadStar(next); else this.turnDone = true;
-          this.cascadeTimer = RM ? 0 : 0.12;
-        }
-      }
-    }
-
     for (const s of this.stars) s.flare = Math.max(0, s.flare - dt * 1.6);
     if (bands.beat) {
-      // the last threaded star answers the beat
       for (let i = this.stars.length - 1; i >= 0; i--) {
         if (this.stars[i].threaded) { this.stars[i].flare = Math.max(this.stars[i].flare, 0.8); break; }
       }
     }
   },
-
   draw(dt) {
-    const t = game.t;
-    const decay = Math.max(0, Math.min(1, (t - 216) / 20));   // mappings fade with the outro
-    const tabP = Math.max(0, Math.min(1, (t - SETPIECE_T.tableau) / 4));
-
-    // aurora wash on mids — vertical fade, no hard edge
-    if (!RM && decay < 1) {
-      ctx.globalAlpha = (0.06 + bands.mid * 0.1) * (1 - decay);
+    if (!RM) {
+      ctx.globalAlpha = 0.06 + bands.mid * 0.1;
       const aGrad = ctx.createLinearGradient(0, 0, 0, H * 0.55);
       aGrad.addColorStop(0, 'rgba(0,240,255,0.9)');
       aGrad.addColorStop(0.5, 'rgba(139,92,246,0.5)');
@@ -2139,132 +1329,514 @@ const sceneSky = {
       ctx.fillRect(0, 0, W, H * 0.55);
       ctx.globalAlpha = 1;
     }
+    if (this.tab.rising) drawRain(dt, 40, { speedMul: -0.5, slant: 1, alpha: 0.1 });
 
-    // rising rain thins to nothing — 'The rain stops.' lands at 196
-    const rainN = Math.max(0, Math.round(80 * (1 - (t - 192) / 4)));
-    drawRain(dt, rainN, { speedMul: -0.6, slant: 1, alpha: 0.12 });
-
-    // ambient + figure stars
     for (const s of this.stars) {
-      const twinkle = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * (RM ? 0.7 : 2) + s.tw));
-      const nearPulse = this.pulse > 0 && Math.hypot(s.x - this.px, s.y - this.py) < 150 ? this.pulse * 0.5 : 0;
+      const twinkle = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(game.t * (RM ? 0.7 : 2) + s.tw));
       if (s.fig && s.threaded) {
-        const r = 5 + s.flare * 7 + bands.bass * (1 - decay) * 2;
+        const r = 5 + s.flare * 7 + bands.bass * 2;
         ctx.drawImage(sprites.cyan, s.x - r * 2, s.y - r * 2, r * 4, r * 4);
         ctx.fillStyle = '#eaffff';
         ctx.fillRect(s.x - 1.5, s.y - 1.5, 3, 3);
       } else if (s.fig) {
-        ctx.globalAlpha = 0.5 + bands.high * (1 - decay) * 0.4 + nearPulse;
+        ctx.globalAlpha = 0.45 + bands.high * 0.35;
         ctx.fillStyle = '#bfe8ff';
         ctx.fillRect(s.x - 1.5, s.y - 1.5, 3, 3);
         ctx.globalAlpha = 1;
       } else {
-        ctx.globalAlpha = (0.25 + twinkle * 0.4) * (1 - tabP * 0.3) + nearPulse * 0.5;
+        ctx.globalAlpha = 0.25 + twinkle * 0.4;
         ctx.fillStyle = '#dfeffc';
         ctx.fillRect(s.x, s.y, 1.5, 1.5);
         ctx.globalAlpha = 1;
       }
     }
-
-    // threaded segments — one path, breathing with the bass
     if (this.segments.length) {
-      ctx.strokeStyle = `rgba(0,240,255,${0.35 + bands.bass * (1 - decay) * 0.35})`;
+      ctx.strokeStyle = `rgba(0,240,255,${0.35 + bands.bass * 0.35})`;
       ctx.lineWidth = 1.5;
       ctx.beginPath();
-      for (const [a, b] of this.segments) {
-        ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-      }
+      for (const [a, b] of this.segments) { ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); }
       ctx.stroke();
     }
 
-    // the drifter — a figure of light, genuinely crossfading out
-    if (tabP < 1) {
-      drawWanderer(ctx, this.px, this.py, 2.2, { alpha: 1 - tabP, lightForm: true });
-      const r = 22 + bands.level * 10;
-      ctx.globalAlpha = 0.3 * (1 - tabP);
-      ctx.drawImage(sprites.white, this.px - r * 2, this.py - r * 2, r * 4, r * 4);
-      ctx.globalAlpha = 1;
-    }
-
-    // the final tableau: the city below, the tiny wanderer looking up
-    if (tabP > 0) {
-      ctx.globalAlpha = tabP;
+    if (this.tab.tableau) {
       if (skylineCanvas) {
-        ctx.globalAlpha = tabP * 0.55;
+        ctx.globalAlpha = 0.55;
         ctx.drawImage(skylineCanvas, -W * 0.08, H * 0.8, skylineCanvas.width, 120);
+        ctx.globalAlpha = 1;
       }
-      ctx.globalAlpha = tabP;
       ctx.fillStyle = '#05050f';
       ctx.fillRect(0, H * 0.9, W, H * 0.1);
-      drawWanderer(ctx, W / 2, H * 0.895, 1.8, { alpha: tabP });
+      drawWanderer(ctx, W / 2, H * 0.895, 1.8, {});
       const r = 24;
-      ctx.globalAlpha = tabP * 0.2;
+      ctx.globalAlpha = 0.2;
       ctx.drawImage(sprites.cyan, W / 2 - r * 2, H * 0.895 - 12 - r * 2, r * 4, r * 4);
       ctx.globalAlpha = 1;
+    } else {
+      drawWanderer(ctx, W * 0.5, H * 0.5, 2.2, { lightForm: true, alpha: 0.9 });
     }
-  },
-
-  pointer() {},
-  key(k) {
-    const step = Math.min(W, H) * 0.1;
-    if (k === 'ArrowLeft') input.x = Math.max(0, input.x - step);
-    if (k === 'ArrowRight') input.x = Math.min(W, input.x + step);
-    if (k === 'ArrowUp') input.y = Math.max(0, input.y - step);
-    if (k === 'ArrowDown') input.y = Math.min(H, input.y + step);
-    input.lastMove = performance.now();
   },
 };
 
-const SCENES = [sceneGlass, sceneStreet, sceneCathedral, sceneShaft, sceneSky];
+const BACKDROPS = { glass: sceneGlass, street: sceneStreet, cathedral: sceneCathedral, shaft: sceneShaft, sky: sceneSky };
+
+// ══════════════════════════════════════════════════════════════════
+//  STORY — placeholder graph (the original eight scenes) wired for
+//  engine verification; the canonical branching graph replaces this.
+// ══════════════════════════════════════════════════════════════════
+const START_NODE = 'start';
+const STORY = {
+  start: {
+    chapter: 'I', chapterName: "THE AWAKENING", sector: "7G",
+    backdrop: ['glass', {"beacon":true}], intensity: 'calm',
+    text: "You open your eyes. Rain traces neon veins down the cracked window of your pod, and through the blur one distant tower pulses cyan — patient, metronomic, keeping time with something behind your sternum. The year is 2087, and a signal older than language is pulling at you through the data-smog of Neo-Shibuya. It has no name; it knows yours.",
+    choices: [
+      { label: "► Follow the signal into the rain", to: 'neon-rain', signal: 8 },
+      { label: "► Jack into the terminal", to: 'the-terminal', signal: 8, color: 'magenta' },
+      { label: "► Turn from the window. Refuse it.", to: 'the-refusal', signal: -8, setFlag: 'refused', color: 'violet' },
+    ],
+  },
+  'the-refusal': {
+    chapter: 'II', chapterName: "THE REFUSAL", sector: "7G",
+    backdrop: ['glass', {"beacon":true,"portrait":true}], intensity: 'calm',
+    text: "You turn your back on the signal, and the pulse follows you around the room like a patient animal. On the window the rain refuses to be ignored: bead by bead it gathers into a figure with your shoulders, out in the city, waiting for you to finish pretending. Ancient things do not beg. They simply continue, the way starlight continues, indifferent to the shutters of one small window.",
+    choices: [
+      { label: "► Answer it after all", to: 'neon-rain', signal: 10 },
+      { label: "► Refuse it a second time", to: 'ending-quiet', signal: -4, color: 'magenta' },
+    ],
+  },
+  'neon-rain': {
+    chapter: 'II', chapterName: "NEON RAIN", sector: "7G-EXT",
+    backdrop: ['street', {"figure":true,"signsLit":5}], intensity: 'pulse',
+    text: "The streets breathe with holographic ads and the ghosts of dead languages, kanji dissolving into rain before they can finish saying anything. Magenta interference chews at the edges of every sign — static wearing the light's skin — but the rain that reaches you falls clean and cyan. At the end of the alley a figure waits, silhouette flickering like corrupted data that refuses to finish corrupting. It has your way of standing still.",
+    choices: [
+      { label: "► Approach the figure", to: 'the-figure', signal: 8 },
+      { label: "► Take the dead subway down", to: 'under-city', signal: 6, color: 'magenta' },
+    ],
+  },
+  'the-figure': {
+    chapter: 'II', chapterName: "NEON RAIN", sector: "7G-EXT",
+    backdrop: ['street', {"figure":true,"signsLit":8}], intensity: 'pulse',
+    text: "You come close enough to see that the silhouette is your own — not a reflection, an original. It raises a hand as you raise yours, not mirroring you but preceding you, the way your reflection sometimes blinks first. Then it turns and walks into the rain, and the neon dims behind it like a tide going out, and every step it takes is one you were already going to take.",
+    gesture: { type: 'walk', prompt: "[ WALK — FOLLOW YOURSELF ]", to: 'dead-cathedral' },
+    choices: [],
+  },
+  'dead-cathedral': {
+    chapter: 'III', chapterName: "THE ORACLE", sector: "BCAST-0",
+    backdrop: ['cathedral', {"woken":0.2,"oracle":true}], intensity: 'calm',
+    text: "It leads you to a cathedral of dead screens — two hundred and twenty of them stacked into a nave, all dark, all listening. At the altar waits a woman with eyes like liquid mercury, a crystalline chip resting on her open palm. 'You heard it too. The frequency predates the Net — predates language. It is the sound the universe made before it learned to be silent.'",
+    choices: [
+      { label: "► Ask what you will become", to: 'oracle-answer', signal: 6 },
+      { label: "► Reach for the chip without a word", to: 'the-chip', signal: 12, setFlag: 'attuned', color: 'magenta' },
+    ],
+  },
+  'oracle-answer': {
+    chapter: 'III', chapterName: "THE ORACLE", sector: "BCAST-0",
+    backdrop: ['cathedral', {"woken":0.6,"oracle":true,"gaze":true}], intensity: 'pulse',
+    text: "'Truth is not a destination,' she says, and one by one the dead screens begin to wake, each lit with your silhouette at a different age, in a different rain. 'It is a becoming. You will not become something else — you will become what you are, with the static burned away.' The chip in her palm pulses at exactly the frequency behind your eyes.",
+    choices: [
+      { label: "► Take the chip", to: 'the-chip', signal: 10, setFlag: 'attuned' },
+      { label: "► Bow, and leave it in her palm", to: 'the-threshold', signal: 4, color: 'magenta' },
+    ],
+  },
+  'the-chip': {
+    chapter: 'III', chapterName: "THE ORACLE", sector: "BCAST-0",
+    backdrop: ['cathedral', {"woken":0.6,"oracle":true}], intensity: 'pulse',
+    text: "The chip is warm the way a held hand is warm. The mercury of her eyes stills, waiting; the cathedral holds its breath, two hundred and twenty screens leaning in.",
+    gesture: { type: 'touch', prompt: "[ TOUCH THE CHIP ]", at: [0.53, 0.6], to: 'the-threshold' },
+    choices: [],
+  },
+  'under-city': {
+    chapter: 'III', chapterName: "THE UNDERCITY", sector: "UG-1",
+    backdrop: ['street', {"signsLit":0}], intensity: 'calm',
+    text: "The subway swallowed its last train decades ago. Now the avenue continues underground in perfect dark — dead signs, drowned kanji, a boulevard built for no one — and beneath your feet the hum rises through the concrete like heat. You do not need light. You only need to keep walking toward the thing that is already walking toward you.",
+    gesture: { type: 'walk', prompt: "[ WALK INTO THE DARK ]", to: 'the-garden' },
+    choices: [],
+  },
+  'the-garden': {
+    chapter: 'III', chapterName: "THE UNDERCITY", sector: "UG-1",
+    backdrop: ['shaft', {"door":false,"seam":0.3}], intensity: 'calm',
+    text: "The dark ends in a garden no one planted: bioluminescent fungi painting the abandoned tunnels in impossible blues, spores drifting upward like a sky rehearsing itself. The light asks nothing of you, sells you nothing, calls you nothing but present — and it pulses in patterns too regular for accident. It is not lighting your way down. It is reading you as you pass.",
+    choices: [
+      { label: "► Open your palms. Let the deep read you back.", to: 'the-threshold', signal: 12, setFlag: 'attuned' },
+      { label: "► Keep your hands empty and walk on", to: 'the-threshold', signal: 6, color: 'magenta' },
+    ],
+  },
+  'the-terminal': {
+    chapter: 'II', chapterName: "THE TERMINAL", sector: "7G-INT",
+    backdrop: ['cathedral', {"woken":0.15}], intensity: 'pulse',
+    text: "The jack kisses the port at the base of your skull, and the world goes green-on-black: a nave of dead screens, the nearest few flickering awake to speak with you. Encrypted threads unravel like wet silk into coordinates that are not spatial but temporal — an address written in when instead of where — beneath a message blinking with the patience of centuries: VERIDIS QUO. THE TRUE PLACE. Then the last layer dissolves into a single word, and the word is a name, and the name — in an alphabet you have never seen and have always known — is yours.",
+    choices: [
+      { label: "► Speak the name aloud", to: 'the-gaze', signal: 12, setFlag: 'attuned' },
+      { label: "► Trace the signal to its origin", to: 'the-source', signal: 8, color: 'magenta' },
+      { label: "► Kill the feed — some doors are better dark", to: 'the-refusal', signal: -8, setFlag: 'refused', color: 'violet' },
+    ],
+  },
+  'the-gaze': {
+    chapter: 'III', chapterName: "THE GAZE", sector: "BCAST-0",
+    backdrop: ['cathedral', {"woken":0.85,"gaze":true}], intensity: 'full',
+    text: "You speak it, and every screen in the dark ignites at once, and every one is showing you: your silhouette in rain, in neon, in static, in starlight. The terminal is not glass anymore — it is the memory of a door, and behind your reflected shoulders something hums in a deep place beneath the city. Your own outline waits under your hand like a held breath.",
+    gesture: { type: 'touch', prompt: "[ PRESS YOUR HAND TO THE SCREEN ]", at: [0.5, 0.4], to: 'the-threshold' },
+    choices: [],
+  },
+  'the-source': {
+    chapter: 'III', chapterName: "THE SOURCE", sector: "7G",
+    backdrop: ['glass', {"beacon":true,"portrait":true}], intensity: 'pulse',
+    text: "You trace the signal backward through the city's nervous system — trunk lines, dead exchanges, a submarine cable the records insist was never laid — and the route closes into a circle. The origin is your pod: the cracked window, the rain, the pulse behind your eyes, broadcasting since before you were born. On the glass the rain has gathered into a figure with one hand raised, palm out, transmitting. You were never the receiver; you are the antenna.",
+    choices: [
+      { label: "► Open the channel — give the signal to the whole city", to: 'ending-cascade', signal: 12 },
+      { label: "► Keep it. Carry it down to where it is loudest.", to: 'the-threshold', signal: 6, color: 'magenta' },
+    ],
+  },
+  'the-threshold': {
+    chapter: 'IV', chapterName: "THE DEEP", sector: "UG-1",
+    backdrop: ['shaft', {"door":true,"seam":0.1}], intensity: 'pulse',
+    text: "Below the city, past the last pipes and the first roots, stands a door that should not exist: smooth obsidian, seamless, warm as a sleeping animal. It hums at exactly 432 hertz — exactly the pulse behind your eyes — and after a moment you notice the hum is not coming through the door. The hum is the door. Doors like this are not locked; they are listening.",
+    choices: [
+      { label: "► Press your palm to the door", to: 'attuned?the-door:the-unmoved', signal: 8 },
+      { label: "► Kneel at the threshold and listen", to: 'ending-threshold', signal: 8, color: 'magenta' },
+    ],
+  },
+  'the-unmoved': {
+    chapter: 'IV', chapterName: "THE DEEP", sector: "UG-1",
+    backdrop: ['shaft', {"door":true,"seam":0.15}], intensity: 'calm',
+    text: "You press your palm to the warm stone, and the stone drinks your heartbeat, and nothing opens. It is not a refusal; the hum simply continues around you, vast and unhurried, a conversation you may join but not interrupt. You came down with empty hands, and the door knows what your hands have not yet held.",
+    choices: [
+      { label: "► Sit with your back against the door. Listen.", to: 'ending-threshold', signal: 4 },
+      { label: "► Carry the hum back up to the city in your chest", to: 'ending-cascade', signal: 8, color: 'magenta' },
+    ],
+  },
+  'the-door': {
+    chapter: 'IV', chapterName: "THE DEEP", sector: "UG-1",
+    backdrop: ['shaft', {"door":true,"seam":0.7}], intensity: 'full',
+    text: "Your palm meets the obsidian and the obsidian answers: a seam of cyan opens under your skin, as if your hand were the key it was cast around. The hum climbs through your wrist, your ribs, the quiet room of your skull, tuning each of them in turn. All the door asks is that you do not let go.",
+    gesture: { type: 'hold', prompt: "[ HOLD YOUR PALM TO THE DOOR ]", to: 'through-the-door' },
+    choices: [],
+  },
+  'through-the-door': {
+    chapter: 'V', chapterName: "TRANSCENDENCE", sector: "∞",
+    backdrop: ['shaft', {"door":true,"seam":1,"fall":true}], intensity: 'full',
+    text: "The door does not open; it stops pretending to be a door. You fall upward through layers of light — neon, phosphor, bioluminescence, starlight — every medium the signal ever borrowed, each one letting you go gently into the next. And somewhere past the last of them you understand: the signal was never calling you from somewhere else. It was calling you back to yourself.",
+    choices: [
+      { label: "► Let go", to: 'ending-becoming', signal: 12 },
+    ],
+  },
+  'ending-becoming': {
+    chapter: 'V', chapterName: "VERIDIS QUO", sector: "Ω",
+    backdrop: ['sky', {"lit":1}], intensity: 'calm',
+    text: "The neon fades. The rain stops. Above Neo-Shibuya the smog opens like an eyelid, and for the first time in sixty years there are stars — forty-four of them, arranged in a shape you have worn all your life, lit from the inside, finished. Veridis Quo was never a destination; it is a becoming, and it is complete, and the place where truth lives is always exactly where you are.",
+    choices: [],
+    isEnding: true,
+    endingName: "VERIDIS QUO",
+    endingText: "The neon fades. The rain stops. Above Neo-Shibuya the smog opens like an eyelid, and for the first time in sixty years there are stars — forty-four of them, arranged in a shape you have worn all your life, lit from the inside, finished. Veridis Quo was never a destination; it is a becoming, and it is complete, and the place where truth lives is always exactly where you are.",
+  },
+  'ending-threshold': {
+    chapter: 'V', chapterName: "THE LISTENER", sector: "Ω",
+    backdrop: ['street', {"figure":true,"signsLit":9}], intensity: 'calm',
+    text: "You listen until the hum and your heartbeat give up being two things. Some doors are not for opening; they are for learning by ear. When you climb back to the avenue the rain sounds different — like an alphabet, like applause — and at the end of a certain alley you stop, and wait, and flicker. Somewhere in the city, a wanderer with your way of standing still is about to open their eyes.",
+    choices: [],
+    isEnding: true,
+    endingName: "THE LISTENER",
+    endingText: "You listen until the hum and your heartbeat give up being two things. Some doors are not for opening; they are for learning by ear. When you climb back to the avenue the rain sounds different — like an alphabet, like applause — and at the end of a certain alley you stop, and wait, and flicker. Somewhere in the city, a wanderer with your way of standing still is about to open their eyes.",
+  },
+  'ending-cascade': {
+    chapter: 'V', chapterName: "THE BEACON", sector: "Ω",
+    backdrop: ['street', {"cascade":true,"signsLit":16}], intensity: 'full',
+    text: "You give it away — every hertz, the whole patient ancientness of it — poured out through the city's nervous system with nothing held back. Every dead sign in Neo-Shibuya ignites at once; drowned kanji wake mid-word; the magenta static thins to nothing, because corruption cannot wear the skin of a signal everyone is singing. In ten thousand pods, ten thousand sleepers feel a pulse behind their eyes. The true place was never a room for one — you have simply become the door.",
+    choices: [],
+    isEnding: true,
+    endingName: "THE BEACON",
+    endingText: "You give it away — every hertz, the whole patient ancientness of it — poured out through the city's nervous system with nothing held back. Every dead sign in Neo-Shibuya ignites at once; drowned kanji wake mid-word; the magenta static thins to nothing, because corruption cannot wear the skin of a signal everyone is singing. In ten thousand pods, ten thousand sleepers feel a pulse behind their eyes. The true place was never a room for one — you have simply become the door.",
+  },
+  'ending-quiet': {
+    chapter: 'V', chapterName: "∅ THE QUIET", sector: "7G",
+    backdrop: ['glass', {"beacon":true,"blooms":true}], intensity: 'calm',
+    text: "The pulse asks once more, courteously, the way very old things ask — and then it lets you go. The rain becomes only rain, plain water tracing plain glass, and the silence where the signal lived is enormous, and it is yours, and you find you can live there. This, too, is a true place: the one you chose. Far across the skyline the beacon keeps pulsing for whoever wakes next — not calling you anymore, only waiting, and it is very good at waiting.",
+    choices: [],
+    isEnding: true,
+    endingName: "∅ THE QUIET",
+    endingText: "The pulse asks once more, courteously, the way very old things ask — and then it lets you go. The rain becomes only rain, plain water tracing plain glass, and the silence where the signal lived is enormous, and it is yours, and you find you can live there. This, too, is a true place: the one you chose. Far across the skyline the beacon keeps pulsing for whoever wakes next — not calling you anymore, only waiting, and it is very good at waiting.",
+  },
+};
+
+// ══════════════════════════════════════════════════════════════════
+//  STORY ENGINE
+// ══════════════════════════════════════════════════════════════════
+const story = {
+  nodeId: null, node: null,
+  flags: {}, visited: 0,
+  typing: false, typeTimer: null, fullText: '', onTyped: null,
+  gesture: null,
+  chapterSeen: '',
+};
+
+function setBackdrop(name, params) {
+  const scene = BACKDROPS[name];
+  if (!scene) return;
+  activeScene = scene;
+  scene.init(params || {});
+}
+
+function resolveTo(to) {
+  const m = to.match(/^([a-z0-9_-]+)\?([a-z0-9_-]+):([a-z0-9_-]+)$/i);
+  if (m) return story.flags[m[1]] ? m[2] : m[3];
+  return to;
+}
+
+function storyGoto(id) {
+  const node = STORY[id];
+  if (!node) { return; }
+  story.nodeId = id;
+  story.node = node;
+  story.visited++;
+  story.gesture = null;
+  game.mem = Math.min(255, 12 + story.visited * 6);
+
+  sceneEnergy = node.intensity === 'full' ? 1 : node.intensity === 'pulse' ? 0.7 : 0.45;
+  setBackdrop(node.backdrop[0], node.backdrop[1]);
+
+  if (node.chapter !== story.chapterSeen) {
+    story.chapterSeen = node.chapter;
+    showChapterCard(node);
+  }
+  $('chapter-val').textContent = node.chapter;
+  $('sector-val').textContent = node.sector || '—';
+  const chIdx = Math.max(0, ['I', 'II', 'III', 'IV', 'V'].indexOf(node.chapter));
+  $('timeline-fill').style.width = ((chIdx + 1) / 5 * 100) + '%';
+  $('timeline-label').textContent = 'CHAPTER ' + node.chapter + (node.chapterName ? ' — ' + node.chapterName : '');
+
+  clearChoices();
+  typeText(node.text, () => presentOptions(node));
+  updateHUD();
+}
+
+function presentOptions(node) {
+  if (node.isEnding) { endStory(node); return; }
+  if (node.gesture) armGesture(node.gesture);
+  showChoices(node.choices || []);
+}
+
+// typewriter — one completion path (click/space/tap skips)
+function typeText(text, done) {
+  const el = $('narrative-text');
+  el.textContent = '';
+  story.fullText = text;
+  story.typing = true;
+  story.onTyped = done;
+  let i = 0;
+  clearTimeout(story.typeTimer);
+  const tick = () => {
+    if (!story.typing) return;
+    if (i < text.length) {
+      el.textContent += text[i++];
+      story.typeTimer = setTimeout(tick, RM ? 8 : 22);
+    } else finishTyping();
+  };
+  tick();
+}
+function finishTyping() {
+  if (!story.typing) return;
+  story.typing = false;
+  clearTimeout(story.typeTimer);
+  $('narrative-text').textContent = story.fullText;
+  const cb = story.onTyped; story.onTyped = null;
+  if (cb) cb();
+}
+
+function clearChoices() {
+  $('narrative-choices').innerHTML = '';
+  $('gesture-prompt').classList.remove('active');
+}
+
+function showChoices(choices) {
+  const container = $('narrative-choices');
+  container.innerHTML = '';
+  choices.forEach((choice, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn' + (choice.color ? ' ' + choice.color : '');
+    btn.textContent = choice.label;
+    btn.addEventListener('click', () => pickChoice(choice));
+    btn.style.opacity = '0';
+    btn.style.transform = 'translateY(10px)';
+    container.appendChild(btn);
+    setTimeout(() => {
+      btn.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      btn.style.opacity = '1';
+      btn.style.transform = 'translateY(0)';
+    }, 200 + i * 180);
+  });
+}
+
+function pickChoice(choice) {
+  if (story.typing) return;
+  if (choice.signal) {
+    game.signal = Math.max(4, Math.min(100, game.signal + choice.signal));
+  }
+  if (choice.setFlag) story.flags[choice.setFlag] = true;
+  updateHUD();
+  transitionTo(resolveTo(choice.to));
+}
+
+let transTimer = null;
+function transitionTo(id) {
+  clearChoices();
+  game.flash = 0.55;
+  clearTimeout(transTimer);
+  transTimer = setTimeout(() => storyGoto(id), 420);
+}
+
+// ─── Gestures: the hand, not the answer ───
+function armGesture(g) {
+  story.gesture = { type: g.type, to: g.to, at: g.at || null, progress: 0, walked: 0 };
+  $('gesture-prompt').textContent = g.prompt;
+  $('gesture-prompt').classList.add('active');
+}
+function gestureTargetPos() {
+  const g = story.gesture;
+  if (!g || !g.at) return null;
+  return { x: W * g.at[0], y: H * g.at[1] };
+}
+function updateGesture(dt) {
+  const g = story.gesture;
+  if (!g) return;
+  if (g.type === 'hold') {
+    if (input.down) {
+      g.progress = Math.min(1, g.progress + dt / 2);
+    } else {
+      g.progress = Math.max(0, g.progress - dt);
+    }
+    if (activeScene === sceneShaft) sceneShaft.tab.seam = g.progress;
+    if (g.progress >= 1) completeGesture();
+  } else if (g.type === 'walk') {
+    if (activeScene === sceneStreet) sceneStreet.tab.walking = input.down;
+    if (input.down) {
+      g.walked += dt;
+      if (g.walked >= 2.4) completeGesture();
+    }
+  }
+}
+function completeGesture() {
+  const g = story.gesture;
+  if (!g) return;
+  story.gesture = null;
+  $('gesture-prompt').classList.remove('active');
+  game.signal = Math.min(100, game.signal + 6);
+  updateHUD();
+  transitionTo(resolveTo(g.to));
+}
+function tryTouchGesture(x, y) {
+  const g = story.gesture;
+  if (!g || g.type !== 'touch') return false;
+  const p = gestureTargetPos();
+  if (!p) return false;
+  if (Math.hypot(x - p.x, y - p.y) < Math.max(60, Math.min(W, H) * 0.09)) {
+    completeGesture();
+    return true;
+  }
+  return false;
+}
+
+// ─── Endings ───
+function endStory(node) {
+  game.ended = true;
+  // sky endings without an explicit lit level complete to your SIGNAL
+  if (activeScene === sceneSky && (node.backdrop[1] || {}).lit === undefined) {
+    sceneSky.applyLit(game.signal / 100);
+  }
+  const pct = Math.round(game.signal);
+  $('end-sub').textContent = node.endingName || 'THE TRUE PLACE';
+  $('end-title').textContent = 'VERIDIS QUO';
+  $('end-stats').innerHTML =
+    'SIGNAL DECRYPTED: <b>' + pct + '%</b><br>' +
+    'MEMORIES: ' + story.visited + ' &nbsp; PATHS MARKED: ' + Object.keys(story.flags).length;
+  $('end-text').textContent = node.endingText || '';
+  setTimeout(() => {
+    $('end-panel').classList.add('active');
+    $('narrative-text').textContent = '';        // the panel carries the words now
+  }, 1400);
+}
+
+function resetGame() {
+  Object.assign(game, { ended: false, paused: false, signal: 12, mem: 12, shake: 0, flash: 0, silentClock: 0 });
+  Object.assign(story, { nodeId: null, node: null, flags: {}, visited: 0, typing: false, gesture: null, chapterSeen: '' });
+  rainDrops = [];
+  beatCount = 0;
+  silentBeatIdx = -1;
+  $('end-panel').classList.remove('active');
+  updateHUD();
+  if (game.started && !game.silent) audio.play().catch(() => {});
+  storyGoto(START_NODE);
+}
+
+// ─── HUD ───
+function updateHUD() {
+  $('signal-bar').style.width = game.signal + '%';
+  $('signal-val').textContent = Math.round(game.signal) + '%';
+  $('memory-val').textContent = '0x' + game.mem.toString(16).toUpperCase().padStart(2, '0');
+}
+
+let cardTimer = null;
+function showChapterCard(node) {
+  $('ch-num').textContent = 'CHAPTER ' + node.chapter;
+  $('ch-name').textContent = node.chapterName || '';
+  const ct = $('chapter-title');
+  clearTimeout(cardTimer);
+  ct.classList.add('active');
+  cardTimer = setTimeout(() => ct.classList.remove('active'), 3000);
+}
 
 // ─── World frame ───
-function skyGradient(act, nextAct, blend) {
-  const a = ACTS[act].sky, b = ACTS[nextAct] ? ACTS[nextAct].sky : a;
+function skyGradient() {
+  const sky = (activeScene && activeScene.sky) || ['#000006', '#05000f', '#0a0020'];
   const grad = ctx.createLinearGradient(0, 0, 0, H);
-  for (let i = 0; i < 3; i++) {
-    grad.addColorStop(i / 2, blend > 0 ? lerpColor(a[i], b[i], blend) : a[i]);
-  }
+  grad.addColorStop(0, sky[0]); grad.addColorStop(0.5, sky[1]); grad.addColorStop(1, sky[2]);
   return grad;
-}
-function lerpColor(c1, c2, t) {
-  const p = c => [parseInt(c.slice(1, 3), 16), parseInt(c.slice(3, 5), 16), parseInt(c.slice(5, 7), 16)];
-  const [r1, g1, b1] = p(c1), [r2, g2, b2] = p(c2);
-  return `rgb(${Math.round(r1 + (r2 - r1) * t)},${Math.round(g1 + (g2 - g1) * t)},${Math.round(b1 + (b2 - b1) * t)})`;
 }
 
 function drawWorld(dt) {
-  const act = game.act;
-  const tInAct = game.t - act * ACT_LEN;
-  const blend = Math.max(0, (tInAct - (ACT_LEN - 4)) / 4);
-
   ctx.save();
-  if (game.shake > 0.5) {
+  if (game.shake > 0.5 && !RM) {
     ctx.translate((Math.random() - 0.5) * game.shake, (Math.random() - 0.5) * game.shake);
     game.shake *= 0.86;
   }
-
-  ctx.fillStyle = skyGradient(act, act + 1, blend);
+  ctx.fillStyle = skyGradient();
   ctx.fillRect(-10, -10, W + 20, H + 20);
 
-  SCENES[act].draw(dt, blend);
+  if (activeScene) activeScene.draw(dt);
 
-  // whiteout (door crossing) + decay
+  // gesture target marker
+  const gp = gestureTargetPos();
+  if (gp && story.gesture) {
+    const r = 16 + Math.sin(game.t * 4) * 5;
+    ctx.globalAlpha = 0.7;
+    ctx.strokeStyle = '#ffb300';
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(gp.x, gp.y, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.globalAlpha = 1;
+  }
+  // hold progress ring
+  if (story.gesture && story.gesture.type === 'hold' && story.gesture.progress > 0) {
+    const cx = W / 2, cy = H * 0.46;
+    ctx.strokeStyle = '#ffb300';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 30, -Math.PI / 2, -Math.PI / 2 + story.gesture.progress * Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // transition veil
   if (game.flash > 0) {
     ctx.fillStyle = `rgba(230,240,255,${game.flash})`;
     ctx.fillRect(-10, -10, W + 20, H + 20);
-    if (game.t > 192) game.flash = Math.max(0, game.flash - dt * 0.7);
+    game.flash = Math.max(0, game.flash - dt * 1.4);
   }
-
-  // beat answered by light — a whisper of it everywhere
   if (!RM && bands.beat) {
-    ctx.fillStyle = 'rgba(0,240,255,0.04)';
+    ctx.fillStyle = 'rgba(0,240,255,0.035)';
     ctx.fillRect(-10, -10, W + 20, H + 20);
   }
-
   ctx.restore();
 }
 
-// spectrum bars above the timeline
+// spectrum bars
 function drawOverlays() {
   if (analyser && !game.silent) {
     const n = 48, bw = 3, gap = 2;
@@ -2279,92 +1851,6 @@ function drawOverlays() {
   }
 }
 
-// ─── HUD / narrative ───
-function updateHUD() {
-  $('signal-bar').style.width = game.signal + '%';
-  $('signal-val').textContent = Math.round(game.signal) + '%';
-  $('memory-val').textContent = '0x' + Math.min(255, 12 + game.frags * 2).toString(16).toUpperCase().padStart(2, '0');
-  const combo = $('combo-val');
-  combo.innerHTML = '&times;' + game.combo;
-  combo.classList.toggle('hot', game.combo >= 10);
-}
-
-let narrativeTimer = null;
-function showNarrative(text, cls) {
-  const el = $('narrative-text');
-  clearTimeout(narrativeTimer);
-  el.classList.remove('visible');
-  setTimeout(() => {
-    el.textContent = text;
-    el.className = 'narrative-text visible' + (cls ? ' ' + cls : '');
-    const hold = 3200 + text.length * 55;
-    narrativeTimer = setTimeout(() => el.classList.remove('visible'), hold);
-  }, 300);
-}
-
-let cardTimer = null;
-function showActCard(act) {
-  const A = ACTS[act];
-  $('ch-num').textContent = A.num;
-  $('ch-name').textContent = A.name;
-  const ct = $('chapter-title');
-  clearTimeout(cardTimer);
-  ct.classList.add('active');
-  cardTimer = setTimeout(() => ct.classList.remove('active'), 3400);
-  $('chapter-val').textContent = ['I', 'II', 'III', 'IV', 'V'][act];
-  $('sector-val').textContent = A.sector;
-  $('timeline-label').textContent = A.num + ' — ' + A.name;
-}
-
-function enterAct(act) {
-  game.act = act;
-  showActCard(act);
-  showNarrative(ACTS[act].intro);
-  SCENES[act].init();
-}
-
-// ─── Ending ───
-function endJourney() {
-  if (game.ended) return;
-  game.ended = true;
-  const pct = Math.round(game.signal);
-  let verdict, text;
-  if (pct >= 85) {
-    verdict = 'FULL RESTORATION';
-    text = 'The constellation is whole. It was your own shape, all along — you were never searching for a place. The silence holds everything, and for once, you are not afraid of it.';
-  } else if (pct >= 55) {
-    verdict = 'PARTIAL RESTORATION';
-    text = 'Half the sky remembers you. Some streets of yourself remain dark — but you know the way back now. The true place waits. It has always been patient.';
-  } else {
-    verdict = 'SIGNAL FAINT';
-    text = 'A few strokes of light in a vast dark — but the first star still pulses at the heart of you. Begin again. The signal will still be calling.';
-  }
-  $('end-stats').innerHTML =
-    'MEMORY RESTORED: <b>' + pct + '%</b> — ' + verdict + '<br>' +
-    'FRAGMENTS: ' + game.frags + ' &nbsp; BEST COMBO: &times;' + game.bestCombo + ' &nbsp; CORRUPTIONS: ' + game.hits;
-  $('end-text').textContent = text;
-  $('end-panel').classList.add('active');
-}
-
-function resetGame() {
-  Object.assign(game, {
-    ended: false, paused: false, t: 0, act: -1, signal: 12,
-    frags: 0, combo: 0, bestCombo: 0, hits: 0,
-    playerX: 0, targetX: 0, vx: 0, shake: 0, flash: 0, iframesUntil: 0,
-    silentClock: 0,
-  });
-  rainDrops = [];
-  handoff.drops = [];
-  beatCount = 0;
-  silentBeatIdx = -1;
-  cues = CUES.slice();
-  $('end-panel').classList.remove('active');
-  updateHUD();
-  audio.currentTime = 0;
-  if (!game.silent) audio.play().catch(() => {});
-  enterAct(0);
-}
-
 // ─── Main loop ───
 function gameLoop(now) {
   requestAnimationFrame(gameLoop);
@@ -2373,32 +1859,16 @@ function gameLoop(now) {
   if (!game.started || game.paused) return;
 
   game.t = game.silent ? (game.silentClock += dt) : audio.currentTime;
-
   readBands();
 
-  const act = Math.min(4, Math.floor(game.t / ACT_LEN));
-  if (act !== game.act && !game.ended) enterAct(act);
-
-  while (cues.length && cues[0].t <= game.t) {
-    const c = cues.shift();
-    showNarrative(c.text, c.cls);
-  }
-
-  if (!game.ended) {
-    SCENES[game.act].update(dt);
-    if (game.t >= TRACK_LEN - 8) endJourney();
-  } else if (game.act === 4) {
-    // the sky keeps breathing behind the verdict
-    sceneSky.update(dt * 0.5);
-  }
+  if (activeScene) activeScene.update(dt);
+  updateGesture(dt);
 
   drawWorld(dt);
   drawOverlays();
-
-  $('timeline-fill').style.width = Math.min(100, (game.t / TRACK_LEN) * 100) + '%';
 }
 
-// ─── Boot (fast + skippable) ───
+// ─── Boot ───
 const bootLines = [
   'NEXUS-7 BIOS v4.2.87',
   'Copyright (c) 2087 Tyrell Systems Corp.',
@@ -2464,21 +1934,12 @@ function startGame() {
 
   initAudio();
   if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-
   const playAttempt = audio.play();
   if (playAttempt) playAttempt.catch(() => { game.silent = true; });
   setTimeout(() => { if (audio.readyState < 2 && audio.currentTime === 0) game.silent = true; }, 2500);
-  // late audio must join the run in progress, never rewind the world
-  audio.addEventListener('playing', () => {
-    if (!game.silent) return;
-    if (game.silentClock > 2) {
-      try { audio.currentTime = game.silentClock; } catch (e) { /* keep silent mode */ }
-    }
-    if (Math.abs(audio.currentTime - game.silentClock) < 3) game.silent = false;
-    else audio.pause();               // can't sync — stay on the silent clock
-  });
+  audio.addEventListener('playing', () => { game.silent = false; });
 
-  input.x = W / 2; input.y = H * 0.55;
+  input.x = W / 2; input.y = H * 0.4;
 
   $('title-screen').classList.remove('active');
   $('game-screen').classList.add('active');
@@ -2488,7 +1949,7 @@ $('start-btn').addEventListener('click', startGame);
 $('title-screen').addEventListener('click', e => {
   if (e.target === $('title-screen')) startGame();
 });
-$('restart-btn').addEventListener('click', () => { game.ended = false; resetGame(); });
+$('restart-btn').addEventListener('click', resetGame);
 
 // ─── Pause ───
 function setPaused(p) {
@@ -2504,18 +1965,15 @@ document.addEventListener('visibilitychange', () => {
 });
 
 // ─── Input plumbing ───
-// UI controls must never leak into gameplay input
 function isUiTarget(e) {
-  return e.target && e.target.closest && e.target.closest('.volume-control, button, input, #end-panel');
+  return e.target && e.target.closest && e.target.closest('.volume-control, button, input, #end-panel, .narrative-choices');
 }
-// first touch owns the input; a stray second finger can't teleport or cancel it
 let activePointerId = null;
 window.addEventListener('pointermove', e => {
   if (isUiTarget(e)) return;
   if (e.pointerType === 'touch' && activePointerId !== null && e.pointerId !== activePointerId) return;
   input.x = e.clientX; input.y = e.clientY;
   input.lastMove = performance.now();
-  if (game.started && !game.paused && game.act >= 0) SCENES[game.act].pointer(e.clientX, e.clientY, false);
 });
 window.addEventListener('pointerdown', e => {
   if (isUiTarget(e)) return;
@@ -2526,7 +1984,9 @@ window.addEventListener('pointerdown', e => {
   input.x = e.clientX; input.y = e.clientY;
   input.down = true; input.downAt = performance.now();
   input.lastMove = performance.now();
-  if (game.started && !game.paused && game.act >= 0) SCENES[game.act].pointer(e.clientX, e.clientY, true);
+  if (!game.started || game.paused) return;
+  if (story.typing) { finishTyping(); return; }
+  tryTouchGesture(e.clientX, e.clientY);
 });
 function releasePointer(e) {
   if (e.pointerType === 'touch' && activePointerId !== null && e.pointerId !== activePointerId) return;
@@ -2535,6 +1995,8 @@ function releasePointer(e) {
 }
 window.addEventListener('pointerup', releasePointer);
 window.addEventListener('pointercancel', releasePointer);
+
+$('narrative-text').addEventListener('click', () => { if (story.typing) finishTyping(); });
 
 document.addEventListener('keydown', e => {
   if (!bootDone) { finishBoot(); return; }
@@ -2545,13 +2007,24 @@ document.addEventListener('keydown', e => {
   switch (e.key) {
     case 'p': case 'P': setPaused(!game.paused); return;
     case 'm': case 'M': $('mute-btn').click(); return;
-    case 'Enter': if (game.ended) { game.ended = false; resetGame(); return; } break;
+    case 'Enter': if (game.ended) { resetGame(); return; } break;
   }
-  // Space is the keyboard's hand: press-and-hold everywhere a pointer would
-  if (e.key === ' ' && !e.repeat) {
-    input.down = true; input.downAt = performance.now();
+  if (game.paused) return;
+  if (e.key === ' ') {
+    e.preventDefault();
+    if (story.typing) { finishTyping(); return; }
+    if (!e.repeat) { input.down = true; input.downAt = performance.now(); }
+    return;
   }
-  if (game.act >= 0 && !game.paused) SCENES[game.act].key(e.key);
+  const n = parseInt(e.key, 10);
+  if (n >= 1 && n <= 3) {
+    if (story.typing) { finishTyping(); return; }
+    const btns = $('narrative-choices').querySelectorAll('.choice-btn');
+    if (btns[n - 1]) btns[n - 1].click();
+  }
+  if ((e.key === 't' || e.key === 'T') && story.gesture && story.gesture.type === 'touch') {
+    completeGesture();
+  }
 });
 document.addEventListener('keyup', e => {
   if (e.key === ' ') input.down = false;
@@ -2569,7 +2042,6 @@ updateHUD();
     track.appendChild(n);
   }
 })();
-cues = CUES.slice();
 setTimeout(bootTick, 400);
 requestAnimationFrame(gameLoop);
 </script>
