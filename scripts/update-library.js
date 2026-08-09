@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const { escapeHtml, fetch } = require('./lib');
+const { escapeHtml, safeUrl, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,10 +15,6 @@ const GOODREADS_RSS = `https://www.goodreads.com/review/list_rss/${GOODREADS_USE
 const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
 const NOTES_DIR = path.join(__dirname, '..', 'book-notes');
 const LIBRARY_DIR = path.join(__dirname, '..', 'library');
-
-  });
-}
-
 
 function generateSlug(title) {
   return title
@@ -168,7 +164,7 @@ function generateBookPageHTML(book, noteHtml) {
     <meta property="og:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
     <meta property="og:url" content="https://skaronis.com/library/${book.slug}/">
     <meta property="og:site_name" content="Peter Skaronis">
-    ${book.cover ? `<meta property="og:image" content="${escapeHtml(book.cover)}">` : ''}
+    ${safeUrl(book.cover) ? `<meta property="og:image" content="${escapeHtml(safeUrl(book.cover))}">` : ''}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
@@ -331,13 +327,13 @@ function generateBookPageHTML(book, noteHtml) {
         <header>
             <a href="/library.html" class="back-link">&larr; Back to library</a>
             <div class="book-header">
-                ${book.cover ? `<div class="book-cover"><img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}"></div>` : ''}
+                ${safeUrl(book.cover) ? `<div class="book-cover"><img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}"></div>` : ''}
                 <div class="book-meta">
                     <h1>${escapeHtml(book.title)}</h1>
                     <p class="book-author">${escapeHtml(book.author)}</p>
                     ${book.rating ? `<p class="book-rating">${generateStars(book.rating)}</p>` : ''}
                     ${dateRead ? `<p class="book-date">Read ${dateRead}</p>` : ''}
-                    <a href="${escapeHtml(book.link)}" class="goodreads-link" target="_blank" rel="noopener">View on Goodreads &rarr;</a>
+                    ${safeUrl(book.link) ? `<a href="${escapeHtml(safeUrl(book.link))}" class="goodreads-link" target="_blank" rel="noopener">View on Goodreads &rarr;</a>` : ''}
                 </div>
             </div>
         </header>
@@ -373,7 +369,7 @@ function generateLibraryHTML(books) {
   let notesCount = 0;
   for (const book of books) {
     const coverImg = book.cover
-      ? `<img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}" loading="lazy">`
+      ? `<img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
     if (book.note) notesCount++;
@@ -382,7 +378,7 @@ function generateLibraryHTML(books) {
       : '';
 
     booksHTML += `            <div class="book-card">
-                <a href="${escapeHtml(book.link)}" class="book" target="_blank" rel="noopener">
+                <a href="${escapeHtml(safeUrl(book.link) || '#')}" class="book" target="_blank" rel="noopener">
                     ${coverImg}
                 </a>
                 <div class="book-info">
@@ -656,7 +652,7 @@ function generateNotesIndexHTML(books) {
   let booksHTML = '';
   for (const book of booksWithNotes) {
     const coverImg = book.cover
-      ? `<img src="${escapeHtml(book.cover)}" alt="${escapeHtml(book.title)}" loading="lazy">`
+      ? `<img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
     booksHTML += `            <a href="/library/${book.slug}/" class="book-card">
