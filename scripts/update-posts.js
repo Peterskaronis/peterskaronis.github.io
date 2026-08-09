@@ -44,17 +44,61 @@ const FEEDS = [
 // HTTP Fetch
 // ============================================================================
 
-function fetch(url) {
+const FETCH_TIMEOUT_MS = 20000;
+const MAX_REDIRECTS = 5;
+const MAX_RESPONSE_BYTES = 15 * 1024 * 1024;
+
+function fetch(url, redirectsLeft = MAX_REDIRECTS) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetch(res.headers.location).then(resolve).catch(reject);
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch (err) {
+      return reject(new Error(`Invalid URL: ${url}`));
+    }
+    // Only ever talk HTTPS. A plaintext redirect is a downgrade, not a destination.
+    if (parsed.protocol !== 'https:') {
+      return reject(new Error(`Refusing non-HTTPS URL: ${url}`));
+    }
+
+    const req = https.get(parsed, (res) => {
+      const status = res.statusCode;
+
+      if (status >= 300 && status < 400 && res.headers.location) {
+        res.resume(); // drain so the socket can be reused
+        if (redirectsLeft <= 0) {
+          return reject(new Error(`Too many redirects fetching ${url}`));
+        }
+        const next = new URL(res.headers.location, parsed).toString();
+        return fetch(next, redirectsLeft - 1).then(resolve, reject);
       }
+
+      // A 404 HTML error page parses as "zero items" and looks like an empty
+      // feed. Treat it as the failure it is.
+      if (status < 200 || status >= 300) {
+        res.resume();
+        return reject(new Error(`HTTP ${status} fetching ${url}`));
+      }
+
       let data = '';
-      res.on('data', chunk => data += chunk);
+      let bytes = 0;
+      res.setEncoding('utf8');
+      res.on('data', chunk => {
+        bytes += Buffer.byteLength(chunk, 'utf8');
+        if (bytes > MAX_RESPONSE_BYTES) {
+          req.destroy(new Error(`Response too large fetching ${url}`));
+          return;
+        }
+        data += chunk;
+      });
       res.on('end', () => resolve(data));
       res.on('error', reject);
-    }).on('error', reject);
+    });
+
+    req.setTimeout(FETCH_TIMEOUT_MS, () => {
+      req.destroy(new Error(`Timed out after ${FETCH_TIMEOUT_MS}ms fetching ${url}`));
+    });
+    req.on('error', reject);
   });
 }
 
@@ -355,13 +399,18 @@ function generateMarkdownFile(post) {
   const attribution = `\n\n---\n\n*Originally published on [${post.siteName}](${post.originalUrl})*`;
   markdown += attribution;
 
-  // Create frontmatter
+  // Create frontmatter.
+  // Truncate BEFORE quoting: the old code escaped then cut at 200 chars, which
+  // could slice through a backslash escape and emit unparseable frontmatter.
+  // JSON string syntax is a subset of YAML's double-quoted scalar, so
+  // JSON.stringify gives correct quoting for free.
+  const description = String(post.description || '').substring(0, 200);
   const frontmatter = `---
-title: "${post.title.replace(/"/g, '\\"')}"
+title: ${JSON.stringify(String(post.title || ''))}
 date: ${dateStr}
 slug: ${slug}
-description: "${post.description.replace(/"/g, '\\"').substring(0, 200)}"
-original_url: ${post.url}
+description: ${JSON.stringify(description)}
+original_url: ${JSON.stringify(String(post.url || ''))}
 ---
 
 `;
@@ -423,8 +472,49 @@ function loadBlogPosts() {
 // HTML Generators
 // ============================================================================
 
+// Post titles, descriptions and URLs come from remote RSS feeds. Everything
+// interpolated into generated HTML goes through here first. (update-blog.js and
+// update-library.js already do this; this script was the odd one out.)
+function escapeHtml(text) {
+  return String(text == null ? '' : text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Escaping alone does not make a URL safe to put in href: `javascript:alert(1)`
+// contains none of the characters escapeHtml touches, so it survives intact and
+// runs on click. Allow only a site-root-relative path or an https:// URL.
+// Returns null for anything else, and the caller decides how to fail.
+function safeUrl(value) {
+  const raw = String(value == null ? '' : value).trim();
+  if (!raw) return null;
+
+  // Root-relative ("/blog/x/"), but not protocol-relative ("//evil.example").
+  if (raw.startsWith('/')) {
+    return raw.startsWith('//') ? null : raw;
+  }
+
+  try {
+    const parsed = new URL(raw);
+    // URL() strips the tabs and newlines browsers also ignore, so
+    // "java\tscript:..." still resolves to the javascript: protocol here.
+    return parsed.protocol === 'https:' ? parsed.toString() : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+// Dates are rendered in CI (UTC) and locally (PT). Without a fixed zone the two
+// disagree near month boundaries and fight each other in git.
 function formatMonthYear(date) {
-  return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC'
+  });
 }
 
 function groupPostsByYearMonth(posts) {
@@ -459,9 +549,19 @@ function generateArchiveHTML(posts) {
 
       let postsHTML = '';
       for (const post of monthPosts) {
-        postsHTML += `                    <li data-category="${post.sourceClass}">
-                        <a href="${post.url}" class="post-title">${post.title}</a>
-                        <span class="post-source ${post.sourceClass}">${post.source}</span>
+        const url = safeUrl(post.url);
+        // One bad entry must not take the whole archive down. Render the title
+        // as plain text and say so, loudly enough to notice in the CI log.
+        const titleHTML = url === null
+          ? escapeHtml(post.title)
+          : `<a href="${escapeHtml(url)}" class="post-title">${escapeHtml(post.title)}</a>`;
+        if (url === null) {
+          console.warn(`  WARNING  dropped unsafe URL on "${post.title}": ${post.url}`);
+        }
+
+        postsHTML += `                    <li data-category="${escapeHtml(post.sourceClass)}">
+                        ${titleHTML}
+                        <span class="post-source ${escapeHtml(post.sourceClass)}">${escapeHtml(post.source)}</span>
                     </li>\n`;
       }
 
@@ -813,21 +913,68 @@ ${sectionsHTML}        <footer>
 </html>`;
 }
 
-function updateIndexHTML(latestPost) {
-  const indexPath = path.join(__dirname, '..', 'index.html');
-  let html = fs.readFileSync(indexPath, 'utf8');
+// The homepage owns its own markup; this script only ever rewrites what sits
+// between these two markers. Previously it matched a chain of class names
+// spanning the whole latest-post card, so any redesign of the homepage silently
+// stopped the sync -- replace() with no match returns the input unchanged, the
+// file was written anyway, and CI still printed "Updated index.html".
+const LATEST_POST_START = '<!-- latest-post:start (generated by scripts/update-posts.js) -->';
+const LATEST_POST_END = '<!-- latest-post:end -->';
 
-  // Update the latest post section
-  const latestPostRegex = /(<section class="latest-grid">[\s\S]*?<span class="stamp">Off the Press<\/span>[\s\S]*?<a href=")[^"]+(" class="latest-content">[\s\S]*?<h2 class="latest-title">)[^<]+(<\/h2>[\s\S]*?<p class="latest-meta">)[^<]+(<span class="latest-source">)[^<]+(<\/span><\/p>)/;
-
+function renderLatestPost(latestPost) {
   const monthYear = formatMonthYear(latestPost.date);
+  const url = safeUrl(latestPost.url);
 
-  html = html.replace(
-    latestPostRegex,
-    `$1${latestPost.url}$2${latestPost.title}$3${monthYear} · $4${latestPost.siteName}$5`
-  );
+  // The homepage links exactly one post. If its URL is not something we can
+  // vouch for, stop the build rather than publish a link we do not trust.
+  if (url === null) {
+    throw new Error(
+      `Refusing to link the latest post: unsupported URL scheme in ${JSON.stringify(latestPost.url)}. ` +
+      `Only site-root-relative paths and https:// URLs are allowed.`
+    );
+  }
 
-  fs.writeFileSync(indexPath, html);
+  return `                <a href="${escapeHtml(url)}" class="latest-content">
+                    <h2 class="latest-title">${escapeHtml(latestPost.title)}</h2>
+                    <p class="latest-meta">${escapeHtml(monthYear)} · <span class="latest-source">${escapeHtml(latestPost.siteName)}</span></p>
+                </a>`;
+}
+
+// Write via a temp file in the same directory, then rename. rename(2) is atomic
+// on the same filesystem, so an interrupted run cannot leave a half-written page.
+function writeFileAtomic(filePath, contents) {
+  const tmpPath = `${filePath}.tmp-${process.pid}`;
+  fs.writeFileSync(tmpPath, contents);
+  fs.renameSync(tmpPath, filePath);
+}
+
+function updateIndexHTML(latestPost, indexPath = path.join(__dirname, '..', 'index.html')) {
+  const html = fs.readFileSync(indexPath, 'utf8');
+
+  const startIdx = html.indexOf(LATEST_POST_START);
+  const endIdx = html.indexOf(LATEST_POST_END);
+
+  // Fail loudly. A missing marker means someone edited the homepage without
+  // knowing this script writes into it; a silent no-op would freeze the latest
+  // post forever behind a green build.
+  if (startIdx === -1 || endIdx === -1 || endIdx < startIdx) {
+    throw new Error(
+      `Could not find the latest-post markers in index.html.\n` +
+      `Expected:\n  ${LATEST_POST_START}\n  ...\n  ${LATEST_POST_END}\n` +
+      `If the homepage was redesigned, re-add the markers around the latest-post card.`
+    );
+  }
+
+  const before = html.slice(0, startIdx + LATEST_POST_START.length);
+  const after = html.slice(endIdx);
+  const updated = `${before}\n${renderLatestPost(latestPost)}\n                ${after}`;
+
+  if (updated === html) {
+    console.log(`index.html already current: "${latestPost.title}"`);
+    return;
+  }
+
+  writeFileAtomic(indexPath, updated);
   console.log(`Updated index.html with latest post: "${latestPost.title}"`);
 }
 
@@ -893,11 +1040,17 @@ async function main() {
     process.exit(1);
   }
 
-  // Update index.html with the latest post that's eligible
+  // Update index.html with the latest post that's eligible.
+  // If every feed marked useForLatest failed to fetch, do NOT touch the
+  // homepage -- leaving the previous post up beats crashing or blanking it.
   const eligiblePosts = allPosts.filter(p => p.useForLatest);
-  const latestPost = eligiblePosts[0];
-  console.log(`\nLatest post: "${latestPost.title}" (${formatMonthYear(latestPost.date)})`);
-  updateIndexHTML(latestPost);
+  if (eligiblePosts.length === 0) {
+    console.error('No posts eligible for the homepage (all "useForLatest" feeds failed?). Leaving index.html unchanged.');
+  } else {
+    const latestPost = eligiblePosts[0];
+    console.log(`\nLatest post: "${latestPost.title}" (${formatMonthYear(latestPost.date)})`);
+    updateIndexHTML(latestPost);
+  }
 
   // Generate archive.html - only show local blog posts (not external RSS)
   const localPosts = allPosts.filter(p => p.url.startsWith('/blog/'));
@@ -909,7 +1062,22 @@ async function main() {
   console.log('\nDone!');
 }
 
-main().catch(err => {
-  console.error('Error:', err);
-  process.exit(1);
-});
+// Only run when invoked directly, so the pure helpers above can be unit tested.
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  escapeHtml,
+  formatMonthYear,
+  renderLatestPost,
+  safeUrl,
+  updateIndexHTML,
+  generateMarkdownFile,
+  slugify,
+  LATEST_POST_START,
+  LATEST_POST_END
+};
