@@ -13,6 +13,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Test content scripts
+        run: node scripts/test-scripts.js
       - name: Build blog from markdown
         run: node scripts/update-blog.js
       - name: Import posts from RSS feeds
@@ -21,16 +23,15 @@ jobs:
         run: node scripts/update-blog.js
       - name: Update library from Goodreads
         run: node scripts/update-library.js
-      - name: Install Puppeteer
-        run: npm install puppeteer
-      - name: Update testimonials
-        run: node scripts/update-testimonials.js
+      # Runs last so pages generated above get the canonical footer too.
+      - name: Normalise site footer
+        run: node scripts/update-footer.js
       - name: Commit changes
         run: |
           git diff --quiet && git diff --cached --quiet || (
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add index.html archive.html posts/ blog/ blog-posts.json library.html library/
+            git add -A index.html archive.html about.html now.html quotes.html notes.html claude-skills.html autofill.html awareness.html posts/ blog/ blog-posts.json library.html library/
             git commit -m "Update content from feeds"
             git push
           )                             
