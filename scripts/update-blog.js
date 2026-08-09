@@ -440,15 +440,19 @@ function main() {
       continue;
     }
 
+    // Normalise once, then use that single value for both the on-disk
+    // directory and the URL. Deriving the URL from the raw frontmatter while
+    // the directory used the normalised slug meant a hand-written "../x" or
+    // "//host" slug produced a link that did not match the page it generated,
+    // and that URL then travelled into blog-posts.json, the homepage and the
+    // archive.
+    const slug = normaliseSlug(frontmatter.slug);
     const post = {
       title: frontmatter.title,
       date: frontmatter.date,
-      // Normalise: the slug becomes a filesystem path AND a URL. RSS-imported
-      // posts are already slugified, but a hand-written post could carry
-      // anything here, including path traversal.
-      slug: normaliseSlug(frontmatter.slug),
+      slug,
       description: frontmatter.description || '',
-      url: `/blog/${frontmatter.slug}/`,
+      url: `/blog/${slug}/`,
       source: 'Blog',
       sourceClass: 'blog',
       siteName: 'Blog'
