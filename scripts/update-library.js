@@ -910,6 +910,24 @@ async function main() {
 
     console.log('\nDone!');
   } catch (err) {
+    // An unreachable Goodreads must not take down the rest of the build.
+    //
+    // This script runs in the middle of the content pipeline. Exiting non-zero
+    // here stops the steps after it -- the footer and the discovery surfaces --
+    // so one third-party feed being down would freeze the whole site's sync.
+    // The existing library.html is left untouched, and the failure is raised as
+    // a GitHub Actions warning annotation so it is visible in the run summary
+    // rather than buried in a green log.
+    //
+    // Goodreads currently answers both this server and GitHub's runners with
+    // HTTP 403; it appears to block datacenter IPs. Verified 2026-08-09.
+    const unreachable = /^(HTTP \d+|Timed out|Idle for|Exceeded|Too many redirects|Response too large|Refusing)/.test(err.message);
+    if (unreachable) {
+      console.log(`::warning file=scripts/update-library.js::Goodreads unreachable, library left unchanged: ${err.message}`);
+      console.error(`Goodreads unreachable: ${err.message}`);
+      console.error('Leaving library.html as it is and continuing the build.');
+      return;
+    }
     console.error(`Error: ${err.message}`);
     process.exit(1);
   }
