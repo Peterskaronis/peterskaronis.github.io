@@ -56,6 +56,23 @@ function safeUrl(value) {
 }
 
 /**
+ * Neutralise raw HTML in a markdown body before it is converted.
+ *
+ * The converters only ever *add* tags; they never intended to pass tags
+ * through. Escaping the angle brackets up front means a post body cannot inject
+ * markup, no matter what the feed contained, while the conversion below still
+ * produces the tags it means to.
+ *
+ * Only < and > are escaped, deliberately. Escaping & as well would corrupt the
+ * query strings in link URLs on the way through, and & alone cannot open a tag.
+ */
+function escapeMarkdownText(text) {
+  return String(text == null ? '' : text)
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+/**
  * Convert markdown links and images to HTML, safely.
  *
  * Every markdown renderer in this repo had its own copy of these two regexes,
@@ -67,17 +84,22 @@ function safeUrl(value) {
  * an image becomes its alt text. Losing a link beats emitting a live one.
  */
 function renderMarkdownLinks(html) {
+  // Link text and alt text are expected to have been through
+  // escapeMarkdownText already, so they are passed through as-is; escaping them
+  // twice would show readers "&amp;lt;" where they wrote "<". The URL is always
+  // validated and escaped here regardless, because that is the injection sink.
+  //
   // Images first: ![alt](url) also matches the link pattern.
   html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (match, alt, url) => {
     const safe = safeUrl(url);
-    if (safe === null) return escapeHtml(alt);
+    if (safe === null) return alt;
     return `<img src="${escapeHtml(safe)}" alt="${escapeHtml(alt)}">`;
   });
 
   html = html.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (match, text, url) => {
     const safe = safeUrl(url);
-    if (safe === null) return escapeHtml(text);
-    return `<a href="${escapeHtml(safe)}">${escapeHtml(text)}</a>`;
+    if (safe === null) return text;
+    return `<a href="${escapeHtml(safe)}">${text}</a>`;
   });
 
   return html;
@@ -174,8 +196,14 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
         if (redirectsLeft <= 0) {
           return reject(new Error(`Too many redirects fetching ${url}`));
         }
-        const next = new URL(res.headers.location, parsed).toString();
-        return fetch(next, redirectsLeft - 1).then(resolve, reject);
+        const next = new URL(res.headers.location, parsed);
+        // Same-host redirects only. A compromised feed could otherwise 302 the
+        // CI runner at any HTTPS endpoint it can reach and have the response
+        // parsed as RSS and published.
+        if (next.host !== parsed.host) {
+          return reject(new Error(`Refusing cross-host redirect ${parsed.host} -> ${next.host}`));
+        }
+        return fetch(next.toString(), redirectsLeft - 1).then(resolve, reject);
       }
 
       if (status < 200 || status >= 300) {
@@ -215,6 +243,7 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
 
 module.exports = {
   escapeHtml,
+  escapeMarkdownText,
   safeUrl,
   renderMarkdownLinks,
   jsonLdScript,

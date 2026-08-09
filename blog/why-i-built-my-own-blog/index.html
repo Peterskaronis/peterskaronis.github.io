@@ -113,7 +113,7 @@
 
 <p><strong>1. update-posts.js</strong> — The Importer</p>
 
-<p>This script fetches my RSS feeds (personal Substack and Cybersecurity Notes), extracts the full content from <code><content:encoded></code>, and converts Substack's messy HTML into clean markdown.</p>
+<p>This script fetches my RSS feeds (personal Substack and Cybersecurity Notes), extracts the full content from <code>&lt;content:encoded&gt;</code>, and converts Substack's messy HTML into clean markdown.</p>
 
 <p>It handles: <ul> <li>Hero images preserved from Substack CDN</li> <li>Blockquotes, code blocks, lists</li> <li>Bold, italic, and nested formatting</li> <li>Stripping Substack boilerplate ("Subscribe to...", "Thanks for reading...")</li> </ul></p>
 
@@ -135,9 +135,9 @@
 
 <pre><code class="language-yaml">name: Update Content
 
-<p>on: schedule: <ul> <li>cron: &#39;<em>/15 </em> <em> </em> *&#39;</li> </ul> workflow_dispatch:</p>
+<p>on: schedule: <ul> <li>cron: '<em>/15 </em> <em> </em> *'</li> </ul> workflow_dispatch:</p>
 
-<p>jobs: update: runs-on: ubuntu-latest steps: <ul> <li>uses: actions/checkout@v4</li> <li>uses: actions/setup-node@v4</li> </ul> with: node-version: &#39;20&#39; <ul> <li>name: Build blog from markdown</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Import posts from RSS feeds</li> </ul> run: node scripts/update-posts.js <ul> <li>name: Rebuild blog with imported posts</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Commit changes</li> </ul> run: | git diff --quiet &amp;&amp; git diff --cached --quiet || ( git config user.name &quot;github-actions[bot]&quot; git config user.email &quot;github-actions[bot]@users.noreply.github.com&quot; git add posts/ blog/ index.html archive.html blog-posts.json git commit -m &quot;Update content from feeds&quot; git push )</code></pre></p>
+<p>jobs: update: runs-on: ubuntu-latest steps: <ul> <li>uses: actions/checkout@v4</li> <li>uses: actions/setup-node@v4</li> </ul> with: node-version: '20' <ul> <li>name: Build blog from markdown</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Import posts from RSS feeds</li> </ul> run: node scripts/update-posts.js <ul> <li>name: Rebuild blog with imported posts</li> </ul> run: node scripts/update-blog.js <ul> <li>name: Commit changes</li> </ul> run: | git diff --quiet && git diff --cached --quiet || ( git config user.name "github-actions[bot]" git config user.email "github-actions[bot]@users.noreply.github.com" git add posts/ blog/ index.html archive.html blog-posts.json git commit -m "Update content from feeds" git push )</code></pre></p>
 
 <p>Every 15 minutes. Automatically. No server to maintain.</p>
 

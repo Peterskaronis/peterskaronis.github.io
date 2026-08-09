@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const { escapeHtml, safeUrl, renderMarkdownLinks, jsonLdScript, fetch } = require('./lib');
+const { escapeHtml, escapeMarkdownText, safeUrl, renderMarkdownLinks, jsonLdScript, writeFileAtomic, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -15,6 +15,10 @@ const GOODREADS_RSS = `https://www.goodreads.com/review/list_rss/${GOODREADS_USE
 const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
 const NOTES_DIR = path.join(__dirname, '..', 'book-notes');
 const LIBRARY_DIR = path.join(__dirname, '..', 'library');
+
+// Same rationale as update-posts.js: a third-party feed should not be able to
+// dictate how large an auto-committed page becomes.
+const MAX_BOOKS = 200;
 
 function generateSlug(title) {
   return title
@@ -32,14 +36,17 @@ function loadBookNote(slug) {
 }
 
 function convertMarkdownToHtml(markdown) {
-  let html = markdown;
+  // Same rule as the blog renderer: escape the body before any tag-producing
+  // replace. Book notes are repo-authored today, but a second copy of this sink
+  // is a second copy of the bug.
+  let html = escapeMarkdownText(markdown);
   html = html.replace(/\r\n/g, '\n');
   html = html.split('\n').map(line => line.trimStart()).join('\n');
 
   // Code blocks
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
-    const escaped = escapeHtml(code.trim());
-    return `<pre><code>${escaped}</code></pre>`;
+    // Body already escaped above.
+    return `<pre><code>${code.trim()}</code></pre>`;
   });
 
   // Inline code
@@ -866,7 +873,11 @@ async function main() {
   try {
     console.log(`Fetching ${GOODREADS_RSS}...`);
     const xml = await fetch(GOODREADS_RSS);
-    const books = parseGoodreadsRSS(xml);
+    let books = parseGoodreadsRSS(xml);
+    if (books.length > MAX_BOOKS) {
+      console.warn(`  Capping ${books.length} books at ${MAX_BOOKS}`);
+      books = books.slice(0, MAX_BOOKS);
+    }
     console.log(`  Found ${books.length} books`);
 
     if (books.length === 0) {
@@ -883,7 +894,7 @@ async function main() {
         const pageHtml = generateBookPageHTML(book, noteHtml);
         const bookDir = path.join(LIBRARY_DIR, book.slug);
         ensureDir(bookDir);
-        fs.writeFileSync(path.join(bookDir, 'index.html'), pageHtml);
+        writeFileAtomic(path.join(bookDir, 'index.html'), pageHtml);
         pagesGenerated++;
         console.log(`  Generated library/${book.slug}/index.html`);
       }
@@ -891,7 +902,7 @@ async function main() {
 
     // Generate main library listing
     const html = generateLibraryHTML(books);
-    fs.writeFileSync(OUTPUT_PATH, html);
+    writeFileAtomic(OUTPUT_PATH, html);
     console.log(`\nGenerated library.html with ${books.length} books`);
     console.log(`Generated ${pagesGenerated} book detail page(s)`);
 
@@ -899,7 +910,7 @@ async function main() {
     const notesDir = path.join(LIBRARY_DIR, 'notes');
     ensureDir(notesDir);
     const notesHtml = generateNotesIndexHTML(books);
-    fs.writeFileSync(path.join(notesDir, 'index.html'), notesHtml);
+    writeFileAtomic(path.join(notesDir, 'index.html'), notesHtml);
     console.log(`Generated library/notes/index.html`);
 
     console.log('\nDone!');

@@ -259,6 +259,41 @@ test('a javascript: link degrades to plain text', () => {
   assert.ok(out.includes('click'), 'link text should survive');
 });
 
+// ---------------------------------------------------------------------------
+// The second secgate review found the deeper sink: the markdown BODY was never
+// escaped, only its URLs were. A tag with no closing bracket slips past the
+// upstream tag-strip regex entirely.
+console.log('\nescapeMarkdownText (body of every generated page)');
+
+test('neutralises raw HTML in a post body', () => {
+  assert.strictEqual(
+    lib.escapeMarkdownText('<script>alert(1)</script>'),
+    '&lt;script&gt;alert(1)&lt;/script&gt;'
+  );
+});
+
+test('neutralises an UNCLOSED tag, which the tag-strip regex cannot match', () => {
+  // This was the live exploit: /<[^>]+>/g cannot match a < with no > after it,
+  // so the payload reached the page and the following --- supplied the >.
+  const payload = '<img src=x onerror=alert(document.domain)//';
+  const out = lib.escapeMarkdownText(payload);
+  assert.ok(!out.includes('<img'), `unclosed tag survived: ${out}`);
+  assert.ok(out.startsWith('&lt;img'), out);
+});
+
+test('leaves & alone so link query strings are not corrupted', () => {
+  // Escaping & here would turn ?a=1&b=2 into ?a=1&amp;b=2 inside the URL.
+  assert.strictEqual(lib.escapeMarkdownText('a & b'), 'a & b');
+});
+
+test('escaped body text passes through the link renderer unchanged', () => {
+  const body = lib.escapeMarkdownText('see <b>this</b>') + ' [link](https://example.com/p)';
+  const out = lib.renderMarkdownLinks(body);
+  assert.ok(out.includes('&lt;b&gt;'), 'body escaping lost');
+  assert.ok(!out.includes('&amp;lt;'), `double-escaped: ${out}`);
+  assert.ok(out.includes('<a href="https://example.com/p">link</a>'), out);
+});
+
 test('a javascript: image degrades to its alt text', () => {
   const out = lib.renderMarkdownLinks('![pic](javascript:alert(1))');
   assert.ok(!/javascript:/i.test(out), `javascript: survived: ${out}`);

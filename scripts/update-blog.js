@@ -15,7 +15,7 @@
  */
 
 const fs = require('fs');
-const { escapeHtml, renderMarkdownLinks, jsonLdScript } = require('./lib');
+const { escapeHtml, escapeMarkdownText, renderMarkdownLinks, jsonLdScript, writeFileAtomic } = require('./lib');
 const path = require('path');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
@@ -37,6 +37,8 @@ function parseFrontmatter(content) {
   const frontmatterStr = match[1];
   const body = match[2];
   const frontmatter = {};
+  // slug becomes both a filesystem path and a URL, so it is normalised below
+  // after parsing rather than trusted as written.
 
   for (const line of frontmatterStr.split('\n')) {
     const colonIndex = line.indexOf(':');
@@ -66,8 +68,22 @@ function parseFrontmatter(content) {
 // ============================================================================
 
 
+/** Restrict a slug to the characters a URL path segment and a directory name share. */
+function normaliseSlug(slug) {
+  return String(slug || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+}
+
 function convertMarkdownToHtml(markdown) {
-  let html = markdown;
+  // Escape the body FIRST. This converter only ever adds tags; it was never
+  // meant to pass markup through from the source. Doing this before any
+  // tag-producing replace means a post body cannot inject HTML regardless of
+  // what the feed contained -- including an unclosed "<img src=x onerror=..."
+  // that the upstream tag-strip regex cannot match.
+  let html = escapeMarkdownText(markdown);
 
   // Normalize line endings
   html = html.replace(/\r\n/g, '\n');
@@ -77,9 +93,9 @@ function convertMarkdownToHtml(markdown) {
 
   // Code blocks (fenced with ```)
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (match, lang, code) => {
-    const escaped = escapeHtml(code.trim());
+    // Body is already escaped above; escaping again here would double-encode.
     const langClass = lang ? ` class="language-${lang}"` : '';
-    return `<pre><code${langClass}>${escaped}</code></pre>`;
+    return `<pre><code${langClass}>${code.trim()}</code></pre>`;
   });
 
   // Inline code (must come after code blocks)
@@ -419,7 +435,7 @@ function main() {
     const { frontmatter, body } = parseFrontmatter(content);
 
     // Validate required fields
-    if (!frontmatter.title || !frontmatter.date || !frontmatter.slug) {
+    if (!frontmatter.title || !frontmatter.date || !normaliseSlug(frontmatter.slug)) {
       console.warn(`  Skipping ${file}: missing required frontmatter (title, date, slug)`);
       continue;
     }
@@ -427,7 +443,10 @@ function main() {
     const post = {
       title: frontmatter.title,
       date: frontmatter.date,
-      slug: frontmatter.slug,
+      // Normalise: the slug becomes a filesystem path AND a URL. RSS-imported
+      // posts are already slugified, but a hand-written post could carry
+      // anything here, including path traversal.
+      slug: normaliseSlug(frontmatter.slug),
       description: frontmatter.description || '',
       url: `/blog/${frontmatter.slug}/`,
       source: 'Blog',
@@ -445,7 +464,7 @@ function main() {
     ensureDir(postDir);
 
     const postHTML = generatePostHTML(post, htmlContent);
-    fs.writeFileSync(path.join(postDir, 'index.html'), postHTML);
+    writeFileAtomic(path.join(postDir, 'index.html'), postHTML);
     console.log(`  Generated blog/${post.slug}/index.html`);
   }
 
@@ -454,11 +473,11 @@ function main() {
 
   // Generate blog index
   const indexHTML = generateBlogIndexHTML(posts);
-  fs.writeFileSync(path.join(BLOG_DIR, 'index.html'), indexHTML);
+  writeFileAtomic(path.join(BLOG_DIR, 'index.html'), indexHTML);
   console.log(`\nGenerated blog/index.html`);
 
   // Export posts as JSON for integration
-  fs.writeFileSync(JSON_OUTPUT, JSON.stringify(posts, null, 2));
+  writeFileAtomic(JSON_OUTPUT, JSON.stringify(posts, null, 2));
   console.log(`Exported ${posts.length} post(s) to blog-posts.json`);
 
   console.log('\nDone!');

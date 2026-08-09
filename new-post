@@ -36,8 +36,12 @@ if (fs.existsSync(filename)) {
 }
 
 // Create post
+// Quote with JSON.stringify, matching scripts/update-posts.js. Naive
+// interpolation breaks on a title containing a quote, and a title containing a
+// newline would inject arbitrary frontmatter keys -- including slug, which
+// becomes a directory name.
 const content = `---
-title: "${title}"
+title: ${JSON.stringify(String(title))}
 date: ${date}
 slug: ${slug}
 description: ""

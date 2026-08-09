@@ -409,7 +409,7 @@ function importPostToMarkdown(post, seenSlugs) {
   }
   seenSlugs.add(result.slug);
 
-  fs.writeFileSync(filepath, result.content);
+  writeFileAtomic(filepath, result.content);
   console.log(`  Imported "${post.title}" → posts/${result.filename}`);
   return result.filename;
 }
@@ -1028,7 +1028,7 @@ async function main() {
   const localPosts = allPosts.filter(p => p.url.startsWith('/blog/'));
   const archivePath = path.join(__dirname, '..', 'archive.html');
   const archiveHTML = generateArchiveHTML(localPosts);
-  fs.writeFileSync(archivePath, archiveHTML);
+  writeFileAtomic(archivePath, archiveHTML);
   console.log(`\nGenerated archive.html with ${localPosts.length} local posts`);
 
   console.log('\nDone!');
