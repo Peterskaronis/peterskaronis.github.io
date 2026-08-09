@@ -128,6 +128,13 @@ function renderMarkdownLinks(html) {
 function jsonLdScript(value, indent = 4) {
   return JSON.stringify(value, null, indent)
     .replace(/</g, '\\u003c')
+    // > and & are not strictly required: an HTML parser does not decode
+    // entities inside a <script> element, so an entity-encoded "</script>"
+    // cannot close it. Verified in a real browser. They are escaped anyway --
+    // the cost is nothing, the output is still valid JSON, and it removes the
+    // need for anyone reading this to know that rule.
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
     // U+2028/U+2029 are legal in JSON but terminate a line for some parsers.
     .replace(/\u2028/g, '\\u2028')
     .replace(/\u2029/g, '\\u2029');
