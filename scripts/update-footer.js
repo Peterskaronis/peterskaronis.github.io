@@ -18,6 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { writeFileAtomic } = require('./lib');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -72,12 +73,6 @@ function findHtmlFiles(dir, found = []) {
     }
   }
   return found;
-}
-
-function writeFileAtomic(filePath, contents) {
-  const tmpPath = `${filePath}.tmp-${process.pid}`;
-  fs.writeFileSync(tmpPath, contents);
-  fs.renameSync(tmpPath, filePath);
 }
 
 // Matches a whole <footer>...</footer> element plus the indentation on its line.

@@ -201,9 +201,37 @@ test('leaves no temp file behind', () => {
 // updateIndexHTML takes the target path, so tests operate purely on a temp file
 // and can never touch the real homepage.
 function rewriteVia(fixtureFile, post) {
-  posts.updateIndexHTML(post, fixtureFile);
+  posts.updateIndexHTML(post, [], fixtureFile);
   return fs.readFileSync(fixtureFile, 'utf8');
 }
+
+// ---------------------------------------------------------------------------
+console.log('\nrenderRecentPosts');
+
+const RECENT = [
+  { title: 'One', url: '/blog/one/', date: new Date('2026-03-02T00:00:00Z') },
+  { title: 'Two', url: '/blog/two/', date: new Date('2026-02-02T00:00:00Z') },
+  { title: 'Three', url: '/blog/three/', date: new Date('2026-01-02T00:00:00Z') },
+  { title: 'Four', url: '/blog/four/', date: new Date('2025-12-02T00:00:00Z') },
+  { title: 'Five', url: '/blog/five/', date: new Date('2025-11-02T00:00:00Z') },
+  { title: 'Six', url: '/blog/six/', date: new Date('2025-10-02T00:00:00Z') }
+];
+
+test('renders at most five posts', () => {
+  const html = posts.renderRecentPosts(RECENT);
+  assert.strictEqual((html.match(/<li>/g) || []).length, 5);
+  assert.ok(!html.includes('Six'), 'sixth post should not be rendered');
+});
+
+test('escapes titles and drops unsafe URLs, keeping the title as text', () => {
+  const html = posts.renderRecentPosts([
+    { title: '<script>alert(1)</script>', url: 'javascript:alert(1)', date: new Date('2026-03-02T00:00:00Z') }
+  ]);
+  assert.ok(!html.includes('<script>'), 'raw script tag leaked');
+  assert.ok(!/javascript:/i.test(html), 'javascript: URL survived');
+  assert.ok(html.includes('&lt;script&gt;'), 'title should still appear, escaped');
+  assert.ok(!html.includes('<a href'), 'unsafe entry must not be linked');
+});
 
 // ---------------------------------------------------------------------------
 console.log('\ngenerateMarkdownFile frontmatter');

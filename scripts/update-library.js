@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const https = require('https');
+const { escapeHtml, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -16,28 +16,9 @@ const OUTPUT_PATH = path.join(__dirname, '..', 'library.html');
 const NOTES_DIR = path.join(__dirname, '..', 'book-notes');
 const LIBRARY_DIR = path.join(__dirname, '..', 'library');
 
-function fetch(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetch(res.headers.location).then(resolve).catch(reject);
-      }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-      res.on('error', reject);
-    }).on('error', reject);
   });
 }
 
-function escapeHtml(text) {
-  if (!text) return '';
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 function generateSlug(title) {
   return title

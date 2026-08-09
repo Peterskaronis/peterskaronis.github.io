@@ -15,6 +15,7 @@
  */
 
 const fs = require('fs');
+const { escapeHtml } = require('./lib');
 const path = require('path');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
@@ -44,10 +45,14 @@ function parseFrontmatter(content) {
     const key = line.slice(0, colonIndex).trim();
     let value = line.slice(colonIndex + 1).trim();
 
-    // Remove quotes if present
-    if ((value.startsWith('"') && value.endsWith('"')) ||
-        (value.startsWith("'") && value.endsWith("'"))) {
-      value = value.slice(1, -1);
+    // Unwrap the quotes, and undo the escaping that writing them required.
+    // Stripping the outer quotes without unescaping left \" in the value, which
+    // was then re-escaped on the way into blog-posts.json and surfaced as \\"
+    // in post descriptions.
+    if (value.startsWith('"') && value.endsWith('"') && value.length >= 2) {
+      value = value.slice(1, -1).replace(/\\(["\\])/g, '$1');
+    } else if (value.startsWith("'") && value.endsWith("'") && value.length >= 2) {
+      value = value.slice(1, -1).replace(/''/g, "'");
     }
 
     frontmatter[key] = value;
@@ -60,13 +65,6 @@ function parseFrontmatter(content) {
 // Markdown to HTML Converter
 // ============================================================================
 
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
 
 function convertMarkdownToHtml(markdown) {
   let html = markdown;

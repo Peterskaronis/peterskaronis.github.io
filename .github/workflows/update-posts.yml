@@ -19,19 +19,23 @@ jobs:
         run: node scripts/update-blog.js
       - name: Import posts from RSS feeds
         run: node scripts/update-posts.js
-      - name: Rebuild blog with imported posts
+      # Second pass: update-posts.js writes new markdown into posts/, which only
+      # becomes HTML when update-blog.js runs again.
+      - name: Rebuild blog with newly imported posts
         run: node scripts/update-blog.js
       - name: Update library from Goodreads
         run: node scripts/update-library.js
-      # Runs last so pages generated above get the canonical footer too.
+      # These two run last so pages generated above are normalised too.
       - name: Normalise site footer
         run: node scripts/update-footer.js
+      - name: Refresh llms.txt, sitemap and discovery tags
+        run: node scripts/update-seo.js
       - name: Commit changes
         run: |
           git diff --quiet && git diff --cached --quiet || (
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -A index.html archive.html about.html now.html quotes.html notes.html claude-skills.html autofill.html awareness.html posts/ blog/ blog-posts.json library.html library/
+            git add -A index.html archive.html about.html now.html quotes.html notes.html claude-skills.html autofill.html awareness.html posts/ blog/ blog-posts.json library.html library/ llms.txt sitemap.xml cyber.html veridis-quo.html
             git commit -m "Update content from feeds"
             git push
           )                             
