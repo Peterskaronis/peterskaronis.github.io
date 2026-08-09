@@ -2,7 +2,17 @@ name: Update Content
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    # Every two hours, at :17 rather than on the hour.
+    #
+    # This was */15, which GitHub mostly dropped: the April run history shows
+    # real gaps of 25-70 minutes against a 15-minute schedule. Scheduled
+    # workflows are best-effort and the top of the hour is the most contended
+    # slot, so an off-the-hour, less frequent schedule actually runs more
+    # reliably than a frequent one. The feeds are a personal blog and a reading
+    # list; two hours is well inside how fast either changes.
+    #
+    # Push a commit or use "Run workflow" to sync immediately.
+    - cron: '17 */2 * * *'
   workflow_dispatch:
 
 # The job only needs to commit back to this repository.

@@ -16,7 +16,7 @@ This system lets me write on Substack (where my subscribers are) while automatic
 Substack → RSS Feed → GitHub Action → Markdown → Static HTML → GitHub Pages
 ```
 
-Every 15 minutes, a GitHub Action:
+Every two hours, a GitHub Action:
 1. Fetches RSS feeds from my Substacks
 2. Converts new posts to markdown
 3. Builds static HTML pages
@@ -105,7 +105,7 @@ Your content here...
 
 ### Option 1: Write on Substack (Recommended)
 
-Just publish on Substack. Within 15 minutes, the post will be automatically imported, converted to markdown, and deployed.
+Just publish on Substack. Within about two hours the post is imported, converted to markdown and deployed. To publish it immediately, run the "Update Content" workflow manually from the Actions tab.
 
 ### Option 2: Write Locally
 
@@ -147,42 +147,26 @@ node scripts/update-blog.js
 
 ## GitHub Action
 
-The workflow runs every 15 minutes:
+The workflow runs every two hours, at :17:
 
-```yaml
-name: Update Content
+Defined in [`.github/workflows/update-posts.yml`](.github/workflows/update-posts.yml).
+It is not reproduced here: a second copy in the README only drifts from the
+real one.
 
-on:
-  schedule:
-    - cron: '*/15 * * * *'
-  workflow_dispatch:  # Manual trigger
+Steps, in order:
 
-jobs:
-  update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: node scripts/update-blog.js
-      - run: node scripts/update-posts.js
-      - run: node scripts/update-blog.js
-      - name: Commit changes
-        run: |
-          git diff --quiet && git diff --cached --quiet || (
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add posts/ blog/ index.html archive.html blog-posts.json
-            git commit -m "Update content from feeds"
-            git push
-          )
-```
+1. `test-scripts.js` — runs first, so a broken script fails before it writes
+2. `update-blog.js` — build HTML from any markdown in `posts/`
+3. `update-posts.js` — import new RSS content to markdown, rewrite the homepage blocks and `archive.html`
+4. `update-blog.js` again — render the markdown the previous step just imported
+5. `update-library.js` — Goodreads (currently 403s from CI; warns and continues)
+6. `update-footer.js` — one footer on every page, including the ones just generated
+7. `update-seo.js` — `llms.txt`, `sitemap.xml` and the per-page discovery tags
+8. commit and push, only if something actually changed
 
-**Why run update-blog.js twice?**
-1. First run: Process any manually added markdown files
-2. update-posts.js: Import new RSS content to markdown
-3. Second run: Process newly imported markdown
+Steps 6 and 7 run last on purpose: the generators above them emit pages from
+their own templates, so normalising afterwards means those templates never need
+to know about the footer or the meta tags.
 
 ## HTML to Markdown Conversion
 

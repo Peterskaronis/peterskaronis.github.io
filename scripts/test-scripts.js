@@ -453,6 +453,38 @@ test('a 200-char boundary cannot leave a dangling escape', () => {
 });
 
 // ---------------------------------------------------------------------------
+// Guard against the drift that produced this test: internal links were fixed in
+// the generated files, but the generator templates still emitted the .html
+// form, so the very next CI run reverted them. Scanning the built output is the
+// only check that catches a template and its product disagreeing.
+section('no internal links point at a redirecting .html URL');
+
+test('no page links to an internal .html path', () => {
+  const skipDirs = new Set(['.git', 'node_modules', '.playwright-mcp', '.github']);
+  const pages = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (e.isDirectory()) {
+        if (!skipDirs.has(e.name)) walk(path.join(dir, e.name));
+      } else if (e.name.endsWith('.html')) {
+        pages.push(path.join(dir, e.name));
+      }
+    }
+  })(path.join(__dirname, '..'));
+
+  // The host 308-redirects /x.html to /x, so an internal link to the .html form
+  // costs a round trip and, in a canonical or a sitemap, actively misdirects.
+  const re = /(?:href|content)="(?:https:\/\/skaronis\.com)?\/?((?:[a-z0-9-]+\/)*[a-z0-9-]+)\.html"/gi;
+  const offenders = [];
+  for (const p of pages) {
+    for (const m of fs.readFileSync(p, 'utf8').matchAll(re)) {
+      offenders.push(`${path.relative(path.join(__dirname, '..'), p)} -> ${m[0]}`);
+    }
+  }
+  assert.deepStrictEqual(offenders, [], `internal .html links found:\n  ${offenders.join('\n  ')}`);
+});
+
+// ---------------------------------------------------------------------------
 run().then(() => {
   console.log(`\n${passed} passed, ${failed} failed\n`);
   process.exit(failed === 0 ? 0 : 1);

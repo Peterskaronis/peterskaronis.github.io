@@ -328,7 +328,7 @@ function generateBookPageHTML(book, noteHtml) {
 <body>
     <div class="container">
         <header>
-            <a href="/library.html" class="back-link">&larr; Back to library</a>
+            <a href="/library" class="back-link">&larr; Back to library</a>
             <div class="book-header">
                 ${safeUrl(book.cover) ? `<div class="book-cover"><img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}"></div>` : ''}
                 <div class="book-meta">
@@ -349,7 +349,7 @@ ${noteHtml}
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
-                <a href="/now.html">Now</a>
+                <a href="/now">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
@@ -626,7 +626,7 @@ function generateLibraryHTML(books) {
 <body>
     <div class="container">
         <header>
-            <a href="index.html" class="back-link">&larr; Back home</a>
+            <a href="/" class="back-link">&larr; Back home</a>
             <h1>Library</h1>
             <p>Books I've read. Synced from <a href="https://www.goodreads.com/user/show/${GOODREADS_USER_ID}" target="_blank" rel="noopener">Goodreads</a>.</p>
             <p class="book-count">${books.length} books · <a href="/library/notes/">View annotated books</a></p>
@@ -638,7 +638,7 @@ ${booksHTML}        </div>
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
-                <a href="/now.html">Now</a>
+                <a href="/now">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
@@ -840,7 +840,7 @@ function generateNotesIndexHTML(books) {
 <body>
     <div class="container">
         <header>
-            <a href="/library.html" class="back-link">&larr; Back to library</a>
+            <a href="/library" class="back-link">&larr; Back to library</a>
             <h1>Book Notes</h1>
             <p>Books I've annotated with personal notes and takeaways.</p>
             <p class="book-count">${booksWithNotes.length} book${booksWithNotes.length === 1 ? '' : 's'} with notes</p>
@@ -851,7 +851,7 @@ function generateNotesIndexHTML(books) {
         <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
-                <a href="/now.html">Now</a>
+                <a href="/now">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>

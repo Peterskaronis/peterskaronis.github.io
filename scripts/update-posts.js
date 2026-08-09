@@ -807,7 +807,7 @@ ${monthsHTML}        </section>\n\n`;
 <body>
     <div class="container">
         <header>
-            <a href="index.html" class="back-link">← Back home</a>
+            <a href="/" class="back-link">← Back home</a>
             <h1>Archive</h1>
             <p>All my writing, organized by date.</p>
             <p class="post-count" id="post-count">${posts.length} posts</p>
@@ -826,7 +826,7 @@ ${monthsHTML}        </section>\n\n`;
 ${sectionsHTML}        <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
-                <a href="/now.html">Now</a>
+                <a href="/now">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
