@@ -283,20 +283,13 @@ blockquote .author {
 
 /* Month/date labels */
 .month-label,
-.update-date,
-.talk-date {
+.update-date {
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: #909090;
     margin-bottom: 0.75rem;
-}
-
-.talk-date {
-    letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
-    color: #888;
 }
 
 /* Year section */
@@ -367,25 +360,6 @@ blockquote .author {
     font-size: 0.85rem;
     color: #909090;
     margin-top: 0.5rem;
-}
-
-/* Talk items */
-.talk {
-    margin-bottom: 2rem;
-}
-
-.talk:last-child {
-    margin-bottom: 0;
-}
-
-.talk-title {
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-size: 1.4rem;
-    color: #ccc;
-}
-
-.talk-title a {
-    color: #fff;
 }
 
 /* Quotes page */
@@ -526,18 +500,8 @@ blockquote .author {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.no-cover {
-    width: 100%;
-    aspect-ratio: 2/3;
-    background: #1a1a1a;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Instrument Serif', Georgia, serif;
-    font-size: 2rem;
-    color: #333;
-}
+/* .no-cover lives in the library templates in scripts/update-library.js, which
+   generate self-contained pages that do not link this stylesheet. */
 
 .book-info {
     margin-top: 0.75rem;
