@@ -240,26 +240,16 @@ ${ANALYTICS_SCRIPT}
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "BlogPosting",
-        "headline": "${escapeHtml(post.title)}",
-        "description": "${description}",
-        "datePublished": "${isoDate}",
-        "author": {
-            "@type": "Person",
-            "name": "Peter Skaronis",
-            "url": "https://skaronis.com"
-        },
-        "publisher": {
-            "@type": "Person",
-            "name": "Peter Skaronis"
-        },
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "${postUrl}"
-        }
-    }
+${jsonLdScript({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.description || post.title,
+      datePublished: isoDate,
+      author: { '@type': 'Person', name: 'Peter Skaronis', url: 'https://skaronis.com' },
+      publisher: { '@type': 'Person', name: 'Peter Skaronis' },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl }
+    })}
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
