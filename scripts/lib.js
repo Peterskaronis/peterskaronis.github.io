@@ -215,12 +215,21 @@ function replaceBlock(html, startMarker, endMarker, body, label) {
 // Network
 // ---------------------------------------------------------------------------
 
+const FEED_UNREACHABLE_CODE = 'FEED_UNREACHABLE';
+
 /** Marks an error as "the feed could not be retrieved", as opposed to a bug. */
 function unreachable(message) {
   const err = new Error(message);
-  err.code = 'FEED_UNREACHABLE';
+  err.code = FEED_UNREACHABLE_CODE;
   return err;
 }
+
+// Identify ourselves. Goodreads returns 403 to any request with no
+// User-Agent, and Node's https.get sends none by default -- which is why the
+// library sync failed identically here and on GitHub's runners and looked like
+// an IP block. Proven: curl with its UA removed also gets 403, and Node with
+// this header set gets 200.
+const USER_AGENT = 'skaronis.com-feed-sync/1.0 (+https://skaronis.com)';
 
 const FETCH_IDLE_TIMEOUT_MS = 20000;
 const FETCH_TOTAL_TIMEOUT_MS = 60000;
@@ -247,7 +256,7 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
       return reject(unreachable(`Refusing non-HTTPS URL: ${url}`));
     }
 
-    const req = https.get(parsed, (res) => {
+    const req = https.get(parsed, { headers: { 'User-Agent': USER_AGENT } }, (res) => {
       const status = res.statusCode;
 
       if (status >= 300 && status < 400 && res.headers.location) {
@@ -296,12 +305,23 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
     deadline.unref();
     const clearDeadline = () => clearTimeout(deadline);
     req.on('close', clearDeadline);
-    req.on('error', (err) => { clearDeadline(); reject(err); });
+    req.on('error', (err) => {
+      clearDeadline();
+      // DNS, socket and TLS failures arrive with Node's own codes (ENOTFOUND,
+      // ECONNRESET, ...). They are unreachability just as much as an HTTP 403,
+      // so tag them too -- otherwise the caller's fail-soft branch is skipped
+      // and one network blip aborts the whole build.
+      if (!err.code || err.code !== FEED_UNREACHABLE_CODE) {
+        err.transport = err.code;
+        err.code = FEED_UNREACHABLE_CODE;
+      }
+      reject(err);
+    });
   });
 }
 
 module.exports = {
-  FEED_UNREACHABLE: 'FEED_UNREACHABLE',
+  FEED_UNREACHABLE: FEED_UNREACHABLE_CODE,
   escapeHtml,
   escapeMarkdownText,
   escapeMarkdownInline,

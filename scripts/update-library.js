@@ -143,8 +143,12 @@ function parseGoodreadsRSS(xml) {
 }
 
 function generateStars(rating) {
-  if (!rating) return '';
-  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+  // Clamp before repeating. rating comes from the feed, and String.repeat throws
+  // RangeError on a negative count -- so a rating of 6 or more crashed the whole
+  // library build on '☆'.repeat(5 - rating).
+  const n = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
+  if (!n) return '';
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
 }
 
 function generateBookPageHTML(book, noteHtml) {

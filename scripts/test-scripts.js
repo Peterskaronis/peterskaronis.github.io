@@ -485,6 +485,46 @@ test('no page links to an internal .html path', () => {
 });
 
 // ---------------------------------------------------------------------------
+section('fetch identifies itself and types every failure');
+
+test('sends a User-Agent', () => {
+  // Goodreads returns 403 to any request without one, and Node's https.get
+  // sends none by default. That single missing header stalled the reading-list
+  // sync for months and looked like an IP block, because it failed identically
+  // on this machine and on GitHub's runners.
+  const src = fs.readFileSync(path.join(__dirname, 'lib.js'), 'utf8');
+  assert.ok(/'User-Agent':\s*USER_AGENT/.test(src), 'fetch must set a User-Agent header');
+  assert.ok(/const USER_AGENT = '[^']+'/.test(src), 'USER_AGENT must be defined');
+});
+
+test('a DNS failure is typed FEED_UNREACHABLE, not left as ENOTFOUND', () => {
+  // Node gives socket/DNS/TLS errors its own codes. Keying the fail-soft branch
+  // on FEED_UNREACHABLE alone meant a real outage skipped it and aborted the build.
+  return lib.fetch('https://this-host-should-not-resolve-xyzq.invalid/feed').then(
+    () => { throw new Error('expected the fetch to reject'); },
+    (err) => {
+      assert.strictEqual(err.code, lib.FEED_UNREACHABLE, `got ${err.code}`);
+      assert.ok(err.transport, 'the original code should be preserved on .transport');
+    }
+  );
+});
+
+// ---------------------------------------------------------------------------
+section('generateStars cannot crash the library build');
+
+test('clamps a rating outside 0-5 instead of throwing', () => {
+  // '☆'.repeat(5 - 6) throws RangeError and took the whole build with it.
+  const src = fs.readFileSync(path.join(__dirname, 'update-library.js'), 'utf8');
+  const m = src.match(/function generateStars\(rating\) \{[\s\S]*?\n\}/);
+  const generateStars = new Function('rating', m[0].replace(/^function generateStars\(rating\) \{/, '') .replace(/\}$/, ''));
+  for (const r of [-3, 0, 3, 5, 6, 99, NaN, null, 'x']) {
+    assert.doesNotThrow(() => generateStars(r), `threw on rating=${r}`);
+  }
+  assert.strictEqual(generateStars(3).length, 5);
+  assert.strictEqual(generateStars(99).length, 5);
+});
+
+// ---------------------------------------------------------------------------
 run().then(() => {
   console.log(`\n${passed} passed, ${failed} failed\n`);
   process.exit(failed === 0 ? 0 : 1);
