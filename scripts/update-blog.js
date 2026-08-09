@@ -15,7 +15,7 @@
  */
 
 const fs = require('fs');
-const { escapeHtml } = require('./lib');
+const { escapeHtml, renderMarkdownLinks, jsonLdScript } = require('./lib');
 const path = require('path');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
@@ -106,11 +106,10 @@ function convertMarkdownToHtml(markdown) {
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   html = html.replace(/_(.+?)_/g, '<em>$1</em>');
 
-  // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-
-  // Images
-  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+  // Links and images. The URL comes from RSS-derived markdown, so it goes
+  // through the shared renderer, which scheme-checks it instead of splicing
+  // it straight into an attribute.
+  html = renderMarkdownLinks(html);
 
   // Unordered lists
   const lines = html.split('\n');

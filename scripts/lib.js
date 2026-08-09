@@ -55,6 +55,50 @@ function safeUrl(value) {
   }
 }
 
+/**
+ * Convert markdown links and images to HTML, safely.
+ *
+ * Every markdown renderer in this repo had its own copy of these two regexes,
+ * each interpolating the URL straight into an attribute with `$2`. That is the
+ * same class of hole safeUrl exists to close, so the renderer lives here and
+ * there is exactly one implementation to get right.
+ *
+ * A rejected URL degrades rather than disappears: a link becomes its own text,
+ * an image becomes its alt text. Losing a link beats emitting a live one.
+ */
+function renderMarkdownLinks(html) {
+  // Images first: ![alt](url) also matches the link pattern.
+  html = html.replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (match, alt, url) => {
+    const safe = safeUrl(url);
+    if (safe === null) return escapeHtml(alt);
+    return `<img src="${escapeHtml(safe)}" alt="${escapeHtml(alt)}">`;
+  });
+
+  html = html.replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"[^"]*")?\)/g, (match, text, url) => {
+    const safe = safeUrl(url);
+    if (safe === null) return escapeHtml(text);
+    return `<a href="${escapeHtml(safe)}">${escapeHtml(text)}</a>`;
+  });
+
+  return html;
+}
+
+/**
+ * Serialise an object for embedding in <script type="application/ld+json">.
+ *
+ * JSON escaping is not HTML escaping. A "</script>" inside any string closes
+ * the element and everything after it parses as markup, so "<" is emitted as
+ * its < escape -- still valid JSON, inert as markup. Escaping the JSON
+ * with escapeHtml instead would corrupt it, which is the mistake this replaces.
+ */
+function jsonLdScript(value, indent = 4) {
+  return JSON.stringify(value, null, indent)
+    .replace(/</g, '\\u003c')
+    // U+2028/U+2029 are legal in JSON but terminate a line for some parsers.
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');
+}
+
 // ---------------------------------------------------------------------------
 // Files
 // ---------------------------------------------------------------------------
@@ -97,7 +141,8 @@ function replaceBlock(html, startMarker, endMarker, body, label) {
 // Network
 // ---------------------------------------------------------------------------
 
-const FETCH_TIMEOUT_MS = 20000;
+const FETCH_IDLE_TIMEOUT_MS = 20000;
+const FETCH_TOTAL_TIMEOUT_MS = 60000;
 const MAX_REDIRECTS = 5;
 const MAX_RESPONSE_BYTES = 15 * 1024 * 1024;
 
@@ -153,11 +198,27 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
       res.on('error', reject);
     });
 
-    req.setTimeout(FETCH_TIMEOUT_MS, () => {
-      req.destroy(new Error(`Timed out after ${FETCH_TIMEOUT_MS}ms fetching ${url}`));
+    // Two clocks. setTimeout is an INACTIVITY timer: a server dribbling one
+    // byte every 19s would hold the job open indefinitely under it alone.
+    req.setTimeout(FETCH_IDLE_TIMEOUT_MS, () => {
+      req.destroy(new Error(`Idle for ${FETCH_IDLE_TIMEOUT_MS}ms fetching ${url}`));
     });
-    req.on('error', reject);
+    const deadline = setTimeout(() => {
+      req.destroy(new Error(`Exceeded ${FETCH_TOTAL_TIMEOUT_MS}ms total fetching ${url}`));
+    }, FETCH_TOTAL_TIMEOUT_MS);
+    deadline.unref();
+    const clearDeadline = () => clearTimeout(deadline);
+    req.on('close', clearDeadline);
+    req.on('error', (err) => { clearDeadline(); reject(err); });
   });
 }
 
-module.exports = { escapeHtml, safeUrl, writeFileAtomic, replaceBlock, fetch };
+module.exports = {
+  escapeHtml,
+  safeUrl,
+  renderMarkdownLinks,
+  jsonLdScript,
+  writeFileAtomic,
+  replaceBlock,
+  fetch
+};

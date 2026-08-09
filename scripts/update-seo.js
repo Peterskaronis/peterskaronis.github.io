@@ -30,7 +30,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { escapeHtml, writeFileAtomic, replaceBlock } = require('./lib');
+const { execFileSync } = require('child_process');
+const { escapeHtml, safeUrl, jsonLdScript, writeFileAtomic, replaceBlock } = require('./lib');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.json'), 'utf8'));
@@ -297,7 +298,7 @@ function renderJsonLd() {
     }
   ];
 
-  const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }, null, 4)
+  const json = jsonLdScript({ '@context': 'https://schema.org', '@graph': graph })
     .split('\n')
     .map(line => '    ' + line)
     .join('\n');
@@ -366,7 +367,14 @@ function renderLlmsTxt() {
     out.push('## Recent posts');
     out.push('');
     for (const p of recent) {
-      const url = p.url.startsWith('http') ? p.url : BASE + p.url;
+      // Same URL rule as every HTML sink. llms.txt is text/plain so there is no
+      // XSS here, but this file exists to be read by agents -- publishing a
+      // javascript: destination as site-endorsed is its own problem.
+      const url = safeUrl(p.url.startsWith('http') ? p.url : BASE + p.url);
+      if (!url) {
+        console.warn(`  WARNING      dropped unsafe URL for "${p.title}": ${p.url}`);
+        continue;
+      }
       out.push(link(p.title, url, `${p.date}${p.description ? ` — ${p.description}` : ''}`));
     }
     out.push('');
@@ -395,10 +403,32 @@ function renderLlmsTxt() {
 // 4. sitemap.xml
 // ---------------------------------------------------------------------------
 
+/**
+ * Last commit date for a path, falling back to file mtime.
+ *
+ * mtime alone is wrong in CI: a fresh actions/checkout stamps every file with
+ * the clone time, so all 35 pages claimed to change on every run -- a false
+ * freshness signal to exactly the crawlers this file exists to serve, plus a
+ * guaranteed daily auto-commit of a sitemap nobody edited.
+ */
+function lastModified(filePath) {
+  try {
+    const out = execFileSync('git', ['log', '-1', '--format=%cI', '--', filePath], {
+      cwd: ROOT,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    }).trim();
+    if (out) return out.slice(0, 10);
+  } catch (err) {
+    // Not a git checkout, or the file is untracked: fall through.
+  }
+  return fs.statSync(filePath).mtime.toISOString().slice(0, 10);
+}
+
 function renderSitemap(pages) {
   const urls = pages
     .map(p => {
-      const lastmod = fs.statSync(p.filePath).mtime.toISOString().slice(0, 10);
+      const lastmod = lastModified(p.filePath);
       return `  <url>\n    <loc>${escapeHtml(p.url)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
     })
     .join('\n');

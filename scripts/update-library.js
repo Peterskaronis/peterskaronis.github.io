@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const { escapeHtml, safeUrl, fetch } = require('./lib');
+const { escapeHtml, safeUrl, renderMarkdownLinks, jsonLdScript, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -53,8 +53,9 @@ function convertMarkdownToHtml(markdown) {
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
-  // Links
-  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  // Links: same shared renderer as the blog. Book notes are repo-authored
+  // today, but a distinct copy of this sink is a distinct copy of the bug.
+  html = renderMarkdownLinks(html);
 
   // Blockquotes
   html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
@@ -368,7 +369,7 @@ function generateLibraryHTML(books) {
   let booksHTML = '';
   let notesCount = 0;
   for (const book of books) {
-    const coverImg = book.cover
+    const coverImg = safeUrl(book.cover)
       ? `<img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
@@ -651,7 +652,7 @@ function generateNotesIndexHTML(books) {
 
   let booksHTML = '';
   for (const book of booksWithNotes) {
-    const coverImg = book.cover
+    const coverImg = safeUrl(book.cover)
       ? `<img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 

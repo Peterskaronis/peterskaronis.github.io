@@ -7,7 +7,7 @@ new:
 	@./new-post "$(title)"
 
 # Build blog locally
-build:
+build: 
 	@node scripts/update-blog.js
 	@node scripts/update-footer.js
 	@node scripts/update-seo.js
@@ -30,7 +30,7 @@ preview: build
 	@open blog/index.html 2>/dev/null || xdg-open blog/index.html 2>/dev/null || echo "Open blog/index.html in your browser"
 
 # Build, commit, and push
-publish: build
+publish: test build
 	@node scripts/update-posts.js
 	@node scripts/update-footer.js
 	@node scripts/update-seo.js

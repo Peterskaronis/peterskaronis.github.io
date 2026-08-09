@@ -5,6 +5,10 @@ on:
     - cron: '*/15 * * * *'
   workflow_dispatch:
 
+# The job only needs to commit back to this repository.
+permissions:
+  contents: write
+
 jobs:
   update:
     runs-on: ubuntu-latest

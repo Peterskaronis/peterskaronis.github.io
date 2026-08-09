@@ -19,6 +19,10 @@ const path = require('path');
 const { escapeHtml, safeUrl, writeFileAtomic, replaceBlock, fetch } = require('./lib');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
+
+// A feed is third-party input. Without a cap, one malformed or hostile response
+// writes an unbounded number of files that CI then commits unattended.
+const MAX_ITEMS_PER_FEED = 50;
 const BLOG_POSTS_JSON = path.join(__dirname, '..', 'blog-posts.json');
 
 const FEEDS = [
@@ -118,7 +122,14 @@ function htmlToMarkdown(html) {
         // If it's a Substack CDN URL with encoded URL, try to extract the real one
         const encodedUrl = src.match(/https%3A%2F%2Fsubstack-post-media[^"&\s]+/);
         if (encodedUrl) {
-          src = decodeURIComponent(encodedUrl[0]);
+          // Validate AFTER decoding. The character class above rejects a literal
+          // quote but not %22, which decodes into one and would break out of the
+          // src attribute downstream. Keep the decoded form only if it is still
+          // a single clean https URL.
+          const decoded = decodeURIComponent(encodedUrl[0]);
+          if (safeUrl(decoded) && !/[\s"'<>]/.test(decoded)) {
+            src = decoded;
+          }
         }
       }
     }
@@ -198,11 +209,17 @@ function htmlToMarkdown(html) {
   // Line breaks - convert to newlines
   md = md.replace(/<br[^>]*>/gi, '\n');
 
-  // Remove remaining HTML tags
+  // Decode entities BEFORE the final strip, then strip again.
+  //
+  // The other order let entity-encoded markup through: a post containing
+  // &lt;img src=x onerror=...&gt; -- which is simply how Substack represents a
+  // code sample, and Peter writes about security -- was stripped while still
+  // encoded, then decoded back into a live tag afterwards. Decoding first means
+  // the strip sees the real markup; the second pass catches anything the
+  // decoding revealed.
   md = md.replace(/<[^>]+>/g, '');
-
-  // Decode HTML entities
   md = decodeHtmlEntities(md);
+  md = md.replace(/<[^>]+>/g, '');
 
   // Remove Substack boilerplate/CTAs
   md = md.replace(/This Substack is reader-supported\..*?(?=\n\n|$)/gs, '');
@@ -364,18 +381,33 @@ original_url: ${JSON.stringify(String(post.url || ''))}
   };
 }
 
-function importPostToMarkdown(post) {
+/**
+ * Slugs already present in posts/, read once.
+ *
+ * This used to be a readdirSync inside the import loop, which made the import
+ * O(items x files). Reading the directory once and matching on the slug
+ * suffix also fixes a real bug: `f.includes(slug)` was a substring test, so a
+ * new post whose slug is a prefix of an existing filename was silently treated
+ * as already imported and never appeared.
+ */
+function existingSlugs() {
+  return new Set(
+    fs.readdirSync(POSTS_DIR)
+      .filter(f => f.endsWith('.md'))
+      // Filenames are "<YYYY-MM-DD>-<slug>.md".
+      .map(f => f.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, ''))
+  );
+}
+
+function importPostToMarkdown(post, seenSlugs) {
   const result = generateMarkdownFile(post);
   const filepath = path.join(POSTS_DIR, result.filename);
 
-  // Check if already imported (by slug match in filename)
-  const existingFiles = fs.readdirSync(POSTS_DIR);
-  const alreadyExists = existingFiles.some(f => f.includes(result.slug));
-
-  if (alreadyExists) {
+  if (seenSlugs.has(result.slug)) {
     console.log(`  Skipping "${post.title}" (already imported)`);
     return null;
   }
+  seenSlugs.add(result.slug);
 
   fs.writeFileSync(filepath, result.content);
   console.log(`  Imported "${post.title}" → posts/${result.filename}`);
@@ -925,19 +957,24 @@ async function main() {
 
   let allPosts = [];
   let importedCount = 0;
+  const seenSlugs = existingSlugs();
 
   for (const feed of FEEDS) {
     try {
       console.log(`Fetching ${feed.url}...`);
       const xml = await fetch(feed.url);
-      const posts = parseRSS(xml, feed);
+      let posts = parseRSS(xml, feed);
+      if (posts.length > MAX_ITEMS_PER_FEED) {
+        console.warn(`  Capping ${posts.length} items at ${MAX_ITEMS_PER_FEED}`);
+        posts = posts.slice(0, MAX_ITEMS_PER_FEED);
+      }
       console.log(`  Found ${posts.length} posts from ${feed.siteName}`);
 
       // Import content for feeds that have importContent: true
       if (feed.importContent) {
         console.log(`  Importing content to local markdown...`);
         for (const post of posts) {
-          const imported = importPostToMarkdown(post);
+          const imported = importPostToMarkdown(post, seenSlugs);
           if (imported) importedCount++;
         }
       }
