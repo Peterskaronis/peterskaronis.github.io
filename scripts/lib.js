@@ -40,9 +40,21 @@ function safeUrl(value) {
   const raw = String(value == null ? '' : value).trim();
   if (!raw) return null;
 
-  // Root-relative ("/blog/x/"), but not protocol-relative ("//evil.example").
+  // Root-relative ("/blog/x/") only, and proven so rather than assumed.
+  //
+  // Checking for a "//" prefix by hand is not enough: browsers also treat
+  // "/\evil.example" and "/\/evil.example" as protocol-relative and resolve
+  // them off-site. Rather than enumerate the tricks, resolve against a
+  // placeholder origin and require that the result stayed on it -- the URL
+  // parser implements the same rules the browser does.
   if (raw.startsWith('/')) {
-    return raw.startsWith('//') ? null : raw;
+    try {
+      const probe = new URL(raw, 'https://site.invalid');
+      if (probe.origin !== 'https://site.invalid') return null;
+      return probe.pathname + probe.search + probe.hash;
+    } catch (err) {
+      return null;
+    }
   }
 
   try {

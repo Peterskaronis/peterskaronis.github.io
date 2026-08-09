@@ -88,13 +88,16 @@ test('escapes a hostile RSS title', () => {
   assert.ok(html.includes('&lt;script&gt;'), 'title was not escaped');
 });
 
-test('escapes a URL that would break out of the href attribute', () => {
+test('a URL that would break out of the href attribute is neutralised', () => {
   const html = posts.renderLatestPost({
     ...SAMPLE_POST,
     url: '/x" onmouseover="alert(1)'
   });
-  assert.ok(!html.includes('onmouseover="alert(1)"'), 'attribute break-out was not neutralised');
-  assert.ok(html.includes('&quot;'), 'url quote was not escaped');
+  // safeUrl resolves root-relative paths through the URL parser, so the quote
+  // comes back percent-encoded (%22) rather than needing HTML escaping. Either
+  // way it can no longer close the attribute.
+  assert.ok(!/onmouseover\s*=\s*"/.test(html), `attribute break-out survived: ${html}`);
+  assert.ok(html.includes('%22'), `expected the quote to be percent-encoded: ${html}`);
 });
 
 test('a title containing $& is written literally', () => {
@@ -129,8 +132,20 @@ test('rejects javascript, data and vbscript schemes', () => {
   }
 });
 
-test('rejects protocol-relative URLs', () => {
+test('rejects protocol-relative URLs, including the backslash forms', () => {
+  // Browsers resolve "/\\evil.example" and "/\\/evil.example" off-site exactly as
+  // they do "//evil.example". Verified in a real browser: /\\evil.example/x
+  // resolves to http://evil.example/x. A hand-written "//" prefix check missed
+  // these, so safeUrl now resolves against a placeholder origin instead.
   assert.strictEqual(posts.safeUrl('//evil.example/x'), null);
+  assert.strictEqual(posts.safeUrl('/\\evil.example/x'), null);
+  assert.strictEqual(posts.safeUrl('/\\/evil.example'), null);
+  assert.strictEqual(posts.safeUrl('/\\\\evil.example'), null);
+});
+
+test('still accepts ordinary root-relative post paths', () => {
+  assert.strictEqual(posts.safeUrl('/blog/taking-the-stairs-won-t-fix-it/'), '/blog/taking-the-stairs-won-t-fix-it/');
+  assert.strictEqual(posts.safeUrl('/x.html?a=1&b=2#f'), '/x.html?a=1&b=2#f');
 });
 
 test('rejects empty and missing values', () => {
