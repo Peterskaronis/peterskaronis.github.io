@@ -365,6 +365,22 @@ test('caps length and never ends on a separator', () => {
 });
 
 // ---------------------------------------------------------------------------
+console.log('\nfetch failures are typed, not string-matched');
+
+test('transport failures carry FEED_UNREACHABLE so callers need not parse messages', () => {
+  // Matching err.message prefixes meant any error worded the right way took the
+  // fail-open path. The code property is set by lib, not by the network.
+  let captured = null;
+  lib.fetch('http://example.com/insecure').catch(err => { captured = err; });
+  // The non-https check rejects synchronously inside the promise executor, so
+  // the rejection is already queued; drain the microtask queue.
+  return Promise.resolve().then(() => {
+    assert.ok(captured, 'expected a rejection');
+    assert.strictEqual(captured.code, lib.FEED_UNREACHABLE, `missing code: ${captured.message}`);
+  });
+});
+
+// ---------------------------------------------------------------------------
 console.log('\njsonLdScript');
 
 test('neutralises a </script> breakout inside JSON-LD', () => {

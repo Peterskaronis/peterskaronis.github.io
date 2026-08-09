@@ -215,6 +215,13 @@ function replaceBlock(html, startMarker, endMarker, body, label) {
 // Network
 // ---------------------------------------------------------------------------
 
+/** Marks an error as "the feed could not be retrieved", as opposed to a bug. */
+function unreachable(message) {
+  const err = new Error(message);
+  err.code = 'FEED_UNREACHABLE';
+  return err;
+}
+
 const FETCH_IDLE_TIMEOUT_MS = 20000;
 const FETCH_TOTAL_TIMEOUT_MS = 60000;
 const MAX_REDIRECTS = 5;
@@ -234,10 +241,10 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
     try {
       parsed = new URL(url);
     } catch (err) {
-      return reject(new Error(`Invalid URL: ${url}`));
+      return reject(unreachable(`Invalid URL: ${url}`));
     }
     if (parsed.protocol !== 'https:') {
-      return reject(new Error(`Refusing non-HTTPS URL: ${url}`));
+      return reject(unreachable(`Refusing non-HTTPS URL: ${url}`));
     }
 
     const req = https.get(parsed, (res) => {
@@ -246,21 +253,21 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
       if (status >= 300 && status < 400 && res.headers.location) {
         res.resume(); // drain so the socket can be reused
         if (redirectsLeft <= 0) {
-          return reject(new Error(`Too many redirects fetching ${url}`));
+          return reject(unreachable(`Too many redirects fetching ${url}`));
         }
         const next = new URL(res.headers.location, parsed);
         // Same-host redirects only. A compromised feed could otherwise 302 the
         // CI runner at any HTTPS endpoint it can reach and have the response
         // parsed as RSS and published.
         if (next.host !== parsed.host) {
-          return reject(new Error(`Refusing cross-host redirect ${parsed.host} -> ${next.host}`));
+          return reject(unreachable(`Refusing cross-host redirect ${parsed.host} -> ${next.host}`));
         }
         return fetch(next.toString(), redirectsLeft - 1).then(resolve, reject);
       }
 
       if (status < 200 || status >= 300) {
         res.resume();
-        return reject(new Error(`HTTP ${status} fetching ${url}`));
+        return reject(unreachable(`HTTP ${status} fetching ${url}`));
       }
 
       let data = '';
@@ -269,7 +276,7 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
       res.on('data', chunk => {
         bytes += Buffer.byteLength(chunk, 'utf8');
         if (bytes > MAX_RESPONSE_BYTES) {
-          req.destroy(new Error(`Response too large fetching ${url}`));
+          req.destroy(unreachable(`Response too large fetching ${url}`));
           return;
         }
         data += chunk;
@@ -281,10 +288,10 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
     // Two clocks. setTimeout is an INACTIVITY timer: a server dribbling one
     // byte every 19s would hold the job open indefinitely under it alone.
     req.setTimeout(FETCH_IDLE_TIMEOUT_MS, () => {
-      req.destroy(new Error(`Idle for ${FETCH_IDLE_TIMEOUT_MS}ms fetching ${url}`));
+      req.destroy(unreachable(`Idle for ${FETCH_IDLE_TIMEOUT_MS}ms fetching ${url}`));
     });
     const deadline = setTimeout(() => {
-      req.destroy(new Error(`Exceeded ${FETCH_TOTAL_TIMEOUT_MS}ms total fetching ${url}`));
+      req.destroy(unreachable(`Exceeded ${FETCH_TOTAL_TIMEOUT_MS}ms total fetching ${url}`));
     }, FETCH_TOTAL_TIMEOUT_MS);
     deadline.unref();
     const clearDeadline = () => clearTimeout(deadline);
@@ -294,6 +301,7 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
 }
 
 module.exports = {
+  FEED_UNREACHABLE: 'FEED_UNREACHABLE',
   escapeHtml,
   escapeMarkdownText,
   escapeMarkdownInline,

@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const { escapeHtml, escapeMarkdownText, safeUrl, slugify, renderMarkdownLinks, jsonLdScript, writeFileAtomic, fetch } = require('./lib');
+const { FEED_UNREACHABLE, escapeHtml, escapeMarkdownText, safeUrl, slugify, renderMarkdownLinks, jsonLdScript, writeFileAtomic, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -921,9 +921,15 @@ async function main() {
     //
     // Goodreads currently answers both this server and GitHub's runners with
     // HTTP 403; it appears to block datacenter IPs. Verified 2026-08-09.
-    const unreachable = /^(HTTP \d+|Timed out|Idle for|Exceeded|Too many redirects|Response too large|Refusing)/.test(err.message);
-    if (unreachable) {
-      console.log(`::warning file=scripts/update-library.js::Goodreads unreachable, library left unchanged: ${err.message}`);
+    // Test the error's type, not the text of its message. Matching message
+    // prefixes meant any error whose wording happened to start the right way
+    // would silently take the fail-open path.
+    if (err.code === FEED_UNREACHABLE) {
+      // The annotation text is fixed. Interpolating err.message here would put
+      // network-derived text inside a GitHub Actions "::" workflow command,
+      // where a newline or a "::" could forge further commands. The detail goes
+      // to stderr, which is not parsed for commands.
+      console.log('::warning file=scripts/update-library.js::Goodreads could not be reached; library.html left unchanged. See the step log for detail.');
       console.error(`Goodreads unreachable: ${err.message}`);
       console.error('Leaving library.html as it is and continuing the build.');
       return;
