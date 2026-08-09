@@ -31,7 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { escapeHtml, safeUrl, jsonLdScript, writeFileAtomic, replaceBlock } = require('./lib');
+const { escapeHtml, escapeMarkdownInline, safeUrl, jsonLdScript, writeFileAtomic, replaceBlock } = require('./lib');
 
 const ROOT = path.join(__dirname, '..');
 const SITE = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.json'), 'utf8'));
@@ -332,8 +332,12 @@ function loadRecentPosts(limit) {
 }
 
 function renderLlmsTxt() {
+  // Name and description are escaped for markdown, not just the URL. A feed
+  // title containing "](javascript:...)" would otherwise close the link early
+  // and supply its own destination on a page written for agents to follow.
   const link = (name, url, description) =>
-    `- [${name}](${url})${description ? `: ${description}` : ''}`;
+    `- [${escapeMarkdownInline(name)}](${url})` +
+    `${description ? `: ${escapeMarkdownInline(description)}` : ''}`;
 
   const out = [];
   out.push(`# ${SITE.person.name}`);

@@ -16,13 +16,20 @@
 
 const fs = require('fs');
 const path = require('path');
-const { escapeHtml, safeUrl, writeFileAtomic, replaceBlock, fetch } = require('./lib');
+const { escapeHtml, safeUrl, slugify, writeFileAtomic, replaceBlock, fetch } = require('./lib');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
 
 // A feed is third-party input. Without a cap, one malformed or hostile response
 // writes an unbounded number of files that CI then commits unattended.
 const MAX_ITEMS_PER_FEED = 50;
+
+// MAX_ITEMS_PER_FEED bounds a single run. The workflow runs 96 times a day and
+// nothing in the pipeline ever deletes a file, so a feed serving freshly
+// randomised slugs each poll would still grow the repository without limit.
+// A real blog gains at most a post or two a day; more than this in one run is
+// an anomaly worth stopping on rather than committing.
+const MAX_NEW_POSTS_PER_RUN = 5;
 const BLOG_POSTS_JSON = path.join(__dirname, '..', 'blog-posts.json');
 
 const FEEDS = [
@@ -287,13 +294,6 @@ function htmlToMarkdown(html) {
 // RSS Parser
 // ============================================================================
 
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
-    .substring(0, 60);
-}
 
 function parseRSS(xml, feedConfig) {
   const posts = [];
@@ -399,15 +399,28 @@ function existingSlugs() {
   );
 }
 
+let newThisRun = 0;
+
 function importPostToMarkdown(post, seenSlugs) {
   const result = generateMarkdownFile(post);
   const filepath = path.join(POSTS_DIR, result.filename);
+
+  if (!result.slug) {
+    console.warn(`  Skipping "${post.title}" (empty slug)`);
+    return null;
+  }
+
+  if (newThisRun >= MAX_NEW_POSTS_PER_RUN) {
+    console.warn(`  Skipping "${post.title}" (hit MAX_NEW_POSTS_PER_RUN=${MAX_NEW_POSTS_PER_RUN})`);
+    return null;
+  }
 
   if (seenSlugs.has(result.slug)) {
     console.log(`  Skipping "${post.title}" (already imported)`);
     return null;
   }
   seenSlugs.add(result.slug);
+  newThisRun++;
 
   writeFileAtomic(filepath, result.content);
   console.log(`  Imported "${post.title}" → posts/${result.filename}`);

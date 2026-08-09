@@ -6,7 +6,7 @@
  * Usage: node scripts/update-library.js
  */
 
-const { escapeHtml, escapeMarkdownText, safeUrl, renderMarkdownLinks, jsonLdScript, writeFileAtomic, fetch } = require('./lib');
+const { escapeHtml, escapeMarkdownText, safeUrl, slugify, renderMarkdownLinks, jsonLdScript, writeFileAtomic, fetch } = require('./lib');
 const fs = require('fs');
 const path = require('path');
 
@@ -20,12 +20,6 @@ const LIBRARY_DIR = path.join(__dirname, '..', 'library');
 // dictate how large an auto-committed page becomes.
 const MAX_BOOKS = 200;
 
-function generateSlug(title) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-}
 
 function loadBookNote(slug) {
   const notePath = path.join(NOTES_DIR, `${slug}.md`);
@@ -128,7 +122,8 @@ function parseGoodreadsRSS(xml) {
     const dateAdded = (item.match(/<user_date_added>(.*?)<\/user_date_added>/) || [])[1];
 
     if (title && author) {
-      const slug = generateSlug(title.trim());
+      const slug = slugify(title.trim());
+      if (!slug) continue;  // a title with no slug-able characters has no page
       const note = loadBookNote(slug);
       books.push({
         title: title.trim(),
@@ -164,13 +159,13 @@ function generateBookPageHTML(book, noteHtml) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(book.title)} — Library — Peter Skaronis</title>
     <meta name="description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
-    <link rel="canonical" href="https://skaronis.com/library/${book.slug}/">
+    <link rel="canonical" href="https://skaronis.com/library/${escapeHtml(book.slug)}/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="${escapeHtml(book.title)} — My Notes">
     <meta property="og:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
-    <meta property="og:url" content="https://skaronis.com/library/${book.slug}/">
+    <meta property="og:url" content="https://skaronis.com/library/${escapeHtml(book.slug)}/">
     <meta property="og:site_name" content="Peter Skaronis">
     ${safeUrl(book.cover) ? `<meta property="og:image" content="${escapeHtml(safeUrl(book.cover))}">` : ''}
 
@@ -382,7 +377,7 @@ function generateLibraryHTML(books) {
 
     if (book.note) notesCount++;
     const noteLink = book.note
-      ? `\n                    <a href="/library/${book.slug}/" class="book-notes-link">Read notes &rarr;</a>`
+      ? `\n                    <a href="/library/${escapeHtml(book.slug)}/" class="book-notes-link">Read notes &rarr;</a>`
       : '';
 
     booksHTML += `            <div class="book-card">
@@ -663,7 +658,7 @@ function generateNotesIndexHTML(books) {
       ? `<img src="${escapeHtml(safeUrl(book.cover))}" alt="${escapeHtml(book.title)}" loading="lazy">`
       : `<div class="no-cover">${escapeHtml(book.title.charAt(0))}</div>`;
 
-    booksHTML += `            <a href="/library/${book.slug}/" class="book-card">
+    booksHTML += `            <a href="/library/${escapeHtml(book.slug)}/" class="book-card">
                 <div class="book-cover">
                     ${coverImg}
                 </div>

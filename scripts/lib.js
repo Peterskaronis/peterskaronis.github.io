@@ -68,6 +68,39 @@ function safeUrl(value) {
 }
 
 /**
+ * The one statement of what a slug may contain.
+ *
+ * There were three hand-written versions of this rule -- slugify (60 chars),
+ * normaliseSlug (80 chars, emptiness-checked) and generateSlug (no cap, no
+ * emptiness check) -- and each consumer trusted the invariant a different one
+ * enforced. A slug becomes a directory name and a URL path segment, so it gets
+ * one definition.
+ */
+function slugify(value, maxLength = 60) {
+  return String(value == null ? '' : value)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, maxLength)
+    .replace(/-+$/, '');
+}
+
+/**
+ * Escape the characters that carry meaning in markdown link syntax.
+ *
+ * llms.txt lines are `- [name](url): description`. Validating the URL is not
+ * enough on its own: a name containing "](javascript:...)" closes the link
+ * early and supplies its own destination, so the guard has to cover the whole
+ * line rather than one field of it.
+ */
+function escapeMarkdownInline(text) {
+  return String(text == null ? '' : text)
+    .replace(/([\[\]()\\])/g, '\\$1')
+    .replace(/[\r\n]+/g, ' ')
+    .trim();
+}
+
+/**
  * Neutralise raw HTML in a markdown body before it is converted.
  *
  * The converters only ever *add* tags; they never intended to pass tags
@@ -263,6 +296,8 @@ function fetch(url, redirectsLeft = MAX_REDIRECTS) {
 module.exports = {
   escapeHtml,
   escapeMarkdownText,
+  escapeMarkdownInline,
+  slugify,
   safeUrl,
   renderMarkdownLinks,
   jsonLdScript,

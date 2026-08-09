@@ -15,7 +15,7 @@
  */
 
 const fs = require('fs');
-const { escapeHtml, escapeMarkdownText, renderMarkdownLinks, jsonLdScript, writeFileAtomic } = require('./lib');
+const { escapeHtml, escapeMarkdownText, renderMarkdownLinks, jsonLdScript, slugify, writeFileAtomic } = require('./lib');
 const path = require('path');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
@@ -68,14 +68,6 @@ function parseFrontmatter(content) {
 // ============================================================================
 
 
-/** Restrict a slug to the characters a URL path segment and a directory name share. */
-function normaliseSlug(slug) {
-  return String(slug || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 80);
-}
 
 function convertMarkdownToHtml(markdown) {
   // Escape the body FIRST. This converter only ever adds tags; it was never
@@ -435,7 +427,7 @@ function main() {
     const { frontmatter, body } = parseFrontmatter(content);
 
     // Validate required fields
-    if (!frontmatter.title || !frontmatter.date || !normaliseSlug(frontmatter.slug)) {
+    if (!frontmatter.title || !frontmatter.date || !slugify(frontmatter.slug, 80)) {
       console.warn(`  Skipping ${file}: missing required frontmatter (title, date, slug)`);
       continue;
     }
@@ -446,7 +438,7 @@ function main() {
     // "//host" slug produced a link that did not match the page it generated,
     // and that URL then travelled into blog-posts.json, the homepage and the
     // archive.
-    const slug = normaliseSlug(frontmatter.slug);
+    const slug = slugify(frontmatter.slug, 80);
     const post = {
       title: frontmatter.title,
       date: frontmatter.date,
