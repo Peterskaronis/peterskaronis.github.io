@@ -85,7 +85,7 @@
     },
     {
       "name": "Archive",
-      "url": "https://skaronis.com/archive.html",
+      "url": "https://skaronis.com/archive",
       "description": "Every post, grouped by year and month."
     }
   ],
@@ -111,13 +111,13 @@
     },
     {
       "name": "Claude Skills",
-      "url": "https://skaronis.com/claude-skills.html",
+      "url": "https://skaronis.com/claude-skills",
       "meta": "AI Skills Library",
       "description": "An open library of Claude Code skills, including a security posture check and the Techimpossible security advisory format."
     },
     {
       "name": "Veridis Quo",
-      "url": "https://skaronis.com/veridis-quo.html",
+      "url": "https://skaronis.com/veridis-quo",
       "meta": "Game",
       "description": "A retro arcade game — a neon odyssey, built for the pleasure of building it."
     },
@@ -129,19 +129,19 @@
     },
     {
       "name": "Life of a Cybersecurity Consultant",
-      "url": "https://skaronis.com/cyber.html",
+      "url": "https://skaronis.com/cyber",
       "meta": "Game",
       "description": "A narrative game about the actual day-to-day of consulting in security."
     },
     {
       "name": "Digital Awareness",
-      "url": "https://skaronis.com/awareness.html",
+      "url": "https://skaronis.com/awareness",
       "meta": "Privacy Demo",
       "description": "A live demonstration of what a website can infer about you before you have typed anything."
     },
     {
       "name": "Autofill Security",
-      "url": "https://skaronis.com/autofill.html",
+      "url": "https://skaronis.com/autofill",
       "meta": "Security Demo",
       "description": "Shows how hidden form fields can harvest far more than the data you thought you were giving away."
     },
@@ -154,9 +154,9 @@
   ],
 
   "reading": [
-    { "name": "Library", "url": "https://skaronis.com/library.html", "description": "Books read, synced from Goodreads, with notes on some." },
-    { "name": "Notes", "url": "https://skaronis.com/notes.html", "description": "Excerpts and marginalia worth keeping." },
-    { "name": "Quotes", "url": "https://skaronis.com/quotes.html", "description": "A collection of quotes, one surfaced on the homepage each day." }
+    { "name": "Library", "url": "https://skaronis.com/library", "description": "Books read, synced from Goodreads, with notes on some." },
+    { "name": "Notes", "url": "https://skaronis.com/notes", "description": "Excerpts and marginalia worth keeping." },
+    { "name": "Quotes", "url": "https://skaronis.com/quotes", "description": "A collection of quotes, one surfaced on the homepage each day." }
   ],
 
   "contact": {

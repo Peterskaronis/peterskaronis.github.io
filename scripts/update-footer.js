@@ -38,8 +38,8 @@ const SKIP_DIRS = new Set(['.git', 'node_modules', '.playwright-mcp', '.github',
 // /library/<slug>/. Relative paths were the reason nested pages drifted.
 const FOOTER_LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/about.html', label: 'About' },
-  { href: '/now.html', label: 'Now' },
+  { href: '/about', label: 'About' },
+  { href: '/now', label: 'Now' },
   { href: 'https://x.com/peter_skaronis', label: 'Twitter' },
   { href: 'https://www.linkedin.com/in/peterskaronis/', label: 'LinkedIn' }
 ];

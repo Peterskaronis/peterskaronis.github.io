@@ -77,12 +77,19 @@ function findHtmlFiles(dir, found = []) {
   return found;
 }
 
-/** "/blog/x/index.html" -> "/blog/x/";  "/about.html" -> "/about.html" */
+/**
+ * "/blog/x/index.html" -> "/blog/x/";  "/about.html" -> "/about"
+ *
+ * The host 308-redirects every .html path to its extensionless form, so naming
+ * the .html version in a canonical tag or a sitemap points search engines at a
+ * redirect. Google reports those as "Page with redirect" and indexes the target
+ * instead, which makes the canonical actively counterproductive.
+ */
 function urlPathFor(filePath) {
   const rel = path.relative(ROOT, filePath).split(path.sep).join('/');
   if (rel === 'index.html') return '/';
   if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'index.html'.length);
-  return '/' + rel;
+  return '/' + rel.replace(/\.html$/, '');
 }
 
 /**
@@ -269,7 +276,7 @@ function renderJsonLd() {
       },
       worksFor: { '@id': `${BASE}/#organization` },
       sameAs: SITE.person.profiles,
-      mainEntityOfPage: `${BASE}/about.html`
+      mainEntityOfPage: `${BASE}/about`
     },
     {
       '@type': 'Organization',
@@ -414,8 +421,8 @@ function renderLlmsTxt() {
 
   out.push('## Optional');
   out.push('');
-  out.push(link('About', `${BASE}/about.html`, 'Background, and why he writes about invisible constraints.'));
-  out.push(link('Now', `${BASE}/now.html`, 'What he is focused on at the moment.'));
+  out.push(link('About', `${BASE}/about`, 'Background, and why he writes about invisible constraints.'));
+  out.push(link('Now', `${BASE}/now`, 'What he is focused on at the moment.'));
   out.push('');
 
   return out.join('\n');

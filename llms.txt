@@ -21,7 +21,7 @@ Website: https://techimpossible.com. Area served: Canada, United States, remote 
 
 - [Essays](https://blog.skaronis.com): Long-form writing on invisible constraints — geographic, economic and psychological — drawn from lived experience rather than advice.
 - [Cybersecurity Notes](https://notes.techimpossible.com): Technical notes on security practice, frameworks and compliance.
-- [Archive](https://skaronis.com/archive.html): Every post, grouped by year and month.
+- [Archive](https://skaronis.com/archive): Every post, grouped by year and month.
 
 ## Recent posts
 
@@ -41,21 +41,21 @@ Website: https://techimpossible.com. Area served: Canada, United States, remote 
 - [LifeLens](https://lifelens.skaronis.com): A life reflection and planning tool built around the observation that a life is roughly four thousand weeks. Privacy-first: everything stays in your browser.
 - [ThinkLens](https://thinklens.pages.dev/): A thinking tool that applies structured mental models to a decision you are actually facing.
 - [Cybersecurity Basics](https://cybersecuritybasics.ca/): A free interactive assessment and course teaching cybersecurity fundamentals to people who are not security professionals.
-- [Claude Skills](https://skaronis.com/claude-skills.html): An open library of Claude Code skills, including a security posture check and the Techimpossible security advisory format.
-- [Veridis Quo](https://skaronis.com/veridis-quo.html): A retro arcade game — a neon odyssey, built for the pleasure of building it.
+- [Claude Skills](https://skaronis.com/claude-skills): An open library of Claude Code skills, including a security posture check and the Techimpossible security advisory format.
+- [Veridis Quo](https://skaronis.com/veridis-quo): A retro arcade game — a neon odyssey, built for the pleasure of building it.
 - [GRC Refinement](https://refinement.techimpossible.com/): A game that teaches governance, risk and compliance estimation by making you do it.
-- [Life of a Cybersecurity Consultant](https://skaronis.com/cyber.html): A narrative game about the actual day-to-day of consulting in security.
-- [Digital Awareness](https://skaronis.com/awareness.html): A live demonstration of what a website can infer about you before you have typed anything.
-- [Autofill Security](https://skaronis.com/autofill.html): Shows how hidden form fields can harvest far more than the data you thought you were giving away.
+- [Life of a Cybersecurity Consultant](https://skaronis.com/cyber): A narrative game about the actual day-to-day of consulting in security.
+- [Digital Awareness](https://skaronis.com/awareness): A live demonstration of what a website can infer about you before you have typed anything.
+- [Autofill Security](https://skaronis.com/autofill): Shows how hidden form fields can harvest far more than the data you thought you were giving away.
 - [Photography](https://unsplash.com/@skaronis): Landscape photography, released free on Unsplash.
 
 ## Reading
 
-- [Library](https://skaronis.com/library.html): Books read, synced from Goodreads, with notes on some.
-- [Notes](https://skaronis.com/notes.html): Excerpts and marginalia worth keeping.
-- [Quotes](https://skaronis.com/quotes.html): A collection of quotes, one surfaced on the homepage each day.
+- [Library](https://skaronis.com/library): Books read, synced from Goodreads, with notes on some.
+- [Notes](https://skaronis.com/notes): Excerpts and marginalia worth keeping.
+- [Quotes](https://skaronis.com/quotes): A collection of quotes, one surfaced on the homepage each day.
 
 ## Optional
 
-- [About](https://skaronis.com/about.html): Background, and why he writes about invisible constraints.
-- [Now](https://skaronis.com/now.html): What he is focused on at the moment.
+- [About](https://skaronis.com/about): Background, and why he writes about invisible constraints.
+- [Now](https://skaronis.com/now): What he is focused on at the moment.
