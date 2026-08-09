@@ -85,9 +85,26 @@ function urlPathFor(filePath) {
   return '/' + rel;
 }
 
+/**
+ * Read a value out of a page's own markup.
+ *
+ * The value is already HTML-escaped, because it came from HTML. It gets escaped
+ * again on the way into the generated tags, so it is decoded here first --
+ * otherwise a title containing "&" was published as "&amp;amp;".
+ */
+function decodeEntities(text) {
+  return String(text)
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#0*39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&');   // last, so "&amp;lt;" does not become "<"
+}
+
 function readTag(html, re, group = 1) {
   const m = html.match(re);
-  return m ? m[group].trim() : null;
+  return m ? decodeEntities(m[group].trim()) : null;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,13 +146,14 @@ function pageFacts(filePath, html) {
     readTag(html, /<meta\s+property="og:description"\s+content="([^"]*)"/i) ||
     SITE.site.tagline;
   // A page's own og:image wins -- book pages legitimately use a cover image.
-  const existingImage = readTag(html, /<meta\s+property="og:image"\s+content="([^"]*)"/i);
+  // og:image is a URL like any other; it gets the same guard as the rest.
+  const existingImage = safeUrl(readTag(html, /<meta\s+property="og:image"\s+content="([^"]*)"/i));
   return {
     url: BASE + urlPath,
     urlPath,
     title: rawTitle.replace(/\s+/g, ' ').trim(),
     description: description.replace(/\s+/g, ' ').trim(),
-    image: existingImage && !existingImage.includes('/og.png') ? existingImage : SITE.site.image,
+    image: existingImage && !existingImage.includes('/og.png') ? existingImage : (safeUrl(SITE.site.image) || SITE.site.image),
     isArticle: urlPath.startsWith('/blog/') && urlPath !== '/blog/'
   };
 }

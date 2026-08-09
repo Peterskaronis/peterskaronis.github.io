@@ -317,6 +317,12 @@ function parseRSS(xml, feedConfig) {
       if (title.toLowerCase() === 'coming soon') continue;
 
       const date = new Date(pubDateMatch[1].trim());
+      // An unparseable date used to poison sorting and formatting for the whole
+      // feed. Drop the single item instead, and say which one.
+      if (Number.isNaN(date.getTime())) {
+        console.warn(`  Skipping an item with an unparseable pubDate: ${pubDateMatch[1].trim()}`);
+        continue;
+      }
       const description = descMatch ? decodeHtmlEntities(descMatch[1].trim()) : '';
       const content = contentMatch ? contentMatch[1] : '';
 

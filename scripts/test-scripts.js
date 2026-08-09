@@ -21,14 +21,34 @@ const lib = require('./lib.js');
 let passed = 0;
 let failed = 0;
 
+// Tests are queued and awaited, so a test that returns a promise is actually
+// waited on. Calling fn() and moving on made any async assertion vacuous: the
+// rejection landed after the summary had already printed "ok".
+const queue = [];
+
 function test(name, fn) {
-  try {
-    fn();
-    passed++;
-    console.log(`  ok    ${name}`);
-  } catch (err) {
-    failed++;
-    console.error(`  FAIL  ${name}\n        ${err.message}`);
+  queue.push({ name, fn });
+}
+
+/** Queues a section heading so it prints in order with the tests below it. */
+function section(label) {
+  queue.push({ label });
+}
+
+async function run() {
+  for (const { name, fn, label } of queue) {
+    if (label) {
+      console.log(`\n${label}`);
+      continue;
+    }
+    try {
+      await fn();
+      passed++;
+      console.log(`  ok    ${name}`);
+    } catch (err) {
+      failed++;
+      console.error(`  FAIL  ${name}\n        ${err.message}`);
+    }
   }
 }
 
@@ -51,7 +71,7 @@ const SAMPLE_POST = {
 };
 
 // ---------------------------------------------------------------------------
-console.log('\nescapeHtml');
+section('escapeHtml');
 
 test('escapes the characters that break attributes and markup', () => {
   assert.strictEqual(
@@ -67,7 +87,7 @@ test('handles null and undefined without throwing', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nformatMonthYear');
+section('formatMonthYear');
 
 test('is stable regardless of the machine timezone', () => {
   // 1 March 00:30 UTC is still February in Vancouver. CI (UTC) and a local run
@@ -77,7 +97,7 @@ test('is stable regardless of the machine timezone', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nrenderLatestPost');
+section('renderLatestPost');
 
 test('escapes a hostile RSS title', () => {
   const html = posts.renderLatestPost({
@@ -110,7 +130,7 @@ test('a title containing $& is written literally', () => {
 // ---------------------------------------------------------------------------
 // Regression tests for the Devin review finding (2026-08-09): escaping alone
 // does not stop a javascript: URL reaching an href.
-console.log('\nsafeUrl');
+section('safeUrl');
 
 test('accepts root-relative paths and https URLs', () => {
   assert.strictEqual(posts.safeUrl('/blog/x/'), '/blog/x/');
@@ -162,7 +182,7 @@ test('renderLatestPost refuses to emit a javascript: link', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nupdateIndexHTML');
+section('updateIndexHTML');
 
 const GOOD_PAGE = `<html><body>
     <div>
@@ -222,7 +242,7 @@ function rewriteVia(fixtureFile, post) {
 }
 
 // ---------------------------------------------------------------------------
-console.log('\nrenderRecentPosts');
+section('renderRecentPosts');
 
 const RECENT = [
   { title: 'One', url: '/blog/one/', date: new Date('2026-03-02T00:00:00Z') },
@@ -254,7 +274,7 @@ test('escapes titles and drops unsafe URLs, keeping the title as text', () => {
 // update-blog.js and update-library.js rendered markdown links and images
 // straight into attributes. The suite could not have caught it because it only
 // imported update-posts.js. These test the shared renderer both now use.
-console.log('\nrenderMarkdownLinks (shared by update-blog and update-library)');
+section('renderMarkdownLinks (shared by update-blog and update-library)');
 
 test('renders a normal link and image', () => {
   assert.strictEqual(
@@ -278,7 +298,7 @@ test('a javascript: link degrades to plain text', () => {
 // The second secgate review found the deeper sink: the markdown BODY was never
 // escaped, only its URLs were. A tag with no closing bracket slips past the
 // upstream tag-strip regex entirely.
-console.log('\nescapeMarkdownText (body of every generated page)');
+section('escapeMarkdownText (body of every generated page)');
 
 test('neutralises raw HTML in a post body', () => {
   assert.strictEqual(
@@ -330,7 +350,7 @@ test('protocol-relative and data URLs are refused', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nescapeMarkdownInline (llms.txt link text)');
+section('escapeMarkdownInline (llms.txt link text)');
 
 test('a title cannot close a markdown link and supply its own destination', () => {
   // llms.txt lines are "- [name](url)". Guarding only the url leaves this open.
@@ -345,7 +365,7 @@ test('collapses newlines so one entry cannot become several lines', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nslugify (one rule, three former copies)');
+section('slugify (one rule, three former copies)');
 
 test('restricts to url- and path-safe characters', () => {
   assert.strictEqual(lib.slugify('Hello, World! -- A Post'), 'hello-world-a-post');
@@ -365,7 +385,7 @@ test('caps length and never ends on a separator', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\nfetch failures are typed, not string-matched');
+section('fetch failures are typed, not string-matched');
 
 test('transport failures carry FEED_UNREACHABLE so callers need not parse messages', () => {
   // Matching err.message prefixes meant any error worded the right way took the
@@ -381,7 +401,7 @@ test('transport failures carry FEED_UNREACHABLE so callers need not parse messag
 });
 
 // ---------------------------------------------------------------------------
-console.log('\njsonLdScript');
+section('jsonLdScript');
 
 test('neutralises a </script> breakout inside JSON-LD', () => {
   const out = lib.jsonLdScript({ name: '</script><img src=x onerror=alert(1)>' });
@@ -398,7 +418,7 @@ test('a trailing backslash still produces parseable JSON', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log('\ngenerateMarkdownFile frontmatter');
+section('generateMarkdownFile frontmatter');
 
 test('quotes a title containing double quotes', () => {
   const result = posts.generateMarkdownFile({
@@ -433,5 +453,7 @@ test('a 200-char boundary cannot leave a dangling escape', () => {
 });
 
 // ---------------------------------------------------------------------------
-console.log(`\n${passed} passed, ${failed} failed\n`);
-process.exit(failed === 0 ? 0 : 1);
+run().then(() => {
+  console.log(`\n${passed} passed, ${failed} failed\n`);
+  process.exit(failed === 0 ? 0 : 1);
+});
