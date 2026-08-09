@@ -85,14 +85,14 @@
             {
                 "@type": "SiteNavigationElement",
                 "position": 3,
-                "name": "Speaking",
-                "url": "https://skaronis.com/#speaking"
+                "name": "Projects",
+                "url": "https://skaronis.com/#projects"
             },
             {
                 "@type": "SiteNavigationElement",
                 "position": 4,
-                "name": "Side Projects",
-                "url": "https://skaronis.com/#side-projects"
+                "name": "Reading",
+                "url": "https://skaronis.com/#reading"
             },
             {
                 "@type": "SiteNavigationElement",
@@ -105,12 +105,6 @@
                 "position": 6,
                 "name": "Company",
                 "url": "https://skaronis.com/#company"
-            },
-            {
-                "@type": "SiteNavigationElement",
-                "position": 7,
-                "name": "Claude Skills",
-                "url": "https://skaronis.com/claude-skills.html"
             }
         ]
     }
@@ -319,112 +313,71 @@
             color: #fff;
         }
 
-        /* Testimonials */
-        .testimonials {
-            padding: 4rem 0;
-            border-bottom: 1px solid #333;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .testimonials-label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #909090;
+        /* Recent writing */
+        .recent-posts {
+            list-style: none;
             margin-bottom: 2rem;
         }
 
-        .testimonial-slider {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-            min-height: 200px;
-        }
-
-        .testimonial {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-        }
-
-        .testimonial.active {
-            opacity: 1;
-        }
-
-        .testimonial-text {
-            font-family: 'Instrument Serif', Georgia, serif;
-            font-size: 1.3rem;
-            font-style: italic;
-            line-height: 1.5;
-            color: #ccc;
-            margin-bottom: 1.5rem;
-        }
-
-        .testimonial-author {
-            font-size: 0.9rem;
-            color: #a0a0a0;
-        }
-
-        .testimonial-author strong {
-            color: #fff;
-            font-weight: 500;
-        }
-
-        .testimonial-dots {
+        .recent-posts li {
+            padding: 0.9rem 0;
+            border-bottom: 1px solid #1f1f1f;
             display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1.5rem;
         }
 
-        .testimonial-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #333;
-            cursor: pointer;
-            transition: background 0.3s;
+        .recent-posts li:first-child { padding-top: 0; }
+
+        .recent-posts li:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
-        .testimonial-dot.active {
-            background: #666;
+        .recent-posts a {
+            font-family: 'Instrument Serif', Georgia, serif;
+            font-size: 1.4rem;
+            line-height: 1.3;
         }
 
-        /* CTA */
-        .cta {
+        .recent-posts .post-date {
+            font-size: 0.8rem;
+            color: #888;
+            white-space: nowrap;
+        }
+
+        .section-more {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .section-more a { color: #a0a0a0; }
+        .section-more a:hover { color: #fff; }
+
+        /* Contact */
+        /* No border-bottom here: the footer now supplies the divider on every
+           page via .with-border, and two adjacent 1px rules read as a thick line. */
+        .contact {
             padding: 5rem 0;
             text-align: center;
-            border-bottom: 1px solid #333;
         }
 
-        .cta h2 {
+        .contact h2 {
             font-family: 'Instrument Serif', Georgia, serif;
             font-size: 3rem;
             font-weight: 400;
-            margin-bottom: 1.5rem;
+            margin: 0 0 1rem;
             letter-spacing: -0.02em;
             color: #fff;
         }
 
-        .cta-button {
-            display: inline-block;
-            background: #fff;
-            color: #000;
-            padding: 1rem 2.5rem;
-            font-size: 1rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-
-        .cta-button:hover {
-            background: #ddd;
-            text-decoration: none;
+        .contact p {
+            color: #a0a0a0;
+            max-width: 480px;
+            margin: 0 auto;
         }
 
         /* Responsive - Homepage specific */
@@ -438,9 +391,15 @@
                 gap: 2rem;
             }
 
-            .cta h2 { font-size: 2rem; }
+            .contact h2 { font-size: 2rem; }
 
             .latest-title { font-size: 1.5rem; }
+
+            .recent-posts li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.25rem;
+            }
         }
     </style>
 </head>
@@ -467,10 +426,12 @@
                     <span class="latest-label">Latest Post</span>
                     <span class="stamp">Off the Press</span>
                 </div>
+                <!-- latest-post:start (generated by scripts/update-posts.js) -->
                 <a href="/blog/taking-the-stairs-won-t-fix-it/" class="latest-content">
-                    <h2 class="latest-title">Taking the Stairs Won't Fix It</h2>
+                    <h2 class="latest-title">Taking the Stairs Won&#39;t Fix It</h2>
                     <p class="latest-meta">February 2026 · <span class="latest-source">Substack</span></p>
                 </a>
+                <!-- latest-post:end -->
                 <a href="archive.html" class="archive-link">View all posts →</a>
             </div>
             <div class="latest-item">
@@ -482,9 +443,110 @@
                     <h2 class="latest-title">Veridis Quo</h2>
                     <p class="latest-meta">A Neon Odyssey — retro arcade game</p>
                 </a>
-                <a href="#side-projects" class="archive-link">View all projects →</a>
+                <a href="#projects" class="archive-link">View all projects →</a>
             </div>
         </section>
+
+        <div class="grid-section" id="writing">
+            <div class="section-label">Writing</div>
+            <div class="section-content">
+                <ul class="recent-posts" id="recent-posts">
+                    <li>
+                        <a href="/blog/taking-the-stairs-won-t-fix-it/">Taking the Stairs Won't Fix It</a>
+                        <span class="post-date">February 2026</span>
+                    </li>
+                    <li>
+                        <a href="/blog/why-i-built-my-own-blog/">Why I Built My Own Blog</a>
+                        <span class="post-date">January 2026</span>
+                    </li>
+                    <li>
+                        <a href="/blog/the-cybersecurity-career-playbook-broke-in-2025/">The Cybersecurity Career Playbook Broke in 2025</a>
+                        <span class="post-date">January 2026</span>
+                    </li>
+                    <li>
+                        <a href="/blog/you-are-not-a-tree/">You Are Not a Tree</a>
+                        <span class="post-date">January 2026</span>
+                    </li>
+                    <li>
+                        <a href="/blog/cheating-is-the-new-innovation/">Cheating Is the New Innovation</a>
+                        <span class="post-date">December 2025</span>
+                    </li>
+                </ul>
+                <div class="section-more">
+                    <a href="archive.html">All posts →</a>
+                    <a href="https://blog.skaronis.com">Substack</a>
+                    <a href="https://notes.techimpossible.com">Cybersecurity Notes</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-section" id="projects">
+            <div class="section-label">Projects</div>
+            <div class="section-content">
+                <ul class="link-list">
+                    <li>
+                        <a href="https://lifelens.skaronis.com">LifeLens</a>
+                        <span class="meta">Life Reflection</span>
+                    </li>
+                    <li>
+                        <a href="https://thinklens.pages.dev/">ThinkLens</a>
+                        <span class="meta">AI Tool</span>
+                    </li>
+                    <li>
+                        <a href="https://cybersecuritybasics.ca/">Cybersecurity Basics</a>
+                        <span class="meta">Free Course</span>
+                    </li>
+                    <li>
+                        <a href="claude-skills.html">Claude Skills</a>
+                        <span class="meta">AI Skills Library</span>
+                    </li>
+                    <li>
+                        <a href="veridis-quo.html">Veridis Quo</a>
+                        <span class="meta">Game</span>
+                    </li>
+                    <li>
+                        <a href="https://refinement.techimpossible.com/">GRC Refinement</a>
+                        <span class="meta">Game</span>
+                    </li>
+                    <li>
+                        <a href="cyber.html">Life of a Cybersecurity Consultant</a>
+                        <span class="meta">Game</span>
+                    </li>
+                    <li>
+                        <a href="awareness.html">Digital Awareness</a>
+                        <span class="meta">Privacy Demo</span>
+                    </li>
+                    <li>
+                        <a href="autofill.html">Autofill Security</a>
+                        <span class="meta">Security Demo</span>
+                    </li>
+                    <li>
+                        <a href="https://unsplash.com/@skaronis">Photography</a>
+                        <span class="meta">Unsplash</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="grid-section" id="reading">
+            <div class="section-label">Reading</div>
+            <div class="section-content">
+                <ul class="link-list">
+                    <li>
+                        <a href="library.html">Library</a>
+                        <span class="meta">Books</span>
+                    </li>
+                    <li>
+                        <a href="notes.html">Notes</a>
+                        <span class="meta">Excerpts</span>
+                    </li>
+                    <li>
+                        <a href="quotes.html">Quotes</a>
+                        <span class="meta">Inspiration</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
         <div class="grid-section" id="company">
             <div class="section-label">Company</div>
@@ -497,144 +559,23 @@
             </div>
         </div>
 
-        <div class="grid-section" id="writing">
-            <div class="section-label">Writing</div>
-            <div class="section-content">
-                <ul class="link-list">
-                    <li>
-                        <a href="https://blog.skaronis.com">Substack</a>
-                        <span class="meta">Essays</span>
-                    </li>
-                    <li>
-                        <a href="https://notes.techimpossible.com">Cybersecurity Notes</a>
-                        <span class="meta">Technical</span>
-                    </li>
-                    <li>
-                        <a href="https://books.techimpossible.com">Techimpossible Books</a>
-                        <span class="meta">Resources</span>
-                    </li>
-                    <li>
-                        <a href="archive.html">Archive</a>
-                        <span class="meta">All Posts</span>
-                    </li>
-                    <li>
-                        <a href="library.html">Library</a>
-                        <span class="meta">Books & Notes</span>
-                    </li>
-                    <li>
-                        <a href="quotes.html">Quotes</a>
-                        <span class="meta">Inspiration</span>
-                    </li>
-                    <li>
-                        <a href="notes.html">Notes</a>
-                        <span class="meta">Excerpts</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="grid-section" id="speaking">
-            <div class="section-label">Speaking</div>
-            <div class="section-content">
-                <div class="talk">
-                    <p class="talk-date">May 2025</p>
-                    <p class="talk-title"><a href="https://www.bsidesvancouver.com">BSides Vancouver</a> — Beyond Algorithms: Human Reasoning in Cybersecurity Compliance</p>
-                </div>
-                <div class="talk">
-                    <p class="talk-date">March 2025</p>
-                    <p class="talk-title">VCC Panel — Getting Started in Cybersecurity in Canada</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid-section" id="side-projects">
-            <div class="section-label">Side Projects</div>
-            <div class="section-content">
-                <ul class="link-list">
-                    <li>
-                        <a href="veridis-quo.html">Veridis Quo</a>
-                        <span class="meta">Game</span>
-                    </li>
-                    <li>
-                        <a href="https://lifelens.skaronis.com">LifeLens</a>
-                        <span class="meta">Life Reflection</span>
-                    </li>
-                    <li>
-                        <a href="https://thinklens.pages.dev/">ThinkLens</a>
-                        <span class="meta">AI Tool</span>
-                    </li>
-                    <li>
-                        <a href="https://skaronis.com/cyber">Life of a Cybersecurity Consultant</a>
-                        <span class="meta">Game</span>
-                    </li>
-                    <li>
-                        <a href="https://refinement.techimpossible.com/">GRC Refinement</a>
-                        <span class="meta">Game</span>
-                    </li>
-                    <li>
-                        <a href="https://unsplash.com/@skaronis">Photography</a>
-                        <span class="meta">Unsplash</span>
-                    </li>
-                    <li>
-                        <a href="https://cybersecuritybasics.ca/">Cybersecurity Basics</a>
-                        <span class="meta">Assessment</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="grid-section" id="tools">
-            <div class="section-label">Tools</div>
-            <div class="section-content">
-                <ul class="link-list">
-                    <li>
-                        <a href="awareness.html">Digital Awareness</a>
-                        <span class="meta">Privacy Demo</span>
-                    </li>
-                    <li>
-                        <a href="autofill.html">Autofill Security</a>
-                        <span class="meta">Hidden Fields</span>
-                    </li>
-                    <li>
-                        <a href="claude-skills.html">Claude Skills</a>
-                        <span class="meta">AI Skills Library</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <section class="testimonials">
-            <p class="testimonials-label">What Clients Say</p>
-            <div class="testimonial-slider">
-                <div class="testimonial active">
-                    <p class="testimonial-text">"Peter combines deep expertise with a level of kindness, diligence, and patience that isn't easy to find. He guided us through every step of the process. I cannot recommend him highly enough."</p>
-                    <p class="testimonial-author"><strong>Keyann Al-Kheder</strong> — CEO, Neuroware AI</p>
-                </div>
-                <div class="testimonial">
-                    <p class="testimonial-text">"The auditor consistently went above and beyond, demonstrating deep expertise and a collaborative approach. Thanks to their dedication, we were thoroughly prepared and confident going into the external audit."</p>
-                    <p class="testimonial-author"><strong>Kwasi Asante</strong> — Ntirety</p>
-                </div>
-            </div>
-            <div class="testimonial-dots">
-                <span class="testimonial-dot active" data-index="0"></span>
-                <span class="testimonial-dot" data-index="1"></span>
-            </div>
+        <section class="contact">
+            <h2>Say hello.</h2>
+            <p>Security, compliance, or something I wrote — <a href="mailto:peter.skaronis@techimpossible.com">peter.skaronis@techimpossible.com</a></p>
         </section>
 
-        <section class="cta">
-            <h2>Let's talk security.</h2>
-            <a href="https://techimpossible.com/meetings/peterskaronis/roadmap" class="cta-button">Book a free call</a>
-        </section>
-
-        <footer>
+        <!-- site-footer:start (generated by scripts/update-footer.js) -->
+        <footer class="with-border">
             <div class="footer-links">
-                <a href="about.html">About</a>
-                <a href="now.html">Now</a>
+                <a href="/">Home</a>
+                <a href="/about.html">About</a>
+                <a href="/now.html">Now</a>
                 <a href="https://x.com/peter_skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
+        <!-- site-footer:end -->
     </div>
 
     <script>
@@ -660,32 +601,52 @@
             })
             .catch(() => {});
 
-        // Testimonial rotation
-        const testimonials = document.querySelectorAll('.testimonial');
-        const dots = document.querySelectorAll('.testimonial-dot');
-        let currentIndex = 0;
+        // Recent writing — refreshes the statically rendered list from the feed data.
+        // The list above is real HTML, so this is progressive enhancement only.
+        const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+                        'July', 'August', 'September', 'October', 'November', 'December'];
 
-        function showTestimonial(index) {
-            testimonials.forEach((t, i) => {
-                t.classList.toggle('active', i === index);
-            });
-            dots.forEach((d, i) => {
-                d.classList.toggle('active', i === index);
-            });
-            currentIndex = index;
+        function escapeHtml(s) {
+            return String(s).replace(/[&<>"']/g, c => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            })[c]);
         }
 
-        // Auto-rotate every 6 seconds
-        setInterval(() => {
-            showTestimonial((currentIndex + 1) % testimonials.length);
-        }, 6000);
+        // Escaping does not neutralise a javascript: URL -- it has none of the
+        // characters escapeHtml touches. Only link root-relative or https URLs.
+        function safeUrl(value) {
+            const raw = String(value == null ? '' : value).trim();
+            if (!raw) return null;
+            if (raw.startsWith('/')) return raw.startsWith('//') ? null : raw;
+            try {
+                return new URL(raw, location.origin).protocol === 'https:' ? raw : null;
+            } catch (err) {
+                return null;
+            }
+        }
 
-        // Click on dots to navigate
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                showTestimonial(parseInt(dot.dataset.index));
-            });
-        });
+        fetch('blog-posts.json')
+            .then(r => r.json())
+            .then(posts => {
+                const list = document.getElementById('recent-posts');
+                if (!list || !Array.isArray(posts) || posts.length === 0) return;
+
+                const recent = posts
+                    .filter(p => p && p.title && p.date && safeUrl(p.url))
+                    .sort((a, b) => b.date.localeCompare(a.date))
+                    .slice(0, 5);
+
+                if (recent.length === 0) return;
+
+                list.innerHTML = recent.map(p => {
+                    const parts = String(p.date).split('-');
+                    const month = MONTHS[parseInt(parts[1], 10) - 1] || '';
+                    const when = (month + ' ' + parts[0]).trim();
+                    return '<li><a href="' + escapeHtml(safeUrl(p.url)) + '">' + escapeHtml(p.title) +
+                           '</a><span class="post-date">' + escapeHtml(when) + '</span></li>';
+                }).join('');
+            })
+            .catch(() => {});
     })();
     </script>
     <script src="scripts/share-selection.js"></script>

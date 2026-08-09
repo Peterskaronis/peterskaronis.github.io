@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://skaronis.com/</loc></url>
-  <url><loc>https://skaronis.com/cyber</loc></url>
-  <url><loc>https://skaronis.com/awareness</loc></url>
-  <url><loc>https://skaronis.com/autofill</loc></url>
+  <url><loc>https://skaronis.com/about.html</loc></url>
+  <url><loc>https://skaronis.com/now.html</loc></url>
+  <url><loc>https://skaronis.com/blog/</loc></url>
+  <url><loc>https://skaronis.com/archive.html</loc></url>
+  <url><loc>https://skaronis.com/library.html</loc></url>
+  <url><loc>https://skaronis.com/notes.html</loc></url>
+  <url><loc>https://skaronis.com/quotes.html</loc></url>
+  <url><loc>https://skaronis.com/claude-skills.html</loc></url>
+  <url><loc>https://skaronis.com/veridis-quo.html</loc></url>
+  <url><loc>https://skaronis.com/cyber.html</loc></url>
+  <url><loc>https://skaronis.com/awareness.html</loc></url>
+  <url><loc>https://skaronis.com/autofill.html</loc></url>
 </urlset>
