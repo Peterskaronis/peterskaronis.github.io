@@ -754,9 +754,11 @@ body[data-zone="finale"] .stepnav-btn.prev { top: auto; bottom: 12px; transform:
 
 /* The opening clip: a gold-framed vertical player over the threshold, below the door. */
 .opener {
-    position: fixed; inset: 0 0 var(--dock-h) 0; z-index: 35;
+    /* Full screen, over the dock (z 30) too: the steps have not started yet, and short
+       phones need the dock's height to fit the player and the button. */
+    position: fixed; inset: 0; z-index: 35;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
-    padding: 16px; background: radial-gradient(ellipse at center, rgba(7, 5, 10, .55), rgba(7, 5, 10, .9));
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: radial-gradient(ellipse at center, rgba(7, 5, 10, .6) 30%, rgba(7, 5, 10, .97) 85%);
 }
 .opener[hidden] { display: none; }
 .opener-frame {
@@ -765,7 +767,7 @@ body[data-zone="finale"] .stepnav-btn.prev { top: auto; bottom: 12px; transform:
     box-shadow: 0 0 0 1px rgba(7, 5, 10, .8), 0 0 60px rgba(246, 210, 140, .35);
 }
 .opener-player {
-    width: min(252px, calc((100vh - var(--dock-h) - 170px) * 9 / 16)); min-width: 200px;
+    width: min(252px, calc((100vh - 170px) * 9 / 16)); min-width: 200px;
     aspect-ratio: 9 / 16; max-width: 100%; background: var(--ink);
 }
 .opener-player iframe { display: block; width: 100%; height: 100%; border: 0; }
@@ -781,6 +783,20 @@ body[data-zone="finale"] .stepnav-btn.prev { top: auto; bottom: 12px; transform:
 }
 .opener-go:hover { background: rgba(7, 5, 10, .92); }
 .opener-go:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+/* Short phones (iPhone SE, 667 px): the 9:16 player cannot shrink below YouTube's
+   200 px minimum width, so tighten everything around it instead, and keep the
+   button on one line. */
+.opener-go { white-space: nowrap; }
+@media (max-width: 480px) {
+    .opener-go { font-size: clamp(.82rem, 3.7vw, 1rem); padding: .55em 1em; }
+}
+@media (max-height: 760px) {
+    .opener { gap: 10px; padding-block: 8px; }
+    .opener-frame { padding: 6px; }
+    .opener-player { width: max(200px, min(252px, calc((100vh - 130px) * 9 / 16))); }
+    .opener-frame figcaption { flex-direction: row; flex-wrap: wrap; justify-content: center; column-gap: .6em; padding-top: 5px; font-size: .85rem; }
+    .opener-go { min-height: 44px; }
+}
 @media (prefers-reduced-motion: no-preference) {
     .opener:not([hidden]) { animation: opener-in 1.2s ease-out both; }
     @keyframes opener-in { from { opacity: 0; } to { opacity: 1; } }
