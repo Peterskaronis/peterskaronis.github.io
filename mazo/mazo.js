@@ -420,6 +420,7 @@
         var realmOp = c < 0.5 ? '0' : (1 - lightOp).toFixed(3);
         if (realmOp !== S.realmOp) { S.realmOp = realmOp; els.realm.style.opacity = realmOp; els.rope.style.opacity = realmOp; }
         focusLogic(c, p, now);
+        updateNav();
     }
 
     function updatePlates(c) {
@@ -533,12 +534,13 @@
     }
 
     var dockEl = doc.getElementById('dock');
-    var dockNote = dockEl ? dockEl.querySelector('.dock-note') : null;
-    var NOTE_DEFAULT = dockNote ? dockNote.textContent : '';
+    var noteStd = dockEl ? dockEl.querySelector('.note-std') : null;
+    var noteTap = dockEl ? dockEl.querySelector('.note-tap') : null;
     function needsTap(on) {
-        if (!dockEl || !dockNote) return;
+        if (!dockEl || !noteStd || !noteTap) return;
         dockEl.classList.toggle('needs-tap', on);
-        dockNote.textContent = on ? 'Press \u25B6 in the player to hear this song.' : NOTE_DEFAULT;
+        noteStd.hidden = on;
+        noteTap.hidden = !on;
     }
 
     // Pausing an embed with nothing playing throws inside Spotify's frame.
@@ -548,8 +550,18 @@
         if (S.apiRequested) return;
         S.apiRequested = true;
         window.onSpotifyIframeApiReady = function (IFrameAPI) {
+            S.api = IFrameAPI;
+            makeController();
+        };
+        var sc = doc.createElement('script');
+        sc.src = 'https://open.spotify.com/embed/iframe-api/v1';
+        sc.async = true;
+        doc.head.appendChild(sc);
+    }
+
+    function makeController() {
             var first = S.wantUri || ('spotify:track:' + (S.steps[0].data.spotify || ''));
-            IFrameAPI.createController(els.embed, { uri: first, width: '100%', height: 80 }, function (ctrl) {
+            S.api.createController(els.embed, { uri: first, width: '100%', height: 80 }, function (ctrl) {
                 S.controller = ctrl;
                 S.currentUri = first;
                 ctrl.addListener('playback_update', function (e) {
@@ -562,12 +574,31 @@
                     if (S.wantUri && !S.muted) play(S.focused || 1, false);
                 });
             });
-        };
-        var sc = doc.createElement('script');
-        sc.src = 'https://open.spotify.com/embed/iframe-api/v1';
-        sc.async = true;
-        doc.head.appendChild(sc);
     }
+
+    // Logging in to Spotify happens in another tab. The embed reads the login only when
+    // it loads, so when the listener comes back, rebuild the player on the current song.
+    var loginPending = false;
+    Array.prototype.forEach.call(doc.querySelectorAll('.spotify-login'), function (a) {
+        a.addEventListener('click', function () { loginPending = true; });
+    });
+    function afterLogin() {
+        if (!loginPending || doc.hidden) return;
+        loginPending = false;
+        if (!S.api || !S.controller) return;
+        try { S.controller.destroy(); } catch (e) { /* already gone */ }
+        S.controller = null;
+        S.paused = true;
+        var holder = doc.createElement('div');
+        holder.id = 'embed';
+        var box = doc.querySelector('.dock-embed');
+        box.textContent = '';
+        box.appendChild(holder);
+        els.embed = holder;
+        makeController();
+    }
+    window.addEventListener('focus', afterLogin);
+    doc.addEventListener('visibilitychange', afterLogin);
 
     function setMuteUi() {
         els.mute.setAttribute('aria-pressed', S.muted ? 'true' : 'false');
@@ -591,6 +622,40 @@
         var top = k > TOTAL ? els.finale.offsetTop : scrollFor(clamp(k, 0, TOTAL));
         window.scrollTo({ top: top, behavior: (reduced || instant) ? 'auto' : 'smooth' });
     }
+
+    // One step forward or back, shared by the arrow keys and the Back / Next buttons.
+    // Position TOTAL + 1 is the finale. Quick repeated presses count from the last
+    // target, not from the camera, which is still on its way there.
+    var navTarget = -1, navAt = 0;
+    function navPos() { return S.p >= TOTAL + 0.6 ? TOTAL + 1 : Math.round(S.c); }
+    function stepBy(dir) {
+        var now = Date.now();
+        var cur = (navTarget >= 0 && now - navAt < 900) ? navTarget : navPos();
+        var t = clamp(cur + dir, 0, TOTAL + 1);
+        navTarget = t; navAt = now;
+        if (t !== cur) goTo(t);
+    }
+
+    var navPrev = doc.getElementById('step-prev');
+    var navNext = doc.getElementById('step-next');
+    var navShown = -2;
+    function stepLabel(k) {
+        if (k > TOTAL) return 'The light';
+        if (k < 1) return 'The beginning';
+        var d = S.byN[k] && S.byN[k].data;
+        return d ? d.numeral + ' ' + d.el : '';
+    }
+    function updateNav() {
+        var pos = navPos();
+        if (pos === navShown) return;
+        navShown = pos;
+        navPrev.setAttribute('aria-disabled', pos <= 0 ? 'true' : 'false');
+        navNext.setAttribute('aria-disabled', pos >= TOTAL + 1 ? 'true' : 'false');
+        navPrev.title = pos > 0 ? 'Back to ' + stepLabel(pos - 1) : '';
+        navNext.title = pos <= TOTAL ? 'On to ' + stepLabel(pos + 1) : '';
+    }
+    navPrev.addEventListener('click', function () { if (navPrev.getAttribute('aria-disabled') !== 'true') stepBy(-1); });
+    navNext.addEventListener('click', function () { if (navNext.getAttribute('aria-disabled') !== 'true') stepBy(1); });
 
     function jumpTo(n) {
         if (!S.opened) { openDoor(); pendingJump = n; return; }
@@ -628,10 +693,10 @@
         }
         if (key === 'ArrowDown' || key === 'ArrowRight' || key === 'PageDown') {
             ev.preventDefault();
-            goTo(cur >= TOTAL ? TOTAL + 1 : cur + 1);
+            stepBy(1);
         } else if (key === 'ArrowUp' || key === 'ArrowLeft' || key === 'PageUp') {
             ev.preventDefault();
-            goTo(Math.max(0, cur - 1));
+            stepBy(-1);
         } else if (key === 'Home') {
             ev.preventDefault(); goTo(0);
         }
@@ -676,6 +741,7 @@
         ensureApi();                      // the click is the audio unlock gesture
         els.door.classList.add('is-open');
         els.dock.hidden = false;
+        doc.getElementById('stepnav').hidden = false;
         layout();
         window.scrollTo(0, 0);
         var delay = (reduced || quick === true) ? 50 : 1700;
