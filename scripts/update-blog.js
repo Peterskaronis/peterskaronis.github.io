@@ -205,10 +205,9 @@ function convertMarkdownToHtml(markdown) {
 // HTML Templates
 // ============================================================================
 
-// Fathom Analytics
-const ANALYTICS_SCRIPT = `    <!-- Fathom - beautiful, simple website analytics -->
-    <script src="https://cdn.usefathom.com/script.js" data-site="WMVSPTHG" defer></script>
-    <!-- / Fathom -->`;
+// Fathom Analytics is added to every page, blog pages included, by
+// scripts/update-seo.js, which runs after this script. Adding it here as well
+// would load it twice and count every visit twice.
 
 function generatePostHTML(post, content) {
   const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
@@ -227,7 +226,6 @@ function generatePostHTML(post, content) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(post.title)} — Peter Skaronis</title>
-${ANALYTICS_SCRIPT}
     <meta name="description" content="${description}">
     <link rel="canonical" href="${postUrl}">
 
@@ -349,7 +347,6 @@ ${monthsHTML}        </section>\n\n`;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog — Peter Skaronis</title>
-${ANALYTICS_SCRIPT}
     <meta name="description" content="Blog posts by Peter Skaronis on cybersecurity, technology, and life.">
     <link rel="canonical" href="https://skaronis.com/blog/">
 

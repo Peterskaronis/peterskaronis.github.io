@@ -525,6 +525,40 @@ test('clamps a rating outside 0-5 instead of throwing', () => {
 });
 
 // ---------------------------------------------------------------------------
+section('Fathom analytics on every page');
+
+const seo = require('./update-seo.js');
+const fathomCount = html => (html.match(/cdn\.usefathom\.com\/script\.js/g) || []).length;
+const PAGE = path.join(seo.ROOT, 'about.html');
+const BARE = '<!DOCTYPE html><html><head>\n    <title>About</title>\n</head><body></body></html>';
+
+test('adds exactly one Fathom script to a page that has none', () => {
+  const out = seo.processPageHtml(PAGE, BARE);
+  assert.strictEqual(fathomCount(out), 1, out);
+  assert.ok(out.includes('data-site="WMVSPTHG"'));
+});
+
+test('strips a hand-placed Fathom block, so a page never loads it twice', () => {
+  const legacy = BARE.replace('</head>',
+    '    <!-- Fathom - beautiful, simple website analytics -->\n' +
+    '    <script src="https://cdn.usefathom.com/script.js" data-site="WMVSPTHG" defer></script>\n' +
+    '    <!-- / Fathom -->\n</head>');
+  const out = seo.processPageHtml(PAGE, legacy);
+  assert.strictEqual(fathomCount(out), 1, out);
+  assert.ok(!out.includes('<!-- Fathom - beautiful'), 'legacy comment survived');
+});
+
+test('a second run changes nothing', () => {
+  const once = seo.processPageHtml(PAGE, BARE);
+  assert.strictEqual(seo.processPageHtml(PAGE, once), once);
+});
+
+test('the blog generator no longer adds its own copy', () => {
+  const src = fs.readFileSync(path.join(__dirname, 'update-blog.js'), 'utf8');
+  assert.ok(!src.includes('cdn.usefathom.com'), 'update-blog.js still embeds Fathom');
+});
+
+// ---------------------------------------------------------------------------
 run().then(() => {
   console.log(`\n${passed} passed, ${failed} failed\n`);
   process.exit(failed === 0 ? 0 : 1);
