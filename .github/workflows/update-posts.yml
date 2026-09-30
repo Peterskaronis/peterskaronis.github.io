@@ -26,6 +26,10 @@ jobs:
       # Pinned to a commit SHA: this job holds contents: write, and a tag can
       # be moved to point at different code.
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+        with:
+          # Full history: update-seo.js dates each sitemap entry from the file's
+          # last commit. A shallow clone has one commit, so every page got its date.
+          fetch-depth: 0
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020  # v4
         with:
           node-version: '20'
