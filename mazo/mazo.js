@@ -421,6 +421,7 @@
         if (realmOp !== S.realmOp) { S.realmOp = realmOp; els.realm.style.opacity = realmOp; els.rope.style.opacity = realmOp; }
         focusLogic(c, p, now);
         updateNav();
+        if (introOpen && p > 0.5) closeIntro();
     }
 
     function updatePlates(c) {
@@ -629,6 +630,7 @@
     var navTarget = -1, navAt = 0;
     function navPos() { return S.p >= TOTAL + 0.6 ? TOTAL + 1 : Math.round(S.c); }
     function stepBy(dir) {
+        closeIntro();
         var now = Date.now();
         var cur = (navTarget >= 0 && now - navAt < 900) ? navTarget : navPos();
         var t = clamp(cur + dir, 0, TOTAL + 1);
@@ -734,9 +736,46 @@
 
     /* ---------------------------------------------------------------- the door */
 
+    /* ---------------------------------------------------------------- the opening clip */
+
+    // A YouTube Short plays in a framed player as the doors open. It is built inside the
+    // door click, so the browser lets its sound start; removing it stops the sound.
+    // Leaving the threshold, Esc or "Begin the climb" closes it for good.
+    var INTRO_ID = 'z88QHdz5BAI';
+    var introEl = doc.getElementById('intro');
+    var introOpen = false;
+    function startIntro() {
+        if (!introEl) return;
+        var f = doc.createElement('iframe');
+        f.src = 'https://www.youtube-nocookie.com/embed/' + INTRO_ID +
+            '?playsinline=1&rel=0' + (S.muted ? '' : '&autoplay=1');
+        f.title = 'Giorgos Mazonakis, a short video from Greek Music Live on YouTube';
+        f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+        f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        f.setAttribute('allowfullscreen', '');
+        doc.getElementById('intro-player').appendChild(f);
+        introEl.hidden = false;
+        introOpen = true;
+    }
+    function closeIntro() {
+        if (!introOpen) return;
+        introOpen = false;
+        introEl.hidden = true;
+        doc.getElementById('intro-player').textContent = '';
+        if (doc.activeElement === doc.getElementById('intro-go') || introEl.contains(doc.activeElement)) {
+            els.threshold.focus({ preventScroll: true });
+        }
+    }
+    doc.getElementById('intro-go').addEventListener('click', closeIntro);
+    window.addEventListener('keydown', function (ev) {
+        if (introOpen && ev.key === 'Escape') { ev.preventDefault(); closeIntro(); }
+    });
+
     function openDoor(quick) {
         if (S.opened || S.opening || !S.geo) return;
         S.opening = true;
+        // Not for a link straight to a song: the jump would cut the clip off at once.
+        if (quick !== true && !/^#step-\d/.test(location.hash)) startIntro();
         els.open.disabled = true;
         ensureApi();                      // the click is the audio unlock gesture
         els.door.classList.add('is-open');
@@ -757,6 +796,7 @@
                 var m = /^#step-(\d{1,2})$/.exec(location.hash);
                 var target = m ? parseInt(m[1], 10) : 0;
                 if (target >= 1 && target <= TOTAL) jumpTo(target);
+                else if (introOpen) doc.getElementById('intro-go').focus({ preventScroll: true });
                 else els.threshold.focus({ preventScroll: true });
             }
         }, delay);

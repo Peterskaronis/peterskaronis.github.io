@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://embed-cdn.spotifycdn.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; frame-src https://open.spotify.com; base-uri 'none'; form-action 'none'; object-src 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-eval' https://open.spotify.com https://embed-cdn.spotifycdn.com; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'self'; frame-src https://open.spotify.com https://www.youtube-nocookie.com; base-uri 'none'; form-action 'none'; object-src 'none'">
     <meta name="referrer" content="strict-origin-when-cross-origin">
     <title>33 Σκαλιά · Γιώργος Μαζωνάκης</title>
     <meta name="description" content="33 Σκαλιά (33 Steps): a fan tribute to Giorgos Mazonakis, 1972 to 2026. Climb 33 of his songs, from his first hit to his last, as oil paintings rising from the dark into the light.">
@@ -195,6 +195,14 @@
 </section>
 
 <!-- ============================================================ THE DOCK -->
+<div id="intro" class="intro" role="dialog" aria-labelledby="intro-title" hidden>
+    <figure class="intro-frame">
+        <div class="intro-player" id="intro-player"></div>
+        <figcaption><span id="intro-title" lang="el">Γιώργος Μαζωνάκης</span> <a href="https://www.youtube.com/shorts/z88QHdz5BAI" target="_blank" rel="noopener noreferrer">Video: Greek Music Live on YouTube</a></figcaption>
+    </figure>
+    <button type="button" class="intro-go" id="intro-go"><span lang="el">Ξεκίνα την ανάβαση</span> <span class="slash">/</span> Begin the climb</button>
+</div>
+
 <nav id="stepnav" class="stepnav" aria-label="Move between steps" hidden>
     <button type="button" class="stepnav-btn prev" id="step-prev"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg><span class="lbl">Back</span></button>
     <button type="button" class="stepnav-btn next" id="step-next"><span class="lbl">Next</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg></button>
