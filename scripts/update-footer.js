@@ -29,7 +29,8 @@ const END = '<!-- site-footer:end -->';
 // bolting a footer onto them would overlay the game UI.
 const SKIP_FILES = new Set([
   'cyber.html',
-  'veridis-quo.html'
+  'veridis-quo.html',
+  'mazo/index.html'
 ]);
 
 const SKIP_DIRS = new Set(['.git', 'node_modules', '.playwright-mcp', '.github', 'assets', 'videos']);
