@@ -187,7 +187,7 @@
         <div class="credits">
             <h3>About this page</h3>
             <p>A fan tribute by Peter Skaronis. It is not affiliated with Giorgos Mazonakis, his family or his record labels.</p>
-            <p>Music streams from Spotify. Listeners who are not logged in to Spotify hear a 30 second preview; logged-in listeners hear the full track. The paintings are AI-assisted interpretations in an oil-painting style, made for this page. His logo and his recordings belong to their owners.</p>
+            <p>Music streams from Spotify. Listeners who are not logged in to Spotify hear a 30 second preview; logged-in listeners hear the full track (<a class="spotify-login" href="https://accounts.spotify.com/login" target="_blank" rel="noopener noreferrer">log in to Spotify</a>, then come back to this tab). The paintings are AI-assisted interpretations in an oil-painting style, made for this page. His logo and his recordings belong to their owners.</p>
             <p>The Kazantzakis translations are my own. This page sets no cookies of its own and uses no analytics; your mute setting is kept in your browser. The Spotify player loads only after you open the door, and it is run by Spotify under its own privacy terms.</p>
             <p><a href="/">skaronis.com</a></p>
         </div>
@@ -195,10 +195,15 @@
 </section>
 
 <!-- ============================================================ THE DOCK -->
+<nav id="stepnav" class="stepnav" aria-label="Move between steps" hidden>
+    <button type="button" class="stepnav-btn prev" id="step-prev"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7"/></svg><span class="lbl">Back</span></button>
+    <button type="button" class="stepnav-btn next" id="step-next"><span class="lbl">Next</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7"/></svg></button>
+</nav>
+
 <aside id="dock" class="dock" aria-label="Music player" hidden>
     <div class="dock-info">
         <p class="dock-now" aria-live="polite"><span class="dock-num" id="dock-num"></span> <span id="dock-title" lang="el">Ανεβαίνοντας</span> <span class="dock-lat" id="dock-lat">Climbing</span></p>
-        <p class="dock-note">Logged out of Spotify? You hear a 30 s preview.</p>
+        <p class="dock-note"><span class="note-std">30 s previews when logged out. <a class="spotify-login" href="https://accounts.spotify.com/login" target="_blank" rel="noopener noreferrer">Log in to Spotify</a></span><span class="note-tap" hidden>Press &#9654; in the player to hear this song.</span></p>
     </div>
     <div class="dock-embed"><div id="embed"></div></div>
     <a class="dock-yt" id="dock-yt" href="https://www.youtube.com/" rel="noopener noreferrer" target="_blank" hidden>Listen on YouTube</a>
