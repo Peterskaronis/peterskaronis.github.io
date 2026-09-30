@@ -43,6 +43,7 @@ Website: https://techimpossible.com. Area served: Canada, United States, remote 
 - [Cybersecurity Basics](https://cybersecuritybasics.ca/): A free interactive assessment and course teaching cybersecurity fundamentals to people who are not security professionals.
 - [Claude Skills](https://skaronis.com/claude-skills): An open library of Claude Code skills, including a security posture check and the Techimpossible security advisory format.
 - [Veridis Quo](https://skaronis.com/veridis-quo): A retro arcade game — a neon odyssey, built for the pleasure of building it.
+- [33 Σκαλιά \(33 Steps\)](https://skaronis.com/mazo): A fan tribute to Giorgos Mazonakis, 1972 to 2026: a climb through 33 of his songs as oil paintings, from the dark to the light.
 - [GRC Refinement](https://refinement.techimpossible.com/): A game that teaches governance, risk and compliance estimation by making you do it.
 - [Life of a Cybersecurity Consultant](https://skaronis.com/cyber): A narrative game about the actual day-to-day of consulting in security.
 - [Digital Awareness](https://skaronis.com/awareness): A live demonstration of what a website can infer about you before you have typed anything.
