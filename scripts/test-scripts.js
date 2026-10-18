@@ -558,6 +558,36 @@ test('the blog generator no longer adds its own copy', () => {
   assert.ok(!src.includes('cdn.usefathom.com'), 'update-blog.js still embeds Fathom');
 });
 
+// Cloudflare Pages serves index.html with a 200 for every unknown path when the
+// site has no top-level 404.html. Google reads that as a soft 404 and can index
+// junk URLs as copies of the homepage.
+section('404 page');
+
+const NOT_FOUND = path.join(seo.ROOT, '404.html');
+
+test('404.html exists at the site root', () => {
+  assert.ok(fs.existsSync(NOT_FOUND), '404.html is missing; unknown URLs will return the homepage with a 200');
+});
+
+test('404.html is noindex and carries no canonical or SEO block', () => {
+  const html = fs.readFileSync(NOT_FOUND, 'utf8');
+  assert.ok(/<meta name="robots" content="noindex">/.test(html), 'missing noindex');
+  assert.ok(!html.includes('rel="canonical"'), 'a 404 page must not declare a canonical');
+  assert.ok(!html.includes('seo:start'), 'update-seo.js must skip 404.html');
+});
+
+test('404.html loads its stylesheet from the root, since it is served at any depth', () => {
+  const html = fs.readFileSync(NOT_FOUND, 'utf8');
+  assert.ok(html.includes('href="/styles.css"'), 'stylesheet path must be root-absolute');
+});
+
+test('404.html is not listed in the sitemap or llms.txt', () => {
+  for (const f of ['sitemap.xml', 'llms.txt']) {
+    const body = fs.readFileSync(path.join(seo.ROOT, f), 'utf8');
+    assert.ok(!/\/404(\.html)?\b/.test(body), `${f} lists the 404 page`);
+  }
+});
+
 // ---------------------------------------------------------------------------
 run().then(() => {
   console.log(`\n${passed} passed, ${failed} failed\n`);
