@@ -48,6 +48,7 @@ Website: https://techimpossible.com. Area served: Canada, United States, remote 
 
 ## Projects
 
+- [Homeopathy Library](https://homeopathylibrary.com/): Classical homeopathic materia medica \(Boericke, Clarke, Kent, Hering and others\) in one library, searchable by remedy, condition or symptom, in English and Greek.
 - [LifeLens](https://lifelens.skaronis.com): A life reflection and planning tool built around the observation that a life is roughly four thousand weeks. Privacy-first: everything stays in your browser.
 - [ThinkLens](https://thinklens.pages.dev/): A thinking tool that applies structured mental models to a decision you are actually facing.
 - [Cybersecurity Basics](https://cybersecuritybasics.ca/): A free interactive assessment and course teaching cybersecurity fundamentals to people who are not security professionals.
