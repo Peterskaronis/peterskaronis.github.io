@@ -400,6 +400,7 @@
     }
     </script>
     <script src="https://cdn.usefathom.com/script.js" data-site="WMVSPTHG" defer></script>
+    <script src="/scripts/fathom-events.js" defer></script>
     <!-- seo:end -->
 </head>
 <body>
@@ -473,7 +474,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-danger" onclick="revealHiddenFields('form1')">Reveal Hidden Fields</button>
-                    <button type="button" class="btn btn-primary" onclick="showCapturedData('form1')">Show What Was Captured</button>
+                    <button type="button" class="btn btn-primary" data-fathom-click="autofill-demo" onclick="showCapturedData('form1')">Show What Was Captured</button>
                     <button type="button" class="btn btn-secondary" onclick="resetForm('form1')">Reset</button>
                 </div>
             </form>
@@ -515,7 +516,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-danger" onclick="revealHiddenFields('form2')">Reveal Hidden Fields</button>
-                    <button type="button" class="btn btn-primary" onclick="showCapturedData('form2')">Show What Was Captured</button>
+                    <button type="button" class="btn btn-primary" data-fathom-click="autofill-demo" onclick="showCapturedData('form2')">Show What Was Captured</button>
                     <button type="button" class="btn btn-secondary" onclick="resetForm('form2')">Reset</button>
                 </div>
             </form>
@@ -557,7 +558,7 @@
 
                 <div class="form-actions">
                     <button type="button" class="btn btn-danger" onclick="revealHiddenFields('form3')">Reveal Hidden Fields</button>
-                    <button type="button" class="btn btn-primary" onclick="showCapturedData('form3')">Show What Was Captured</button>
+                    <button type="button" class="btn btn-primary" data-fathom-click="autofill-demo" onclick="showCapturedData('form3')">Show What Was Captured</button>
                     <button type="button" class="btn btn-secondary" onclick="resetForm('form3')">Reset</button>
                 </div>
             </form>

@@ -553,6 +553,60 @@ test('a second run changes nothing', () => {
   assert.strictEqual(seo.processPageHtml(PAGE, once), once);
 });
 
+test('loads the events script once, after the Fathom script', () => {
+  const out = seo.processPageHtml(PAGE, seo.processPageHtml(PAGE, BARE));
+  assert.strictEqual(out.split('/scripts/fathom-events.js').length - 1, 1, out);
+  assert.ok(out.indexOf('cdn.usefathom.com') < out.indexOf('/scripts/fathom-events.js'), 'events script before Fathom');
+});
+
+test('the events script exists where pages load it from', () => {
+  assert.ok(fs.existsSync(path.join(seo.ROOT, 'scripts', 'fathom-events.js')));
+});
+
+const { linkEvent } = require('./fathom-events.js');
+const HERE = new URL('https://skaronis.com/blog/some-post/');
+
+test('link clicks are named by destination', () => {
+  const cases = {
+    'https://blog.skaronis.com/p/x': 'substack-click',
+    'https://peter.substack.com/': 'substack-click',
+    'https://notes.techimpossible.com/p/y': 'notes-click',
+    'https://www.techimpossible.com/': 'techimpossible-click',
+    'https://refinement.techimpossible.com/': 'techimpossible-click',
+    'https://www.linkedin.com/in/peterskaronis/': 'linkedin-click',
+    'https://x.com/peter_skaronis': 'x-click',
+    'https://twitter.com/a': 'x-click',
+    'https://www.goodreads.com/book/1': 'goodreads-click',
+    'https://www.amazon.ca/dp/1': 'amazon-click',
+    'https://youtu.be/abc': 'youtube-click',
+    'https://en.wikipedia.org/wiki/X': 'outbound-click',
+    'https://lifelens.skaronis.com/': 'outbound-click',
+    'mailto:someone@example.com': 'email-click',
+    '/skills/astrology-skill.md': 'skill-download',
+    'https://skaronis.com/skills/a.md': 'skill-download'
+  };
+  for (const [href, name] of Object.entries(cases)) assert.strictEqual(linkEvent(href, HERE), name, href);
+});
+
+test('internal links, anchors and script URLs send nothing', () => {
+  for (const href of ['/about', '#top', 'https://skaronis.com/now', 'https://www.skaronis.com/', '../x',
+                      'javascript:alert(1)', 'data:text/html,x', 'tel:123', '/skills/../x.md', 'http://[bad']) {
+    assert.strictEqual(linkEvent(href, HERE), null, href);
+  }
+});
+
+test('lookalike hosts are not mistaken for known destinations', () => {
+  assert.strictEqual(linkEvent('https://evil-linkedin.com/', HERE), 'outbound-click');
+  assert.strictEqual(linkEvent('https://x.com.evil.example/', HERE), 'outbound-click');
+  assert.strictEqual(linkEvent('https://notskaronis.com/', HERE), 'outbound-click');
+});
+
+test('event names are fixed strings: no URL or text reaches Fathom', () => {
+  const src = fs.readFileSync(path.join(__dirname, 'fathom-events.js'), 'utf8');
+  const calls = src.match(/trackEvent\([^)]*\)/g) || [];
+  assert.deepStrictEqual(calls, ['trackEvent(name)'], 'trackEvent must only receive a name');
+});
+
 test('the blog generator no longer adds its own copy', () => {
   const src = fs.readFileSync(path.join(__dirname, 'update-blog.js'), 'utf8');
   assert.ok(!src.includes('cdn.usefathom.com'), 'update-blog.js still embeds Fathom');
@@ -673,6 +727,14 @@ test('404.html is noindex and carries no canonical or SEO block', () => {
   assert.ok(/<meta name="robots" content="noindex">/.test(html), 'missing noindex');
   assert.ok(!html.includes('rel="canonical"'), 'a 404 page must not declare a canonical');
   assert.ok(!html.includes('seo:start'), 'update-seo.js must skip 404.html');
+});
+
+test('404.html counts missing-page visits with the same Fathom and events tags as every other page', () => {
+  const html = fs.readFileSync(NOT_FOUND, 'utf8');
+  for (const tag of [seo.FATHOM_TAG, seo.EVENTS_TAG]) {
+    assert.strictEqual(html.split(tag.trim()).length - 1, 1, `404.html must load exactly one: ${tag.trim()}`);
+  }
+  assert.ok(html.includes('<body data-fathom-event="not-found">'), 'missing the not-found page event');
 });
 
 test('404.html loads its stylesheet from the root, since it is served at any depth', () => {
