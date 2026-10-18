@@ -130,15 +130,33 @@ const META_END = '<!-- seo:end -->';
 const FATHOM_SITE = 'WMVSPTHG';
 const FATHOM_TAG = `    <script src="https://cdn.usefathom.com/script.js" data-site="${FATHOM_SITE}" defer></script>`;
 
+// The site-wide card. Its size is fixed, so it can be declared; a page's own
+// image (a book cover, a Substack header) has unknown dimensions and is left
+// for the platforms to measure.
+const DEFAULT_IMAGE_META = { width: 1200, height: 630, type: 'image/png', alt: 'Peter Skaronis, Cybersecurity Consultant and vCISO' };
+
+// Lets Google show a large image preview and a full-length snippet. Pages that
+// declare their own robots meta (the 404 page, say) keep theirs instead.
+const ROBOTS_META = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
 function renderPageMeta(page) {
+  const isDefaultImage = page.image === (safeUrl(SITE.site.image) || SITE.site.image);
+  const imageAlt = isDefaultImage ? DEFAULT_IMAGE_META.alt : page.shortTitle;
   const lines = [
     `    <link rel="canonical" href="${escapeHtml(page.url)}">`,
+    ...(page.hasOwnRobots ? [] : [`    <meta name="robots" content="${ROBOTS_META}">`]),
     `    <meta property="og:type" content="${page.isArticle ? 'article' : 'website'}">`,
     `    <meta property="og:site_name" content="${escapeHtml(SITE.site.title)}">`,
     `    <meta property="og:url" content="${escapeHtml(page.url)}">`,
     `    <meta property="og:title" content="${escapeHtml(page.title)}">`,
     `    <meta property="og:description" content="${escapeHtml(page.description)}">`,
     `    <meta property="og:image" content="${escapeHtml(page.image)}">`,
+    ...(isDefaultImage ? [
+      `    <meta property="og:image:width" content="${DEFAULT_IMAGE_META.width}">`,
+      `    <meta property="og:image:height" content="${DEFAULT_IMAGE_META.height}">`,
+      `    <meta property="og:image:type" content="${DEFAULT_IMAGE_META.type}">`
+    ] : []),
+    `    <meta property="og:image:alt" content="${escapeHtml(imageAlt)}">`,
     `    <meta property="og:locale" content="en_CA">`,
     `    <meta name="twitter:card" content="summary_large_image">`,
     `    <meta name="twitter:site" content="${escapeHtml(SITE.site.twitter)}">`,
@@ -146,10 +164,83 @@ function renderPageMeta(page) {
     `    <meta name="twitter:title" content="${escapeHtml(page.title)}">`,
     `    <meta name="twitter:description" content="${escapeHtml(page.description)}">`,
     `    <meta name="twitter:image" content="${escapeHtml(page.image)}">`,
+    `    <meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}">`,
     `    <meta name="author" content="${escapeHtml(SITE.person.name)}">`,
+    ...renderPageJsonLd(page),
     FATHOM_TAG
   ];
   return '\n' + lines.join('\n') + '\n    ';
+}
+
+// ---------------------------------------------------------------------------
+// Per-page structured data
+//
+// Every page but the homepage gets a BreadcrumbList, which Google shows in
+// place of the raw URL and which tells answer engines where a page sits. A
+// page with no JSON-LD of its own also gets a WebPage node tied to the site
+// and to Peter, so no page is an anonymous document. Pages that already carry
+// richer data (BlogPosting, CollectionPage) keep it and only gain breadcrumbs.
+// ---------------------------------------------------------------------------
+
+// Sections a page can sit under, longest prefix first.
+const SECTIONS = [
+  { prefix: '/blog/', name: 'Blog', url: '/blog/' },
+  { prefix: '/library/', name: 'Library', url: '/library' }
+];
+
+const COLLECTION_PATHS = new Set(['/archive', '/blog/', '/library', '/library/notes/', '/quotes', '/notes', '/claude-skills']);
+
+function breadcrumbTrail(page) {
+  const trail = [{ name: 'Home', url: `${BASE}/` }];
+  const section = SECTIONS.find(s => page.urlPath.startsWith(s.prefix) && page.urlPath !== s.url);
+  if (section) trail.push({ name: section.name, url: BASE + section.url });
+  trail.push({ name: page.shortTitle, url: page.url });
+  return trail;
+}
+
+function pageType(urlPath) {
+  if (urlPath === '/about') return 'AboutPage';
+  if (COLLECTION_PATHS.has(urlPath)) return 'CollectionPage';
+  return 'WebPage';
+}
+
+function renderPageJsonLd(page) {
+  if (page.urlPath === '/') return [];   // the homepage has its own full graph
+
+  const person = { '@type': 'Person', '@id': `${BASE}/#person`, name: SITE.person.name, url: `${BASE}/` };
+  const graph = [{
+    '@type': 'BreadcrumbList',
+    '@id': `${page.url}#breadcrumb`,
+    itemListElement: breadcrumbTrail(page).map((crumb, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: crumb.name,
+      item: crumb.url
+    }))
+  }];
+
+  if (!page.hasOwnJsonLd) {
+    const type = pageType(page.urlPath);
+    graph.unshift({
+      '@type': type,
+      '@id': `${page.url}#webpage`,
+      url: page.url,
+      name: page.shortTitle,
+      description: page.description,
+      inLanguage: 'en',
+      isPartOf: { '@type': 'WebSite', '@id': `${BASE}/#website`, name: SITE.site.title, url: `${BASE}/` },
+      breadcrumb: { '@id': `${page.url}#breadcrumb` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: page.image },
+      author: person,
+      ...(type === 'AboutPage' ? { mainEntity: person } : {})
+    });
+  }
+
+  const json = jsonLdScript({ '@context': 'https://schema.org', '@graph': graph })
+    .split('\n')
+    .map(line => '    ' + line)
+    .join('\n');
+  return ['    <script type="application/ld+json">', json, '    </script>'];
 }
 
 function pageFacts(filePath, html) {
@@ -162,14 +253,29 @@ function pageFacts(filePath, html) {
   // A page's own og:image wins -- book pages legitimately use a cover image.
   // og:image is a URL like any other; it gets the same guard as the rest.
   const existingImage = safeUrl(readTag(html, /<meta\s+property="og:image"\s+content="([^"]*)"/i));
+  // Judged on the page minus our own block, so a second run sees the same
+  // page the first one did.
+  const own = outsideMetaBlock(html);
+  const title = rawTitle.replace(/\s+/g, ' ').trim();
   return {
     url: BASE + urlPath,
     urlPath,
-    title: rawTitle.replace(/\s+/g, ' ').trim(),
+    title,
+    // "The Psychology of Money — Library — Peter Skaronis" -> "The Psychology of Money"
+    shortTitle: title.split(' — ')[0].trim() || title,
+    hasOwnJsonLd: /<script\s+type="application\/ld\+json"/i.test(own),
+    hasOwnRobots: /<meta\s+name="robots"/i.test(own),
     description: description.replace(/\s+/g, ' ').trim(),
     image: existingImage && !existingImage.includes('/og.png') ? existingImage : (safeUrl(SITE.site.image) || SITE.site.image),
     isArticle: urlPath.startsWith('/blog/') && urlPath !== '/blog/'
   };
+}
+
+function outsideMetaBlock(html) {
+  const start = html.indexOf(META_START);
+  const end = html.indexOf(META_END);
+  if (start === -1 || end === -1) return html;
+  return html.slice(0, start) + html.slice(end + META_END.length);
 }
 
 /** Insert the marker pair just before </head> the first time a page is seen. */
@@ -403,9 +509,11 @@ function renderLlmsTxt() {
   for (const w of SITE.writing) out.push(link(w.name, w.url, w.description));
   out.push('');
 
-  const recent = loadRecentPosts(10);
+  // Every post, newest first. The archive is small, and an answer engine can
+  // only cite what it can find.
+  const recent = loadRecentPosts(Infinity);
   if (recent.length) {
-    out.push('## Recent posts');
+    out.push('## Posts');
     out.push('');
     for (const p of recent) {
       // Same URL rule as every HTML sink. llms.txt is text/plain so there is no
@@ -416,7 +524,8 @@ function renderLlmsTxt() {
         console.warn(`  WARNING      dropped unsafe URL for "${p.title}": ${p.url}`);
         continue;
       }
-      out.push(link(p.title, url, `${p.date}${p.description ? ` — ${p.description}` : ''}`));
+      const about = p.summary || p.description;
+      out.push(link(p.title, url, `${p.date}${about ? ` — ${about}` : ''}`));
     }
     out.push('');
   }

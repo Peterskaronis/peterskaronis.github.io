@@ -15,12 +15,72 @@
  */
 
 const fs = require('fs');
-const { escapeHtml, escapeMarkdownText, renderMarkdownLinks, jsonLdScript, slugify, writeFileAtomic } = require('./lib');
+const { escapeHtml, escapeMarkdownText, renderMarkdownLinks, jsonLdScript, safeUrl, slugify, writeFileAtomic } = require('./lib');
 const path = require('path');
 
 const POSTS_DIR = path.join(__dirname, '..', 'posts');
 const BLOG_DIR = path.join(__dirname, '..', 'blog');
 const JSON_OUTPUT = path.join(__dirname, '..', 'blog-posts.json');
+
+const BASE = 'https://skaronis.com';
+const DEFAULT_IMAGE = `${BASE}/og.png`;
+
+// ============================================================================
+// Search snippet and social card inputs
+// ============================================================================
+
+// Substack subtitles are often a few words ("Less is more"). Google and the
+// social cards show those as the whole summary, so a short subtitle is padded
+// with the opening of the post. 160 is roughly what Google shows before it
+// truncates; anything longer is cut at a word boundary.
+const MIN_DESCRIPTION = 70;
+const MAX_DESCRIPTION = 160;
+
+function truncateAtWord(text, max) {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  const space = cut.lastIndexOf(' ');
+  return (space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s,;:.\-–—]+$/, '') + '…';
+}
+
+/** Plain text of the post body: no images, headings, rules, lists or markup. */
+function excerptFromMarkdown(body) {
+  return String(body || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/```[\s\S]*?```/g, '\n\n')
+    .split(/\n\s*\n/)
+    .map(block => block.trim())
+    .filter(block => block && !/^(!\[|#|---|\*\*\*|[-*] |\d+\. )/.test(block))
+    .join(' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^>\s?/gm, '')
+    .replace(/[*_`]+/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function postDescription(subtitle, body) {
+  const sub = String(subtitle || '').replace(/\s+/g, ' ').trim();
+  if (sub.length >= MIN_DESCRIPTION) return truncateAtWord(sub, MAX_DESCRIPTION);
+  const excerpt = excerptFromMarkdown(body);
+  if (!excerpt) return sub;
+  // A subtitle that is just the post's first words ("Hey friends,") would be
+  // said twice.
+  const bare = sub.replace(/[\s,;:.\-–—]+$/, '');
+  if (!bare || excerpt.toLowerCase().startsWith(bare.toLowerCase())) {
+    return truncateAtWord(excerpt, MAX_DESCRIPTION);
+  }
+  const lead = /[.!?…"”']$/.test(sub) ? sub : `${bare}.`;
+  return truncateAtWord(`${lead} ${excerpt}`, MAX_DESCRIPTION);
+}
+
+/** The first image in the post, which on Substack is the cover. https only. */
+function coverImage(body) {
+  const m = String(body || '').match(/!\[[^\]]*\]\(\s*([^)\s]+)/);
+  const url = m ? safeUrl(m[1]) : null;
+  return url && url.startsWith('https://') ? url : null;
+}
 
 // ============================================================================
 // YAML Frontmatter Parser
@@ -97,7 +157,9 @@ function convertMarkdownToHtml(markdown) {
   html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
   html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  // The page header already holds the post title as the one <h1>. A second h1
+  // in the body muddles the outline search engines and screen readers rely on.
+  html = html.replace(/^# (.+)$/gm, '<h2>$1</h2>');
 
   // Horizontal rules
   html = html.replace(/^---$/gm, '<hr>');
@@ -217,8 +279,12 @@ function generatePostHTML(post, content) {
   });
 
   const isoDate = new Date(post.date).toISOString();
-  const postUrl = `https://skaronis.com/blog/${post.slug}/`;
-  const description = escapeHtml(post.description || post.title);
+  const postUrl = `${BASE}/blog/${post.slug}/`;
+  const summary = post.summary || post.description || post.title;
+  const description = escapeHtml(summary);
+  const image = post.image || DEFAULT_IMAGE;
+  // The same @id as the Person on the homepage, so engines join the two.
+  const person = { '@type': 'Person', '@id': `${BASE}/#person`, name: 'Peter Skaronis', url: `${BASE}/` };
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -235,25 +301,33 @@ function generatePostHTML(post, content) {
     <meta property="og:description" content="${description}">
     <meta property="og:url" content="${postUrl}">
     <meta property="og:site_name" content="Peter Skaronis">
-    <meta property="article:author" content="Peter Skaronis">
+    <meta property="og:image" content="${escapeHtml(image)}">
+    <meta property="article:author" content="${BASE}/about">
     <meta property="article:published_time" content="${isoDate}">
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@peter_skaronis">
     <meta name="twitter:title" content="${escapeHtml(post.title)}">
     <meta name="twitter:description" content="${description}">
+    <meta name="twitter:image" content="${escapeHtml(image)}">
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
 ${jsonLdScript({
       '@context': 'https://schema.org',
       '@type': 'BlogPosting',
+      '@id': `${postUrl}#article`,
       headline: post.title,
-      description: post.description || post.title,
+      description: summary,
+      url: postUrl,
+      image,
       datePublished: isoDate,
-      author: { '@type': 'Person', name: 'Peter Skaronis', url: 'https://skaronis.com' },
-      publisher: { '@type': 'Person', name: 'Peter Skaronis' },
+      dateModified: isoDate,
+      inLanguage: 'en',
+      author: person,
+      publisher: person,
+      isPartOf: { '@type': 'Blog', '@id': `${BASE}/blog/#blog`, name: 'Peter Skaronis — Blog', url: `${BASE}/blog/` },
       mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl }
     })}
     </script>
@@ -347,13 +421,13 @@ ${monthsHTML}        </section>\n\n`;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog — Peter Skaronis</title>
-    <meta name="description" content="Blog posts by Peter Skaronis on cybersecurity, technology, and life.">
+    <meta name="description" content="Essays by Peter Skaronis, a Vancouver cybersecurity consultant and vCISO, on security, compliance, AI, technology and living on your own terms.">
     <link rel="canonical" href="https://skaronis.com/blog/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Blog — Peter Skaronis">
-    <meta property="og:description" content="Blog posts by Peter Skaronis on cybersecurity, technology, and life.">
+    <meta property="og:description" content="Essays by Peter Skaronis, a Vancouver cybersecurity consultant and vCISO, on security, compliance, AI, technology and living on your own terms.">
     <meta property="og:url" content="https://skaronis.com/blog/">
     <meta property="og:site_name" content="Peter Skaronis">
 
@@ -361,7 +435,28 @@ ${monthsHTML}        </section>\n\n`;
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@peter_skaronis">
     <meta name="twitter:title" content="Blog — Peter Skaronis">
-    <meta name="twitter:description" content="Blog posts by Peter Skaronis on cybersecurity, technology, and life.">
+    <meta name="twitter:description" content="Essays by Peter Skaronis, a Vancouver cybersecurity consultant and vCISO, on security, compliance, AI, technology and living on your own terms.">
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+${jsonLdScript({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      '@id': `${BASE}/blog/#blog`,
+      name: 'Peter Skaronis — Blog',
+      description: 'Essays by Peter Skaronis, a Vancouver cybersecurity consultant and vCISO, on security, compliance, AI, technology and living on your own terms.',
+      url: `${BASE}/blog/`,
+      inLanguage: 'en',
+      author: { '@type': 'Person', '@id': `${BASE}/#person`, name: 'Peter Skaronis', url: `${BASE}/` },
+      blogPost: posts.map(post => ({
+        '@type': 'BlogPosting',
+        '@id': `${BASE}/blog/${post.slug}/#article`,
+        headline: post.title,
+        url: `${BASE}/blog/${post.slug}/`,
+        datePublished: new Date(post.date).toISOString()
+      }))
+    })}
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -441,6 +536,9 @@ function main() {
       date: frontmatter.date,
       slug,
       description: frontmatter.description || '',
+      // Fuller than the Substack subtitle; used for meta tags and llms.txt.
+      summary: postDescription(frontmatter.description, body),
+      image: coverImage(body),
       url: `/blog/${slug}/`,
       source: 'Blog',
       sourceClass: 'blog',
@@ -476,4 +574,8 @@ function main() {
   console.log('\nDone!');
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { postDescription, excerptFromMarkdown, coverImage, convertMarkdownToHtml, generatePostHTML, generateBlogIndexHTML, MAX_DESCRIPTION };
