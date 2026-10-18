@@ -558,6 +558,105 @@ test('the blog generator no longer adds its own copy', () => {
   assert.ok(!src.includes('cdn.usefathom.com'), 'update-blog.js still embeds Fathom');
 });
 
+section('blog post descriptions and social cards');
+
+const blog = require('./update-blog.js');
+
+test('a short Substack subtitle is padded with the opening of the post', () => {
+  const d = blog.postDescription('Less is more', '![](https://x.example/c.jpg)\n\nToday I wandered into a store.\n\nMore text.');
+  assert.strictEqual(d, 'Less is more. Today I wandered into a store. More text.');
+});
+
+test('a subtitle that repeats the first line is not said twice', () => {
+  const d = blog.postDescription('Hey friends,', 'Hey friends, welcome to the newsletter.');
+  assert.strictEqual(d, 'Hey friends, welcome to the newsletter.');
+});
+
+test('a long subtitle is kept, cut at a word boundary at 160 characters', () => {
+  const long = 'word '.repeat(60).trim();
+  const d = blog.postDescription(long, 'body');
+  assert.ok(d.length <= blog.MAX_DESCRIPTION, `length ${d.length}`);
+  assert.ok(d.endsWith('…') && !d.includes('wor…'), d);
+});
+
+test('the excerpt drops images, headings and markdown syntax', () => {
+  const md = '# Heading\n\n![alt](https://x.example/i.png)\n\nSome **bold** and a [link](https://x.example).\n\n- a list item';
+  assert.strictEqual(blog.excerptFromMarkdown(md), 'Some bold and a link.');
+});
+
+test('the cover image is the first https image, and nothing else', () => {
+  assert.strictEqual(blog.coverImage('text\n\n![](https://cdn.example/a.png)\n\n![](https://cdn.example/b.png)'), 'https://cdn.example/a.png');
+  assert.strictEqual(blog.coverImage('![](javascript:alert(1))'), null);
+  assert.strictEqual(blog.coverImage('![](http://cdn.example/a.png)'), null);
+  assert.strictEqual(blog.coverImage('no images here'), null);
+});
+
+test('a heading in the post body never becomes a second <h1>', () => {
+  assert.ok(!/<h1/.test(blog.convertMarkdownToHtml('# Inside the post\n\ntext')));
+});
+
+test('the post page links its author to the homepage Person', () => {
+  const html = blog.generatePostHTML(
+    { title: 'T', date: '2026-01-02', slug: 't', summary: 'S', image: 'https://cdn.example/a.png' }, '<p>x</p>');
+  assert.ok(html.includes('"@id": "https://skaronis.com/#person"'), 'author is not tied to #person');
+  assert.ok(html.includes('<meta property="og:image" content="https://cdn.example/a.png">'));
+});
+
+section('per-page structured data and card metadata');
+
+function builtPage(rel) {
+  return fs.readFileSync(path.join(seo.ROOT, rel), 'utf8');
+}
+function jsonLdTypes(html) {
+  const types = [];
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    const doc = JSON.parse(m[1]);   // throws, and fails the test, on invalid JSON
+    for (const node of doc['@graph'] || [doc]) types.push(node['@type']);
+  }
+  return types;
+}
+
+test('every built page except the homepage has breadcrumbs and valid JSON-LD', () => {
+  for (const rel of ['about.html', 'now.html', 'blog/index.html', 'library/notes/index.html', 'blog/you-are-not-a-tree/index.html']) {
+    assert.ok(jsonLdTypes(builtPage(rel)).includes('BreadcrumbList'), `${rel} has no BreadcrumbList`);
+  }
+});
+
+test('a page without its own JSON-LD gets a typed page node', () => {
+  assert.ok(jsonLdTypes(builtPage('about.html')).includes('AboutPage'));
+  assert.ok(jsonLdTypes(builtPage('archive.html')).includes('CollectionPage'));
+  assert.ok(jsonLdTypes(builtPage('now.html')).includes('WebPage'));
+});
+
+test('a page with its own JSON-LD keeps it and gains no second page node', () => {
+  const types = jsonLdTypes(builtPage('blog/you-are-not-a-tree/index.html'));
+  assert.ok(types.includes('BlogPosting'));
+  assert.ok(!types.includes('WebPage'), types.join(','));
+});
+
+test('every built page declares an image alt for its social card', () => {
+  for (const rel of ['index.html', 'about.html', 'blog/you-are-not-a-tree/index.html']) {
+    const html = builtPage(rel);
+    assert.ok(/<meta property="og:image:alt" content="[^"]+">/.test(html), `${rel} og:image:alt`);
+    assert.ok(/<meta name="twitter:image:alt" content="[^"]+">/.test(html), `${rel} twitter:image:alt`);
+  }
+});
+
+test('only the default card declares fixed dimensions', () => {
+  assert.ok(builtPage('about.html').includes('<meta property="og:image:width" content="1200">'));
+  assert.ok(!builtPage('blog/you-are-not-a-tree/index.html').includes('og:image:width'));
+});
+
+test('the robots directive allows large previews, and the 404 page keeps its noindex', () => {
+  assert.ok(builtPage('about.html').includes('max-image-preview:large'));
+  assert.ok(!builtPage('404.html').includes('max-image-preview'));
+});
+
+test('structured data is stable across runs', () => {
+  const html = builtPage('about.html');
+  assert.strictEqual(seo.processPageHtml(path.join(seo.ROOT, 'about.html'), html), html);
+});
+
 // Cloudflare Pages serves index.html with a 200 for every unknown path when the
 // site has no top-level 404.html. Google reads that as a soft 404 and can index
 // junk URLs as copies of the homepage.

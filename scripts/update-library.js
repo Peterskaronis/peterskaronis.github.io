@@ -162,13 +162,13 @@ function generateBookPageHTML(book, noteHtml) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(book.title)} — Library — Peter Skaronis</title>
-    <meta name="description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+    <meta name="description" content="Peter Skaronis&#39;s notes and key takeaways from ${escapeHtml(book.title)} by ${escapeHtml(book.author)}: the ideas worth keeping and applying.">
     <link rel="canonical" href="https://skaronis.com/library/${escapeHtml(book.slug)}/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:title" content="${escapeHtml(book.title)} — My Notes">
-    <meta property="og:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+    <meta property="og:description" content="Peter Skaronis&#39;s notes and key takeaways from ${escapeHtml(book.title)} by ${escapeHtml(book.author)}: the ideas worth keeping and applying.">
     <meta property="og:url" content="https://skaronis.com/library/${escapeHtml(book.slug)}/">
     <meta property="og:site_name" content="Peter Skaronis">
     ${safeUrl(book.cover) ? `<meta property="og:image" content="${escapeHtml(safeUrl(book.cover))}">` : ''}
@@ -177,7 +177,7 @@ function generateBookPageHTML(book, noteHtml) {
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@peter_skaronis">
     <meta name="twitter:title" content="${escapeHtml(book.title)} — My Notes">
-    <meta name="twitter:description" content="My notes on ${escapeHtml(book.title)} by ${escapeHtml(book.author)}">
+    <meta name="twitter:description" content="Peter Skaronis&#39;s notes and key takeaways from ${escapeHtml(book.title)} by ${escapeHtml(book.author)}: the ideas worth keeping and applying.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -403,13 +403,13 @@ function generateLibraryHTML(books) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library — Peter Skaronis</title>
-    <meta name="description" content="Books I've read — my personal library.">
+    <meta name="description" content="Books Peter Skaronis has read, with ratings and notes: money, business, health and personal growth, from Morgan Housel to Jason Fried.">
     <link rel="canonical" href="https://skaronis.com/library.html">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Library — Peter Skaronis">
-    <meta property="og:description" content="Books I've read — my personal library.">
+    <meta property="og:description" content="Books Peter Skaronis has read, with ratings and notes: money, business, health and personal growth, from Morgan Housel to Jason Fried.">
     <meta property="og:url" content="https://skaronis.com/library.html">
     <meta property="og:site_name" content="Peter Skaronis">
 
@@ -417,7 +417,7 @@ function generateLibraryHTML(books) {
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@peter_skaronis">
     <meta name="twitter:title" content="Library — Peter Skaronis">
-    <meta name="twitter:description" content="Books I've read — my personal library.">
+    <meta name="twitter:description" content="Books Peter Skaronis has read, with ratings and notes: money, business, health and personal growth, from Morgan Housel to Jason Fried.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -680,13 +680,13 @@ function generateNotesIndexHTML(books) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Notes — Peter Skaronis</title>
-    <meta name="description" content="Books I've read with my personal notes and takeaways.">
+    <meta name="description" content="Peter Skaronis's notes and key takeaways from the books worth rereading, and the ideas he puts to work in business and life.">
     <link rel="canonical" href="https://skaronis.com/library/notes/">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Book Notes — Peter Skaronis">
-    <meta property="og:description" content="Books I've read with my personal notes and takeaways.">
+    <meta property="og:description" content="Peter Skaronis's notes and key takeaways from the books worth rereading, and the ideas he puts to work in business and life.">
     <meta property="og:url" content="https://skaronis.com/library/notes/">
     <meta property="og:site_name" content="Peter Skaronis">
 
@@ -694,7 +694,7 @@ function generateNotesIndexHTML(books) {
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@peter_skaronis">
     <meta name="twitter:title" content="Book Notes — Peter Skaronis">
-    <meta name="twitter:description" content="Books I've read with my personal notes and takeaways.">
+    <meta name="twitter:description" content="Peter Skaronis's notes and key takeaways from the books worth rereading, and the ideas he puts to work in business and life.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
