@@ -657,6 +657,67 @@ test('structured data is stable across runs', () => {
   assert.strictEqual(seo.processPageHtml(path.join(seo.ROOT, 'about.html'), html), html);
 });
 
+section('latest project card');
+
+test('the homepage card shows the first project in site.json', () => {
+  const site = JSON.parse(fs.readFileSync(path.join(seo.ROOT, 'site.json'), 'utf8'));
+  const card = seo.renderLatestProject();
+  assert.ok(card.includes(`href="${site.projects[0].url}"`), card);
+  const home = fs.readFileSync(path.join(seo.ROOT, 'index.html'), 'utf8');
+  assert.ok(home.includes(card.trim()), 'built homepage card is stale');
+});
+
+section('site menu');
+
+const chrome = require('./update-footer.js');
+const PAGE_HEAD = '<body>\n    <div class="container">\n        <header>\n            <h1>X</h1>\n        </header>\n';
+
+test('the menu goes just before the page header, once', () => {
+  const out = chrome.applyNav(PAGE_HEAD, 'about.html');
+  assert.strictEqual((out.match(/<nav class="site-nav"/g) || []).length, 1);
+  assert.ok(out.indexOf('site-nav:end') < out.indexOf('<header>'), out);
+});
+
+test('a second run changes nothing', () => {
+  const once = chrome.applyNav(PAGE_HEAD, 'about.html');
+  assert.strictEqual(chrome.applyNav(once, 'about.html'), once);
+});
+
+test('the current section is marked, and only that one', () => {
+  const post = chrome.applyNav(PAGE_HEAD, path.join('blog', 'x', 'index.html'));
+  assert.ok(post.includes('<a href="/blog/" aria-current="page">Blog</a>'), post);
+  assert.strictEqual((post.match(/aria-current/g) || []).length, 1);
+  const book = chrome.applyNav(PAGE_HEAD, path.join('library', 'some-book', 'index.html'));
+  assert.ok(book.includes('<a href="/library" aria-current="page">Library</a>'));
+  const archive = chrome.applyNav(PAGE_HEAD, 'archive.html');
+  assert.ok(!archive.includes('aria-current'), 'archive is not one of the menu sections');
+});
+
+test('the homepage gets the menu before its hero', () => {
+  const home = chrome.applyNav('<div class="container">\n        <section class="hero">\n', 'index.html');
+  assert.ok(home.indexOf('site-nav') < home.indexOf('class="hero"'));
+  assert.ok(home.includes('class="site-nav-home" aria-current="page"'));
+});
+
+test('a page with no header and no hero is reported, not guessed at', () => {
+  assert.strictEqual(chrome.applyNav('<body><main>x</main></body>', 'odd.html'), null);
+});
+
+test('every menu link is root-absolute, so it works at any depth', () => {
+  for (const l of chrome.NAV_LINKS) assert.ok(l.href.startsWith('/') && !l.href.startsWith('//'), l.href);
+});
+
+test('every built page outside the skip list carries exactly one menu', () => {
+  for (const rel of ['index.html', 'about.html', '404.html', 'blog/index.html', 'library/notes/index.html']) {
+    const html = fs.readFileSync(path.join(seo.ROOT, rel), 'utf8');
+    assert.strictEqual((html.match(/<nav class="site-nav"/g) || []).length, 1, rel);
+  }
+  for (const rel of chrome.SKIP_FILES) {
+    const html = fs.readFileSync(path.join(seo.ROOT, rel), 'utf8');
+    assert.ok(!html.includes('site-nav'), `${rel} is full-screen and must stay chrome-free`);
+  }
+});
+
 // Cloudflare Pages serves index.html with a 200 for every unknown path when the
 // site has no top-level 404.html. Google reads that as a soft 404 and can index
 // junk URLs as copies of the homepage.
