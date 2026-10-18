@@ -6,7 +6,7 @@
     // Create the share popup
     const popup = document.createElement('div');
     popup.id = 'share-popup';
-    popup.innerHTML = '<button id="share-x-btn" title="Share on X">𝕏</button>';
+    popup.innerHTML = '<button id="share-x-btn" title="Share on X" data-fathom-click="share-x">𝕏</button>';
     popup.style.cssText = `
         position: absolute;
         display: none;

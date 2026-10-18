@@ -181,6 +181,7 @@
                 b.appendChild(bl);
                 b.appendChild(doc.createTextNode(' · Play'));
                 b.appendChild(el('span', 'vh', ' ' + d.lat));
+                b.setAttribute('data-fathom-click', 'mazo-play');
                 b.addEventListener('click', function (ev) { ev.stopPropagation(); goTo(d.n, true); play(d.n, true); });
                 b.addEventListener('focus', function () { if (Math.round(S.c) !== d.n) goTo(d.n, true); });
                 actions.appendChild(b);

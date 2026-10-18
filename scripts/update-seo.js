@@ -129,6 +129,9 @@ const META_END = '<!-- seo:end -->';
 // stripped (LEGACY_TAG_RE): two copies would count every visit twice.
 const FATHOM_SITE = 'WMVSPTHG';
 const FATHOM_TAG = `    <script src="https://cdn.usefathom.com/script.js" data-site="${FATHOM_SITE}" defer></script>`;
+// Events (link clicks, shares, read-complete, the 404 page) live in scripts/fathom-events.js.
+// A same-origin file rather than inline code, so pages with a strict CSP (the tribute) run it too.
+const EVENTS_TAG = '    <script src="/scripts/fathom-events.js" defer></script>';
 
 // The site-wide card. Its size is fixed, so it can be declared; a page's own
 // image (a book cover, a Substack header) has unknown dimensions and is left
@@ -167,7 +170,8 @@ function renderPageMeta(page) {
     `    <meta name="twitter:image:alt" content="${escapeHtml(imageAlt)}">`,
     `    <meta name="author" content="${escapeHtml(SITE.person.name)}">`,
     ...renderPageJsonLd(page),
-    FATHOM_TAG
+    FATHOM_TAG,
+    EVENTS_TAG
   ];
   return '\n' + lines.join('\n') + '\n    ';
 }
@@ -625,4 +629,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { renderLlmsTxt, renderJsonLd, renderProjects, urlPathFor, pageFacts, processPageHtml, FATHOM_TAG, ROOT, safeMarkers: { META_START, META_END } };
+module.exports = { renderLlmsTxt, renderJsonLd, renderProjects, urlPathFor, pageFacts, processPageHtml, FATHOM_TAG, EVENTS_TAG, ROOT, safeMarkers: { META_START, META_END } };
