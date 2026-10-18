@@ -13,14 +13,14 @@ This system lets me write on Substack (where my subscribers are) while automatic
 ## Architecture
 
 ```
-Substack → RSS Feed → GitHub Action → Markdown → Static HTML → GitHub Pages
+Substack → RSS Feed → GitHub Action → Markdown → Static HTML → main → Cloudflare Pages
 ```
 
 Every two hours, a GitHub Action:
 1. Fetches RSS feeds from my Substacks
 2. Converts new posts to markdown
 3. Builds static HTML pages
-4. Commits and deploys to GitHub Pages
+4. Commits to `main`, which Cloudflare Pages deploys (see [Hosting](#hosting))
 
 ## Directory Structure
 
@@ -159,7 +159,7 @@ Steps, in order:
 2. `update-blog.js` — build HTML from any markdown in `posts/`
 3. `update-posts.js` — import new RSS content to markdown, rewrite the homepage blocks and `archive.html`
 4. `update-blog.js` again — render the markdown the previous step just imported
-5. `update-library.js` — Goodreads (currently 403s from CI; warns and continues)
+5. `update-library.js` — Goodreads (fail-soft: if the feed is unreachable it warns and continues)
 6. `update-footer.js` — one footer on every page, including the ones just generated
 7. `update-seo.js` — `llms.txt`, `sitemap.xml` and the per-page discovery tags
 8. commit and push, only if something actually changed
@@ -167,6 +167,33 @@ Steps, in order:
 Steps 6 and 7 run last on purpose: the generators above them emit pages from
 their own templates, so normalising afterwards means those templates never need
 to know about the footer or the meta tags.
+
+## Hosting
+
+skaronis.com is served by **Cloudflare Pages** (project `peterskaronis`), not
+GitHub Pages. Cloudflare's Git integration deploys every push to `main`, usually
+within a minute, and builds a preview of every other branch at
+`https://<branch>.peterskaronis.pages.dev` (slashes become dashes, so
+`ralph/seo-aeo` previews at `ralph-seo-aeo.peterskaronis.pages.dev`). Each pull
+request gets a "Cloudflare Pages" check with a link to its preview.
+
+Two Cloudflare Pages behaviours this site depends on:
+
+- **Clean URLs.** `/about.html` 308-redirects to `/about`. That is why canonical
+  tags and the sitemap use the extensionless form (`urlPathFor` in
+  `update-seo.js`); naming the `.html` URL would point search engines at a
+  redirect.
+- **`404.html` must exist at the root.** Without it, Cloudflare Pages treats the
+  site as a single-page app and answers every unknown URL with the homepage and a
+  200, which Google reports as a soft 404. The tests check that it exists and is
+  `noindex`.
+
+GitHub Pages still publishes the same files at `peterskaronis.github.io`. That
+copy is a mirror: every page's canonical tag points at skaronis.com, so search
+engines index the domain, not the mirror.
+
+Search Console: the domain property `sc-domain:skaronis.com` (DNS-verified) has
+`https://skaronis.com/sitemap.xml` submitted.
 
 ## HTML to Markdown Conversion
 
