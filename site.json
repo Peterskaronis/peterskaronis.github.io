@@ -8,7 +8,7 @@
     "summary": "Personal site of Peter Skaronis — cybersecurity consultant, vCISO, and founder of Techimpossible. Essays on security, compliance and the constraints people do not notice, plus the tools and games he builds.",
     "image": "https://skaronis.com/og.png",
     "locale": "en",
-    "twitter": "@peter_skaronis"
+    "twitter": "@skaronis"
   },
 
   "person": {
@@ -31,7 +31,7 @@
     ],
     "profiles": [
       "https://www.linkedin.com/in/peterskaronis/",
-      "https://x.com/peter_skaronis",
+      "https://x.com/skaronis",
       "https://blog.skaronis.com",
       "https://unsplash.com/@skaronis",
       "https://techimpossible.com"

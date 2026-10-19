@@ -58,7 +58,7 @@ const FOOTER_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/now', label: 'Now' },
   { href: '/library', label: 'Library' },
-  { href: 'https://x.com/peter_skaronis', label: 'Twitter' },
+  { href: 'https://x.com/skaronis', label: 'Twitter' },
   { href: 'https://www.linkedin.com/in/peterskaronis/', label: 'LinkedIn' }
 ];
 

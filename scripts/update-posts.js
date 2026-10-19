@@ -828,7 +828,7 @@ ${sectionsHTML}        <footer>
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>

@@ -307,7 +307,7 @@ function generatePostHTML(post, content) {
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:site" content="@skaronis">
     <meta name="twitter:title" content="${escapeHtml(post.title)}">
     <meta name="twitter:description" content="${description}">
     <meta name="twitter:image" content="${escapeHtml(image)}">
@@ -358,7 +358,7 @@ ${content}
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
@@ -433,7 +433,7 @@ ${monthsHTML}        </section>\n\n`;
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:site" content="@skaronis">
     <meta name="twitter:title" content="Blog — Peter Skaronis">
     <meta name="twitter:description" content="Essays by Peter Skaronis, a Vancouver cybersecurity consultant and vCISO, on security, compliance, AI, technology and living on your own terms.">
 
@@ -479,7 +479,7 @@ ${posts.length === 0 ? '        <div class="empty-state"><p>No posts yet. Check 
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
                 <a href="https://www.linkedin.com/in/peterskaronis/">LinkedIn</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>

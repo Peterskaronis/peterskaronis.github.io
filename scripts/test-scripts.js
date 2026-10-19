@@ -657,6 +657,34 @@ test('structured data is stable across runs', () => {
   assert.strictEqual(seo.processPageHtml(path.join(seo.ROOT, 'about.html'), html), html);
 });
 
+section('X handle');
+
+// The handle moved from @peter_skaronis (now gone) to @skaronis on 19 October
+// 2026. Old status links still resolve by id, so only those may keep it.
+test('no built page or template names the old X handle, except old status links', () => {
+  const hits = [];
+  const walk = dir => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (['.git', 'node_modules', 'posts'].includes(e.name)) continue;
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (/\.(html|js|json|txt|xml)$/.test(e.name)) {
+        const text = fs.readFileSync(p, 'utf8').replace(/twitter\.com\/Peter_Skaronis\/status\/\d+/gi, '');
+        if (/peter_skaronis/i.test(text) && !p.endsWith('test-scripts.js')) hits.push(path.relative(seo.ROOT, p));
+      }
+    }
+  };
+  walk(seo.ROOT);
+  assert.deepStrictEqual(hits, []);
+});
+
+test('site.json and the footer point at @skaronis', () => {
+  const site = JSON.parse(fs.readFileSync(path.join(seo.ROOT, 'site.json'), 'utf8'));
+  assert.strictEqual(site.site.twitter, '@skaronis');
+  assert.ok(site.person.profiles.includes('https://x.com/skaronis'));
+  assert.ok(chrome.renderFooter().includes('href="https://x.com/skaronis"'));
+});
+
 section('latest project card');
 
 test('the homepage card shows the first project in site.json', () => {

@@ -175,7 +175,7 @@ function generateBookPageHTML(book, noteHtml) {
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:site" content="@skaronis">
     <meta name="twitter:title" content="${escapeHtml(book.title)} — My Notes">
     <meta name="twitter:description" content="Peter Skaronis&#39;s notes and key takeaways from ${escapeHtml(book.title)} by ${escapeHtml(book.author)}: the ideas worth keeping and applying.">
 
@@ -354,7 +354,7 @@ ${noteHtml}
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
@@ -415,7 +415,7 @@ function generateLibraryHTML(books) {
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:site" content="@skaronis">
     <meta name="twitter:title" content="Library — Peter Skaronis">
     <meta name="twitter:description" content="Books Peter Skaronis has read, with ratings and notes: money, business, health and personal growth, from Morgan Housel to Jason Fried.">
 
@@ -643,7 +643,7 @@ ${booksHTML}        </div>
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
@@ -692,7 +692,7 @@ function generateNotesIndexHTML(books) {
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@peter_skaronis">
+    <meta name="twitter:site" content="@skaronis">
     <meta name="twitter:title" content="Book Notes — Peter Skaronis">
     <meta name="twitter:description" content="Peter Skaronis's notes and key takeaways from the books worth rereading, and the ideas he puts to work in business and life.">
 
@@ -856,7 +856,7 @@ function generateNotesIndexHTML(books) {
             <div class="footer-links">
                 <a href="/">Home</a>
                 <a href="/now">Now</a>
-                <a href="https://x.com/peter_skaronis">Twitter</a>
+                <a href="https://x.com/skaronis">Twitter</a>
             </div>
             <p class="copyright">Made in Vancouver 🇨🇦</p>
         </footer>
